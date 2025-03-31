@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/LogBackground.png</file>
+        <file>res/Logo.png</file>
+        <file>res/Search_Icon.svg</file>
+        <file>res/default.jpg</file>
+        <file>res/supermarket.jpg</file>
+    </qresource>
+</RCC>

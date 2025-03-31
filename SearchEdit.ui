@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SearchEdit</class>
+ <widget class="QLineEdit" name="SearchEdit">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>402</width>
+    <height>107</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SearchEdit</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+  </property>
+  <property name="placeholderText">
+   <string/>
+  </property>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
