@@ -29,7 +29,7 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="styleSheet">
@@ -273,8 +273,8 @@ QScrollBar::add-page, QScrollBar::sub-page {
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>100</width>
-                  <height>30</height>
+                  <width>1010</width>
+                  <height>600</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -317,9 +317,23 @@ background-color:rgba(255,255,255,0.0);
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="tempBtn">
+              <widget class="QLabel" name="productWidgetPageLabel">
                <property name="text">
-                <string>占个位置，先不能搞</string>
+                <string>第1/1页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="preProductWidgetPageBtn">
+               <property name="text">
+                <string>上一页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="nextProductWidgetPageBtn">
+               <property name="text">
+                <string>下一页</string>
                </property>
               </widget>
              </item>

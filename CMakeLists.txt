@@ -33,8 +33,11 @@ set(PROJECT_SOURCES
     ProductDetailDialog.ui
     ProductDetailDialog.h
     ProductDetailDialog.cpp
-    OrderPagination.cpp
     OrderPagination.h
+    OrderPagination.cpp
+    ProductWidgetPagination.h
+    ProductWidgetPagination.cpp
+
 )
 
 qt_add_resources(PROJECT_SOURCES resource.qrc)
