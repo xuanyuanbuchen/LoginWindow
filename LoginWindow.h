@@ -12,7 +12,7 @@ public:
     ~LoginWindow();
 private slots:
     void onLoginClicked();
-
+    void onMailLoginClicked();
 private:
     Ui::LoginWindowClass ui;
 };

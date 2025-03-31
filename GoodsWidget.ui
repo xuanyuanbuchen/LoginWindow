@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ProductWidget</class>
- <widget class="QWidget" name="ProductWidget">
+ <class>GoodsWidget</class>
+ <widget class="QWidget" name="GoodsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>140</width>
-    <height>170</height>
+    <height>180</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>140</width>
-    <height>170</height>
+    <height>180</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -22,18 +22,13 @@
     <height>280</height>
    </size>
   </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
-   <string>ProductWidget</string>
+   <string>GoodsWidget</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QWidget:hover{
-background-color:rgba(255,255,255,0.0);
-border:soild;
-border-width:1px;
-border-color:black;
-}</string>
-  </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QFrame" name="frame">
      <property name="styleSheet">
@@ -70,7 +65,7 @@ border-width:2px
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="productPicture">
+       <widget class="QLabel" name="goodsPicture">
         <property name="minimumSize">
          <size>
           <width>110</width>
@@ -119,7 +114,7 @@ border-width:2px
           <number>0</number>
          </property>
          <item>
-          <widget class="QLabel" name="productPriceText">
+          <widget class="QLabel" name="goodsPriceText">
            <property name="font">
             <font>
              <pointsize>9</pointsize>
@@ -141,7 +136,17 @@ border-width:2px
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="productNameText">
+          <widget class="QLabel" name="goodsCountText">
+           <property name="text">
+            <string>库存</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="goodsNameText">
            <property name="font">
             <font>
              <pointsize>8</pointsize>

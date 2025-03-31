@@ -86,7 +86,7 @@
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;       
     font-size: 14px;           
 }
 
@@ -149,7 +149,7 @@ border:none;
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;       
     font-size: 14px;           
 }
 
@@ -174,7 +174,7 @@ QPushButton:pressed
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -216,7 +216,7 @@ QPushButton:pressed
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;    
     font-size: 14px;           
 }
 
@@ -267,7 +267,7 @@ QPushButton:pressed
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -425,7 +425,7 @@ border:none;
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -450,7 +450,7 @@ border:none;
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -479,7 +479,7 @@ border:none;
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;       
     font-size: 14px;           
 }
 
@@ -508,7 +508,7 @@ QPushButton:pressed
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;       
     font-size: 14px;           
 }
 
@@ -537,7 +537,7 @@ QPushButton:pressed
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;       
     font-size: 14px;           
 }
 
@@ -622,7 +622,7 @@ QPushButton:pressed
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -681,7 +681,7 @@ border:none;
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -707,7 +707,7 @@ border:none;
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+  	border-radius: 15px;      
     font-size: 14px;           
 }
 
@@ -732,7 +732,7 @@ QPushButton:pressed
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -774,7 +774,7 @@ QPushButton:pressed
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;      
     font-size: 14px;           
 }
 
@@ -812,7 +812,7 @@ QPushButton:pressed
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -831,7 +831,7 @@ QPushButton:pressed
               <property name="styleSheet">
                <string notr="true"> QLineEdit {
      border: 1px solid #ccc;
-     border-radius: 10px;
+     border-radius: 15px;
      padding: 5px;
      font-size: 14px;
      text-align: center;
@@ -854,7 +854,7 @@ QPushButton:pressed
     color: white;               
     border: none;              
     padding: 10px 20px;        
-    border-radius: 10px;       
+    border-radius: 15px;      
     font-size: 14px;           
 }
 

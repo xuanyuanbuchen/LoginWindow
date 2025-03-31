@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QDebug>
 #include "CashierWindowClass.h"
+#include "ManagerWindowClass.h"
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QWidget(parent)
@@ -18,36 +19,45 @@ LoginWindow::LoginWindow(QWidget *parent)
     this->setPalette(palette);
 
     ui.stackedWidget->setCurrentIndex(0);
-
+	//注册按钮事件
     connect(ui.signPageBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(2);
         });
+	//注册返回登录界面按钮事件
     connect(ui.signReturnToLogBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(0);
         });
+	//邮件按钮事件
     connect(ui.mailPageBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(1);
         });
+	//邮件返回登录界面按钮事件
     connect(ui.mailReturnToLogBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(0);
         });
+	//登录按钮事件
     connect(ui.logBtn, &QPushButton::clicked,this,&LoginWindow::onLoginClicked);
-
+	//邮件登录按钮事件
+	connect(ui.mailLogBtn, &QPushButton::clicked, this, &LoginWindow::onMailLoginClicked);
 }
 
 void LoginWindow::onLoginClicked()
 {
-   
-    
     this->hide();
-    CashierWindowClass *cashierWindow = new CashierWindowClass;
+    CashierWindowClass* cashierWindow = new CashierWindowClass;
     connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // 连接退出信号
-    cashierWindow->show();
-    
-    
+    cashierWindow->show();   
 }
 
 LoginWindow::~LoginWindow()
 {
     
+}
+
+void LoginWindow::onMailLoginClicked()
+{
+	this->hide();
+	ManagerWindowClass* managerWindow = new ManagerWindowClass;
+	connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // 连接退出信号
+	managerWindow->show();
 }

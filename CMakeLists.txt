@@ -33,10 +33,17 @@ set(PROJECT_SOURCES
     ProductDetailDialog.ui
     ProductDetailDialog.h
     ProductDetailDialog.cpp
+    ManagerWindowClass.ui
+    ManagerWindowClass.h
+    ManagerWindowClass.cpp
+    GoodsWidget.ui
+    GoodsWidget.h
+    GoodsWidget.cpp
     OrderPagination.h
     OrderPagination.cpp
     ProductWidgetPagination.h
     ProductWidgetPagination.cpp
+
 
 )
 
