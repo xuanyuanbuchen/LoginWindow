@@ -73,7 +73,7 @@ background-color:rgba(255,255,255,0.0);
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
              <item>
-              <widget class="QComboBox" name="produceComboBoxCategory">
+              <widget class="QComboBox" name="goodsComboBoxCategory">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -146,7 +146,7 @@ background-color:rgba(255,255,255,0.0);
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="produceComboBoxPrice">
+              <widget class="QComboBox" name="goodsComboBoxPrice">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -183,7 +183,7 @@ background-color:rgba(255,255,255,0.0);
               </widget>
              </item>
              <item>
-              <widget class="SearchEdit" name="produceNameLine">
+              <widget class="SearchEdit" name="goodsNameLine">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -276,7 +276,7 @@ QScrollBar::add-page, QScrollBar::sub-page {
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>1035</width>
+                  <width>1038</width>
                   <height>600</height>
                  </rect>
                 </property>
@@ -307,21 +307,34 @@ background-color:rgba(255,255,255,0.0);
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <widget class="QLabel" name="productWidgetPageLabel">
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="goodsWidgetPageLabel">
                <property name="text">
                 <string>第1/1页</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="preProductWidgetPageBtn">
+              <widget class="QPushButton" name="preGoodsWidgetPageBtn">
                <property name="text">
                 <string>上一页</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="nextProductWidgetPageBtn">
+              <widget class="QPushButton" name="nextGoodsWidgetPageBtn">
                <property name="text">
                 <string>下一页</string>
                </property>
@@ -380,7 +393,7 @@ background-color:rgba(255,255,255,0.0);
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
              <item>
-              <widget class="QComboBox" name="produceComboBoxCategory_2">
+              <widget class="QComboBox" name="goodsComboBoxCategory_2">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>

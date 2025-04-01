@@ -39,11 +39,15 @@ set(PROJECT_SOURCES
     GoodsWidget.ui
     GoodsWidget.h
     GoodsWidget.cpp
+    GoodsDetailDialog.ui
+    GoodsDetailDialog.h
+    GoodsDetailDialog.cpp
     OrderPagination.h
     OrderPagination.cpp
     ProductWidgetPagination.h
     ProductWidgetPagination.cpp
-
+    GoodsWidgetPagination.h
+    GoodsWidgetPagination.cpp
 
 )
 

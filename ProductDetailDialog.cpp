@@ -6,6 +6,7 @@ ProductDetailDialog::ProductDetailDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
+	ui.productTextEdit->setReadOnly(true);
 }
 
 ProductDetailDialog::ProductDetailDialog(QWidget* parent, const QString& id)
@@ -13,6 +14,8 @@ ProductDetailDialog::ProductDetailDialog(QWidget* parent, const QString& id)
 {
 	ui.setupUi(this);
 	ui.productID2->setText(id);
+	ui.productTextEdit->setReadOnly(true);
+
 }
 
 ProductDetailDialog::~ProductDetailDialog()

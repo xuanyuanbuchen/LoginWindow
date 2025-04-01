@@ -71,7 +71,7 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
         model->appendRow(rowItems);
         ui.tableView->setIndexWidget(model->index(i, 5), widget);
     }
-    //初始化分页管理器
+    //初始化订单分页管理器
     orderPagination = new OrderPagination(model, 30);
     //更新数据
     updateOrderPage();
@@ -85,6 +85,7 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
         updateOrderPage();
     });
 
+	//设置页面跳转按钮
     connect(ui.checkGoodsBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(0);
     });
@@ -128,8 +129,7 @@ void CashierWindowClass::onProductClicked()
 {
     ProductWidget* productWidget = qobject_cast<ProductWidget*>(sender());
     if (productWidget) {
-        ProductDetailDialog dialog(this);
-        dialog.exec();
+		productWidget->showProductDetailDialog();
     }
 }
 

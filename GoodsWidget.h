@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include "ui_GoodsWidget.h"
+#include <GoodsDetailDialog.h>
 
 class GoodsWidget : public QWidget
 {
@@ -11,6 +12,7 @@ public:
 	GoodsWidget(QWidget *parent = nullptr);
 	~GoodsWidget();
 	void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
+	void showGoodsDetailDialog();
 signals:
 	void clicked();  // µã»÷ÐÅºÅ
 
@@ -20,4 +22,5 @@ protected:
 private:
 	Ui::GoodsWidget ui;
 	QString id;
+	GoodsDetailDialog* goodsDetailDialog;
 };
