@@ -48,6 +48,8 @@ set(PROJECT_SOURCES
     ProductWidgetPagination.cpp
     GoodsWidgetPagination.h
     GoodsWidgetPagination.cpp
+    ClickableLabel.h
+    ClickableLabel.cpp
 
 )
 

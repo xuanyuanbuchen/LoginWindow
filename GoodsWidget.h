@@ -6,21 +6,25 @@
 
 class GoodsWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	GoodsWidget(QWidget *parent = nullptr);
-	~GoodsWidget();
-	void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
-	void showGoodsDetailDialog();
+    GoodsWidget(QWidget* parent = nullptr);
+    ~GoodsWidget();
+    void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
+    void showGoodsDetailDialog();
+
 signals:
-	void clicked();  // 点击信号
+    void clicked();  // 点击信号
 
 protected:
-	void mousePressEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+
+private slots:
+    void onPictureChanged(const QPixmap& newImage);
 
 private:
-	Ui::GoodsWidget ui;
-	QString id;
-	GoodsDetailDialog* goodsDetailDialog;
+    Ui::GoodsWidget ui;
+    QString id;
+    GoodsDetailDialog* goodsDetailDialog;
 };

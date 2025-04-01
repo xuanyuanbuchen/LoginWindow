@@ -31,7 +31,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QLabel" name="goodsPicture">
+       <widget class="ClickableLabel" name="goodsPicture">
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -529,6 +529,13 @@ QPushButton:pressed
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resource.qrc"/>
  </resources>

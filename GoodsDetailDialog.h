@@ -5,16 +5,22 @@
 
 class GoodsDetailDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	GoodsDetailDialog(QWidget *parent = nullptr);
-	GoodsDetailDialog(QWidget* parent, const QString& id);
-	~GoodsDetailDialog();
+    GoodsDetailDialog(QWidget* parent = nullptr);
+    GoodsDetailDialog(QWidget* parent, const QString& id);
+    ~GoodsDetailDialog();
 
-	void setGoodsDetail(const QString& id, const QString& name, const QString& price, const QString& category,
-		const QPixmap& image, const QString& description, const int count);
+    void setGoodsDetail(const QString& id, const QString& name, const QString& price, const QString& category,
+        const QPixmap& image, const QString& description, const int count);
+
+signals:
+    void pictureChanged(const QPixmap& newImage);
+
+private slots:
+    void onGoodsPictureClicked();
 
 private:
-	Ui::GoodsDetailDialog ui;
+    Ui::GoodsDetailDialog ui;
 };
