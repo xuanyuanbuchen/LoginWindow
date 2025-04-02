@@ -10,6 +10,7 @@ class GoodsWidget : public QWidget
 
 public:
     GoodsWidget(QWidget* parent = nullptr);
+    GoodsWidget(const QString& path = ":/res/default.jpg", QWidget* parent = nullptr);
     ~GoodsWidget();
     void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
     void showGoodsDetailDialog();

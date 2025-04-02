@@ -6,5 +6,6 @@
         <file>res/default.jpg</file>
         <file>res/supermarket.jpg</file>
         <file>res/manager.png</file>
+        <file>res/Add_Icon.svg</file>
     </qresource>
 </RCC>

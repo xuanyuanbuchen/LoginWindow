@@ -3,7 +3,7 @@
 #include <QWidget>
 #include "ui_CashierWindowClass.h"
 #include "ProductWidget.h"
-#include "OrderPagination.h"
+#include "TableViewPagination.h"
 #include "ProductWidgetPagination.h"
 #include <vector>
 
@@ -30,7 +30,7 @@ private:
     std::vector<ProductWidget*> vec_current_produc_widget;
     int currentPage;
     int totalPages;
-    OrderPagination* orderPagination;
+    TableViewPagination* orderPagination;
     ProductWidgetPagination* productWidgetPagination;
 
     void loadPage(int page);

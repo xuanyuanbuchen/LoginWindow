@@ -15,12 +15,12 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <SearchEdit.h>
-class OrderPagination 
+class TableViewPagination 
 {
 public:
 
     // 构造函数
-    OrderPagination(QAbstractItemModel* model, int pageSize = 15);
+    TableViewPagination(QAbstractItemModel* model, int pageSize = 15);
     //获取页总数
     int pageCount() const;
     // 设置当前页(自动处理边界)

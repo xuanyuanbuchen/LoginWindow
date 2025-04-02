@@ -6,6 +6,7 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
     : QWidget(parent), currentPage(0), totalPages(0)
 {
     ui.setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     ui.stackedWidget->setCurrentIndex(0);
     // 设置窗口背景图片
     QPixmap background(":/res/supermarket.jpg");  // 从资源文件中加载图片
@@ -16,7 +17,6 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
     //设置商品展示网格
     for (int i = 0; i < 19; i++)
     {
-       
         ProductWidget* pro = new ProductWidget;
         pro->setStyleSheet("QWidget { background-color: rgba(255,255,255,0.8); }");
         vec_current_produc_widget.push_back(pro);
@@ -52,7 +52,7 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
         rowItems << new QStandardItem(i % 3 == 0 ? QString("待处理") : (i % 3 == 1 ? QString("已发货") : QString("已完成")));
 
         // 添加操作按钮
-        QPushButton* btn = new QPushButton("同意");
+        QPushButton* btn = new QPushButton("同意",this);
         btn->setProperty("row", i); // 存储行索引
 
         //执行的操作（有数据库里再写）
@@ -61,7 +61,7 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
         });
 
         // 将按钮放入表格
-        QWidget* widget = new QWidget();
+        QWidget* widget = new QWidget;
         QHBoxLayout* layout = new QHBoxLayout(widget);
         layout->addWidget(btn);
         layout->setAlignment(Qt::AlignCenter);
@@ -72,7 +72,7 @@ CashierWindowClass::CashierWindowClass(QWidget *parent)
         ui.tableView->setIndexWidget(model->index(i, 5), widget);
     }
     //初始化订单分页管理器
-    orderPagination = new OrderPagination(model, 30);
+    orderPagination = new TableViewPagination(model, 30);
     //更新数据
     updateOrderPage();
 

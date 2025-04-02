@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>140</width>
-    <height>180</height>
+    <width>250</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>140</width>
-    <height>180</height>
+    <height>200</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>250</width>
-    <height>280</height>
+    <height>300</height>
    </size>
   </property>
   <property name="mouseTracking">

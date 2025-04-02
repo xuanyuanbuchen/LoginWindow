@@ -1,30 +1,30 @@
-#include "OrderPagination.h"
+#include "TableViewPagination.h"
 
-OrderPagination::OrderPagination(QAbstractItemModel* model, int pageSize)
+TableViewPagination::TableViewPagination(QAbstractItemModel* model, int pageSize)
 	: model(model), pageSize(pageSize), currentPage(0)
 {
 	Q_ASSERT(model != nullptr);
 	Q_ASSERT(pageSize > 0);
 }
 
-int OrderPagination::pageCount() const
+int TableViewPagination::pageCount() const
 {
 	//空数据处理
 	if (model->rowCount() == 0) return 1;
 	return (model->rowCount() + pageSize - 1) / pageSize;
 }
 
-void OrderPagination::setPage(int page)
+void TableViewPagination::setPage(int page)
 {
 	currentPage = qBound(0, page, pageCount() - 1);
 }
 
-int OrderPagination::getCurrentPage() const
+int TableViewPagination::getCurrentPage() const
 {
 	return currentPage;
 }
 
-void OrderPagination::applyToTableView(QTableView* tableView)
+void TableViewPagination::applyToTableView(QTableView* tableView)
 {
 	int start = currentPage * pageSize;
 	int end = qMin(start + pageSize, model->rowCount());
@@ -35,12 +35,12 @@ void OrderPagination::applyToTableView(QTableView* tableView)
 	}
 }
 
-int OrderPagination::startRow() const
+int TableViewPagination::startRow() const
 {
 	return currentPage * pageSize;
 }
 
-int OrderPagination::endRow() const
+int TableViewPagination::endRow() const
 {
 	return qMin(startRow() + pageSize, model->rowCount());
 }

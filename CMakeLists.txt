@@ -42,8 +42,8 @@ set(PROJECT_SOURCES
     GoodsDetailDialog.ui
     GoodsDetailDialog.h
     GoodsDetailDialog.cpp
-    OrderPagination.h
-    OrderPagination.cpp
+    TableViewPagination.h
+    TableViewPagination.cpp
     ProductWidgetPagination.h
     ProductWidgetPagination.cpp
     GoodsWidgetPagination.h
