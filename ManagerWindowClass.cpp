@@ -1,6 +1,7 @@
 ﻿#include "ManagerWindowClass.h"
 #include <qstandarditemmodel.h>
 #include <qdatetime.h>
+#include <qmessagebox.h>
 
 ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     : QWidget(parent)
@@ -179,6 +180,13 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     connect(ui.staffChangedCancelBtn, &QPushButton::clicked, this, &ManagerWindowClass::onStaffChangedCancelClicked);
     connect(ui.addStaffBtn, &QPushButton::clicked, this, &ManagerWindowClass::onAddStaffClicked);
     connect(ui.staffTableView->model(), &QAbstractItemModel::dataChanged, this, &ManagerWindowClass::onStaffDataChanged);
+
+    //删除按钮连接
+    connect(ui.goodsDeleteBtn, &QPushButton::clicked, this, &ManagerWindowClass::onDeleteGoodsClicked);
+    connect(ui.saleDeleteBtn, &QPushButton::clicked, this, &ManagerWindowClass::onDeleteSaleClicked);
+    connect(ui.staffDeleteBtn, &QPushButton::clicked, this, &ManagerWindowClass::onDeleteStaffClicked);
+
+
 
 }
 
@@ -432,4 +440,106 @@ void ManagerWindowClass::onAddStaffClicked()
 
     // 更新分页
     updateStaffPage();
+}
+
+void ManagerWindowClass::onDeleteGoodsClicked()
+{
+    QString goodsId = ui.goodsDeleteEdit->text().trimmed(); // 获取输入的商品编号
+    if (goodsId.isEmpty()) {
+        QMessageBox::warning(this, "警告", "请输入商品编号！");
+        return;
+    }
+
+    // 遍历商品列表，找到对应的商品
+    auto it = std::find_if(vec_current_goods_widget.begin(), vec_current_goods_widget.end(),
+        [&goodsId](GoodsWidget* widget) {
+            return widget->getID() == goodsId;
+        });
+
+    if (it != vec_current_goods_widget.end()) {
+        GoodsWidget* widgetToDelete = *it;
+
+        // 从布局中移除并删除商品
+        ui.gridLayout->removeWidget(widgetToDelete);
+        vec_current_goods_widget.erase(it);
+        delete widgetToDelete;
+
+        // 更新商品分页
+        updateGoodsPage();
+
+        QMessageBox::information(this, "成功", "商品已成功删除！");
+    }
+    else {
+        QMessageBox::warning(this, "警告", "未找到对应的商品编号！");
+    }
+}
+
+void ManagerWindowClass::onDeleteSaleClicked()
+{
+    QString saleId = ui.saleDeleteEdit->text().trimmed(); // 获取输入的订单编号
+    if (saleId.isEmpty()) {
+        QMessageBox::warning(this, "警告", "请输入订单编号！");
+        return;
+    }
+
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui.saleTableView->model());
+    if (!model) {
+        QMessageBox::warning(this, "错误", "无法获取销售记录表格模型！");
+        return;
+    }
+
+    // 遍历表格，找到对应的订单编号
+    bool recordFound = false;
+    for (int row = 0; row < model->rowCount(); ++row) {
+        QModelIndex index = model->index(row, 0); // 假设订单编号在第0列
+        if (model->data(index).toString() == saleId) {
+            model->removeRow(row); // 删除该行
+            recordFound = true;
+            break;
+        }
+    }
+
+    if (recordFound) {
+        // 更新分页
+        updateSalePage();
+        QMessageBox::information(this, "成功", "销售记录已成功删除！");
+    }
+    else {
+        QMessageBox::warning(this, "警告", "未找到对应的订单编号！");
+    }
+}
+
+void ManagerWindowClass::onDeleteStaffClicked()
+{
+    QString staffId = ui.staffDeleteEdit->text().trimmed(); // 获取输入的员工编号
+    if (staffId.isEmpty()) {
+        QMessageBox::warning(this, "警告", "请输入员工编号！");
+        return;
+    }
+
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui.staffTableView->model());
+    if (!model) {
+        QMessageBox::warning(this, "错误", "无法获取员工表格模型！");
+        return;
+    }
+
+    // 遍历表格，找到对应的员工编号
+    bool recordFound = false;
+    for (int row = 0; row < model->rowCount(); ++row) {
+        QModelIndex index = model->index(row, 0); // 假设员工编号在第0列
+        if (model->data(index).toString() == staffId) {
+            model->removeRow(row); // 删除该行
+            recordFound = true;
+            break;
+        }
+    }
+
+    if (recordFound) {
+        // 更新分页
+        updateStaffPage();
+        QMessageBox::information(this, "成功", "员工已成功删除！");
+    }
+    else {
+        QMessageBox::warning(this, "警告", "未找到对应的员工编号！");
+    }
 }

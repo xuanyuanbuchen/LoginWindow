@@ -47,6 +47,10 @@ void GoodsWidget::showGoodsDetailDialog()
     goodsDetailDialog->exec();
 }
 
+const QString& GoodsWidget::getID()
+{
+	return this->id;
+}
 void GoodsWidget::mousePressEvent(QMouseEvent* event)
 {
     Q_UNUSED(event);

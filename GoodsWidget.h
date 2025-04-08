@@ -14,6 +14,7 @@ public:
     ~GoodsWidget();
     void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
     void showGoodsDetailDialog();
+    const QString& getID();
 
 signals:
     void clicked();  // µã»÷ÐÅºÅ

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>770</height>
+    <height>768</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -288,7 +288,7 @@ QPushButton:pressed
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="styleSheet">
@@ -539,7 +539,7 @@ QScrollBar::add-page, QScrollBar::sub-page {
                   <x>0</x>
                   <y>0</y>
                   <width>1038</width>
-                  <height>602</height>
+                  <height>591</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -569,6 +569,49 @@ background-color:rgba(255,255,255,0.0);
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
+              <widget class="QPushButton" name="goodsDeleteBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>删除商品</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="goodsDeleteEdit">
+               <property name="styleSheet">
+                <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入商品ID</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <spacer name="horizontalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -590,6 +633,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="preGoodsWidgetPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>上一页</string>
                </property>
@@ -597,6 +657,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="nextGoodsWidgetPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>下一页</string>
                </property>
@@ -816,6 +893,23 @@ background-color:rgba(255,255,255,0.0);
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
               <widget class="QPushButton" name="saleChangedAcceptBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>确认修改</string>
                </property>
@@ -823,6 +917,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="saleChangedCancelBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>取消修改</string>
                </property>
@@ -830,8 +941,68 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="addSaleBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>添加订单</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="saleDeleteBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>删除订单</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="saleDeleteEdit">
+               <property name="styleSheet">
+                <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入订单ID</string>
                </property>
               </widget>
              </item>
@@ -857,6 +1028,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="preSalePageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>上一页</string>
                </property>
@@ -864,6 +1052,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="nextSalePageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>下一页</string>
                </property>
@@ -1009,6 +1214,23 @@ background-color:rgba(255,255,255,0.0);
             <layout class="QHBoxLayout" name="horizontalLayout_13">
              <item>
               <widget class="QPushButton" name="staffChangedAcceptBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>确认修改</string>
                </property>
@@ -1016,6 +1238,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="staffChangedCancelBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>取消修改</string>
                </property>
@@ -1023,8 +1262,68 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="addStaffBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>添加员工</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="staffDeleteBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>删除员工</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="staffDeleteEdit">
+               <property name="styleSheet">
+                <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入员工ID</string>
                </property>
               </widget>
              </item>
@@ -1050,6 +1349,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="preStaffPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>上一页</string>
                </property>
@@ -1057,6 +1373,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="nextStaffPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>下一页</string>
                </property>
@@ -1115,7 +1448,7 @@ background-color:rgba(255,255,255,0.0);
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
              <item>
-              <widget class="SearchEdit" name="saleNameLine_4">
+              <widget class="SearchEdit" name="customerNameLine">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -1151,7 +1484,7 @@ background-color:rgba(255,255,255,0.0);
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_18">
              <item>
-              <widget class="QTableView" name="saleTableView_4"/>
+              <widget class="QTableView" name="customerTableView"/>
              </item>
             </layout>
            </widget>
@@ -1171,6 +1504,118 @@ background-color:rgba(255,255,255,0.0);
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_19">
              <item>
+              <widget class="QPushButton" name="customerChangedAcceptBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>确认修改</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="customerChangedCancelBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>取消修改</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="addCustomerBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>添加顾客</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="customerDeleteBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>删除顾客</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="customerDeleteEdit">
+               <property name="styleSheet">
+                <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <spacer name="horizontalSpacer_13">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -1184,21 +1629,55 @@ background-color:rgba(255,255,255,0.0);
               </spacer>
              </item>
              <item>
-              <widget class="QLabel" name="salePageLabel_4">
+              <widget class="QLabel" name="customerPageLabel">
                <property name="text">
                 <string>第1/1页</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="preSalePageBtn_4">
+              <widget class="QPushButton" name="preCustomerPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>上一页</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="nextSalePageBtn_4">
+              <widget class="QPushButton" name="nextCustomerPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>下一页</string>
                </property>

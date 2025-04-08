@@ -280,7 +280,7 @@ QScrollBar::add-page, QScrollBar::sub-page {
                   <x>0</x>
                   <y>0</y>
                   <width>1010</width>
-                  <height>600</height>
+                  <height>591</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -331,6 +331,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="preProductWidgetPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>上一页</string>
                </property>
@@ -338,6 +355,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="nextProductWidgetPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>下一页</string>
                </property>
@@ -577,6 +611,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="preOrderPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>上一页</string>
                </property>
@@ -584,6 +635,23 @@ background-color:rgba(255,255,255,0.0);
              </item>
              <item>
               <widget class="QPushButton" name="nextOrderPageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
                <property name="text">
                 <string>下一页</string>
                </property>

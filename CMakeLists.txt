@@ -50,6 +50,8 @@ set(PROJECT_SOURCES
     GoodsWidgetPagination.cpp
     ClickableLabel.h
     ClickableLabel.cpp
+    SqlTools.h
+    SqlTools.cpp
 
 )
 

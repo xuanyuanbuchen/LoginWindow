@@ -35,6 +35,10 @@ private slots:
     void onStaffChangedCancelClicked();
     void onStaffDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles = QVector<int>());
     void onAddStaffClicked();
+    void onDeleteGoodsClicked();
+    void onDeleteSaleClicked();
+    void onDeleteStaffClicked();
+
 
 private:
     Ui::ManagerWindowClass ui;
