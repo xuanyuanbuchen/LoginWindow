@@ -11,7 +11,12 @@ ClickableLabel::~ClickableLabel()
 
 }
 
-void ClickableLabel::mousePressEvent(QMouseEvent* event) 
+void ClickableLabel::mousePressEvent(QMouseEvent* event)
 {
     emit clicked();
+}
+
+void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    emit doubleClicked(); // ·¢ÉäË«»÷ÐÅºÅ
 }

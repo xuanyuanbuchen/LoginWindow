@@ -12,6 +12,7 @@ find_package(Qt${QT_VERSION_MAJOR}
         Core
         Gui
         Widgets
+        Charts
 )
 qt_standard_project_setup()
 
@@ -42,6 +43,9 @@ set(PROJECT_SOURCES
     GoodsDetailDialog.ui
     GoodsDetailDialog.h
     GoodsDetailDialog.cpp
+    CustomerDetailDialog.ui
+    CustomerDetailDialog.h
+    CustomerDetailDialog.cpp
     TableViewPagination.h
     TableViewPagination.cpp
     ProductWidgetPagination.h
@@ -52,6 +56,10 @@ set(PROJECT_SOURCES
     ClickableLabel.cpp
     SqlTools.h
     SqlTools.cpp
+    FinanceChart.ui
+    FinanceChart.h
+    FinanceChart.cpp
+
 
 )
 
@@ -70,6 +78,8 @@ target_link_libraries(${PROJECT_NAME}
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt6::Charts
+
 )
 
 INCLUDE_DIRECTORIES(

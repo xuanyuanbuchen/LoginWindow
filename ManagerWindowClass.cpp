@@ -2,6 +2,11 @@
 #include <qstandarditemmodel.h>
 #include <qdatetime.h>
 #include <qmessagebox.h>
+#include <qfiledialog.h>
+#include "CustomerDetailDialog.h"
+#include "FinanceChart.h"
+#include <QRandomGenerator>
+
 
 ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     : QWidget(parent)
@@ -94,12 +99,6 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     connect(ui.addSaleBtn, &QPushButton::clicked, this, &ManagerWindowClass::onAddOrderClicked);
 
 
-
-
-
-
-
-
     //设置员工展示和处理表格
     QStandardItemModel* staffmodel = new QStandardItemModel(this);
     staffmodel->setHorizontalHeaderLabels({ "员工ID","名字","邮箱","密码","加入时间","职责" });
@@ -137,12 +136,93 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
         });
 
 
+    // 设置顾客展示和处理表格
 
+    customerModel = new QStandardItemModel(this);
+    customerModel->setHorizontalHeaderLabels({ "头像", "顾客ID", "出生年月", "个人备注", "注册时间", "邮箱", "密码" });
 
+    ui.customerTableView->setModel(customerModel);
+    ui.customerTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui.customerTableView->setEditTriggers(QAbstractItemView::DoubleClicked);
+    ui.customerTableView->verticalHeader()->setVisible(false); // 隐藏行号
+    ui.customerTableView->horizontalHeader()->setStretchLastSection(true); // 最后一列拉伸
+    ui.customerTableView->setStyleSheet("QTableView { border: 1px solid #ddd; }");
 
+    // 添加初始数据
+    for (int i = 0; i < 50; ++i) {
+        QList<QStandardItem*> rowItems;
 
+        // 头像
+        QPixmap avatar(":/res/default.jpg");
+        QStandardItem* avatarItem = new QStandardItem();
+        avatarItem->setData(QVariant(avatar.scaled(50, 50, Qt::KeepAspectRatio)), Qt::DecorationRole);
+        avatarItem->setEditable(false); // 头像不可直接编辑
+        rowItems << avatarItem;
 
+        // 其他列
+        rowItems << new QStandardItem(QString("CUS%1").arg(1000 + i));
+        rowItems << new QStandardItem("1990-01-01");
+        rowItems << new QStandardItem(QString("备注%1").arg(i + 1));
+        rowItems << new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+        rowItems << new QStandardItem(QString("customer%1@example.com").arg(i + 1));
+        rowItems << new QStandardItem(QString("password%1").arg(i + 1));
 
+        customerModel->appendRow(rowItems);
+    }
+
+    // 初始化顾客分页管理器
+    customerPagination = new TableViewPagination(customerModel, 30);
+    updateCustomerPage();
+
+    // 连接翻页按钮
+    connect(ui.preCustomerPageBtn, &QPushButton::clicked, [=]() {
+        customerPagination->setPage(customerPagination->getCurrentPage() - 1);
+        updateCustomerPage();
+        });
+    connect(ui.nextCustomerPageBtn, &QPushButton::clicked, [=]() {
+        customerPagination->setPage(customerPagination->getCurrentPage() + 1);
+        updateCustomerPage();
+        });
+
+    // 连接表格操作
+    connect(ui.customerChangedAcceptBtn, &QPushButton::clicked, this, &ManagerWindowClass::onCustomerChangedAcceptClicked);
+    connect(ui.customerChangedCancelBtn, &QPushButton::clicked, this, &ManagerWindowClass::onCustomerChangedCancelClicked);
+    connect(ui.addCustomerBtn, &QPushButton::clicked, this, &ManagerWindowClass::onAddCustomerClicked);
+    connect(ui.customerDeleteBtn, &QPushButton::clicked, this, &ManagerWindowClass::onDeleteCustomerClicked);
+    connect(ui.customerTableView->model(), &QAbstractItemModel::dataChanged, this, &ManagerWindowClass::onCustomerDataChanged);
+
+    // 双击头像替换图片
+    connect(ui.customerTableView, &QTableView::doubleClicked, this, &ManagerWindowClass::onCustomerAvatarDoubleClicked);
+
+   
+    
+   
+
+    // 创建 FinanceChart 实例
+    FinanceChart* financeChart = new FinanceChart(ui.page_5);
+
+    // 设置 FinanceChart 的初始数据（可选）
+    QVector<QPair<QDateTime, double>> incomeData = {
+        { QDateTime::currentDateTime().addDays(-5), 5000.0 },
+        { QDateTime::currentDateTime().addDays(-4), 7000.0 },
+        { QDateTime::currentDateTime().addDays(-3), 8000.0 },
+        { QDateTime::currentDateTime().addDays(-2), 6000.0 },
+        { QDateTime::currentDateTime().addDays(-1), 9000.0 }
+    };
+    QVector<QPair<QDateTime, double>> expenseData = {
+        { QDateTime::currentDateTime().addDays(-5), 2000.0 },
+        { QDateTime::currentDateTime().addDays(-4), 3000.0 },
+        { QDateTime::currentDateTime().addDays(-3), 2500.0 },
+        { QDateTime::currentDateTime().addDays(-2), 4000.0 },
+        { QDateTime::currentDateTime().addDays(-1), 3500.0 }
+    };
+
+    financeChart->setIncomeData(incomeData);
+    financeChart->setExpenseData(expenseData);
+
+    // 将 FinanceChart 添加到布局中
+    ui.chartLay->layout()->addWidget(financeChart);
+    
 
 
 	//设置页面跳转按钮
@@ -152,14 +232,17 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
 	connect(ui.processSalesInfoBtn, &QPushButton::clicked, [=]() {
 		ui.stackedWidget->setCurrentIndex(1);
 		});
-    connect(ui.manageStaffBtn, &QPushButton::clicked, [=]() {
+    connect(ui.processreStockInfoBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(2);
         });
-    connect(ui.managerCustomBtn, &QPushButton::clicked, [=]() {
+    connect(ui.manageStaffBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(3);
         });
-    connect(ui.financialManagerBtn, &QPushButton::clicked, [=]() {
+    connect(ui.managerCustomBtn, &QPushButton::clicked, [=]() {
         ui.stackedWidget->setCurrentIndex(4);
+        });
+    connect(ui.financialManagerBtn, &QPushButton::clicked, [=]() {
+        ui.stackedWidget->setCurrentIndex(5);
         });
     //设置登出按钮
     connect(ui.logOutBtn, &QPushButton::clicked, this, &ManagerWindowClass::onLogoutClicked);
@@ -543,3 +626,121 @@ void ManagerWindowClass::onDeleteStaffClicked()
         QMessageBox::warning(this, "警告", "未找到对应的员工编号！");
     }
 }
+
+void ManagerWindowClass::onCustomerChangedAcceptClicked()
+{
+    for (int row = 0; row < customerModel->rowCount(); ++row) {
+        for (int col = 0; col < customerModel->columnCount(); ++col) {
+            QModelIndex index = customerModel->index(row, col);
+            QVariant data = customerModel->data(index, Qt::ForegroundRole);
+            if (data.isValid() && data.value<QBrush>().color() == Qt::red) {
+                // 确认修改后将字体颜色恢复为黑色
+                customerModel->setData(index, QBrush(Qt::black), Qt::ForegroundRole);
+            }
+        }
+    }
+}
+
+void ManagerWindowClass::onCustomerChangedCancelClicked()
+{
+    QMessageBox::information(this, "提示", "取消修改功能未实现具体逻辑。");
+
+}
+
+void ManagerWindowClass::onAddCustomerClicked()
+{
+    // 创建并显示 CustomerDetailDialog
+    CustomerDetailDialog dialog(this);
+    connect(&dialog, &CustomerDetailDialog::dataAccepted, this, [=](const QString& id, const QString& birthDate, const QString& logDate, const QString& email, const QString& password, const QString& description, const QString& avatarPath) {
+        // 创建新顾客数据
+        QList<QStandardItem*> rowItems;
+
+        // 头像
+        QPixmap avatar(avatarPath);
+        QStandardItem* avatarItem = new QStandardItem();
+        avatarItem->setData(QVariant(avatar.scaled(50, 50, Qt::KeepAspectRatio)), Qt::DecorationRole);
+        avatarItem->setEditable(false); // 头像不可直接编辑
+        rowItems << avatarItem;
+
+        // 其他列
+        rowItems << new QStandardItem(id);
+        rowItems << new QStandardItem(birthDate);
+        rowItems << new QStandardItem(description);
+        rowItems << new QStandardItem(logDate);
+        rowItems << new QStandardItem(email);
+        rowItems << new QStandardItem(password);
+
+        // 将新行添加到模型中
+        customerModel->appendRow(rowItems);
+
+        // 更新分页
+        updateCustomerPage();
+
+        QMessageBox::information(this, "成功", "新顾客已成功添加！");
+        });
+
+    dialog.exec(); // 以模态方式显示对话框
+}
+
+void ManagerWindowClass::onDeleteCustomerClicked()
+{
+    QString customerId = ui.customerDeleteEdit->text().trimmed(); // 获取输入的顾客ID
+    if (customerId.isEmpty()) {
+        QMessageBox::warning(this, "警告", "请输入顾客ID！");
+        return;
+    }
+
+    // 遍历表格，找到对应的顾客ID
+    bool recordFound = false;
+    for (int row = 0; row < customerModel->rowCount(); ++row) {
+        QModelIndex index = customerModel->index(row, 1); // 假设顾客ID在第1列
+        if (customerModel->data(index).toString() == customerId) {
+            customerModel->removeRow(row); // 删除该行
+            recordFound = true;
+            break;
+        }
+    }
+
+    if (recordFound) {
+        // 更新分页
+        updateCustomerPage();
+        QMessageBox::information(this, "成功", "顾客已成功删除！");
+    }
+    else {
+        QMessageBox::warning(this, "警告", "未找到对应的顾客ID！");
+    }
+}
+
+void ManagerWindowClass::onCustomerDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles)
+{
+    for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
+        for (int col = topLeft.column(); col <= bottomRight.column(); ++col) {
+            QModelIndex index = customerModel->index(row, col);
+            // 将修改后的数据字体变为红色
+            customerModel->setData(index, QBrush(Qt::red), Qt::ForegroundRole);
+        }
+    }
+}
+
+void ManagerWindowClass::onCustomerAvatarDoubleClicked(const QModelIndex& index)
+{
+    if (index.column() == 0) { // 头像列
+        QString filePath = QFileDialog::getOpenFileName(this, "选择头像", "", "Images (*.png *.jpg *.jpeg *.bmp)");
+        if (!filePath.isEmpty()) {
+            QPixmap avatar(filePath);
+            customerModel->setData(index, QVariant(avatar.scaled(50, 50, Qt::KeepAspectRatio)), Qt::DecorationRole);
+        }
+    }
+}
+
+void ManagerWindowClass::updateCustomerPage()
+{
+    customerPagination->applyToTableView(ui.customerTableView);
+    ui.customerPageLabel->setText(QString("第 %1/%2 页").arg(customerPagination->getCurrentPage() + 1).arg(customerPagination->pageCount()));
+    ui.preCustomerPageBtn->setEnabled(customerPagination->getCurrentPage() > 0);
+    ui.nextCustomerPageBtn->setEnabled(customerPagination->getCurrentPage() < customerPagination->pageCount() - 1);
+}
+
+
+
+

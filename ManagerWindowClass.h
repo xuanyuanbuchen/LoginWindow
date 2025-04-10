@@ -7,6 +7,12 @@
 #include "GoodsWidgetPagination.h"
 #include "TableViewPagination.h"
 #include <vector>
+#include <QStandardItemModel>
+
+//struct FinancialData {
+//    QList<QPointF> income;  // 收入数据（x: 时间戳，y: 金额）
+//    QList<QPointF> expense; // 支出数据
+//};
 
 class ManagerWindowClass : public QWidget
 {
@@ -38,7 +44,15 @@ private slots:
     void onDeleteGoodsClicked();
     void onDeleteSaleClicked();
     void onDeleteStaffClicked();
+    void onCustomerChangedAcceptClicked();
+    void onCustomerChangedCancelClicked();
+    void onAddCustomerClicked();
+    void onDeleteCustomerClicked();
+    void onCustomerDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles = QVector<int>());
+    void onCustomerAvatarDoubleClicked(const QModelIndex& index);
+    void updateCustomerPage();
 
+    
 
 private:
     Ui::ManagerWindowClass ui;
@@ -46,4 +60,6 @@ private:
 	TableViewPagination* salePagination;
     TableViewPagination* staffPagination;
     GoodsWidgetPagination* goodsWidgetPagination;
+    QStandardItemModel* customerModel;
+    TableViewPagination* customerPagination;
 };

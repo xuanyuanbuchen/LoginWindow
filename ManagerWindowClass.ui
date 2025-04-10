@@ -29,22 +29,6 @@ background-color:rgba(255,255,255,0.7);
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
        <widget class="QFrame" name="frame">
         <property name="styleSheet">
          <string notr="true">QFrame{
@@ -144,6 +128,35 @@ QPushButton:pressed
            </property>
            <property name="text">
             <string>销售数据</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="processreStockInfoBtn">
+           <property name="styleSheet">
+            <string notr="true">QPushButton 
+{
+    background-color: rgba(33,150,243,0.0);  
+    color: white;               
+    border: none;              
+    padding: 10px 20px;        
+    border-radius: 10px;       
+    font-size: 14px;           
+}
+
+QPushButton:hover
+{
+    background-color: #1976D2;  
+}
+
+QPushButton:pressed 
+{
+    background-color: #0D47A1;
+    color: #E0E0E0;            
+}</string>
+           </property>
+           <property name="text">
+            <string>进货数据</string>
            </property>
           </widget>
          </item>
@@ -288,7 +301,7 @@ QPushButton:pressed
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="styleSheet">
@@ -538,8 +551,8 @@ QScrollBar::add-page, QScrollBar::sub-page {
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>1038</width>
-                  <height>591</height>
+                  <width>1084</width>
+                  <height>535</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -550,6 +563,95 @@ background-color:rgba(255,255,255,0.0);
                 <layout class="QGridLayout" name="gridLayout"/>
                </widget>
               </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_12" native="true">
+            <property name="styleSheet">
+             <string notr="true">QWidget{
+background-color:rgba(255,255,255,0.0);
+}</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_22">
+             <item>
+              <widget class="QPushButton" name="goodsStockBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>进货</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="goodsStockEdit">
+               <property name="styleSheet">
+                <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入商品ID</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="goodsCountLabel">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>数量：</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="goodsSpinBox">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="minimum">
+                <number>1</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -1052,6 +1154,401 @@ QPushButton:pressed {
              </item>
              <item>
               <widget class="QPushButton" name="nextSalePageBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>下一页</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_6">
+      <property name="styleSheet">
+       <string notr="true">QWidget{
+background-color:rgba(255,255,255,0.8);
+}</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_26">
+       <item>
+        <widget class="QFrame" name="frame_12">
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+background-color:rgba(255,255,255,0.0);
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QFrame" name="frame_13">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QFrame{
+background-color:rgba(255,255,255,0.0);
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_23">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
+             <item>
+              <widget class="QComboBox" name="stockComboBoxCategory">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                </font>
+               </property>
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
+               <property name="maxCount">
+                <number>2147483646</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string>全部种类</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>生鲜</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>蔬菜</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>水果</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>粮食</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>饮品</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>烟</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>零食</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>日用百货</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>五金零件</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>母婴用品</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="stockComboBoxPrice">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                </font>
+               </property>
+               <item>
+                <property name="text">
+                 <string>全部价格</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>&lt;10元</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>10元~50元 </string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>50元~100元</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>&gt;100</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="SearchEdit" name="stockNameLine_2">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                </font>
+               </property>
+               <property name="placeholderText">
+                <string>请输入进货记录ID</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_13" native="true">
+            <property name="styleSheet">
+             <string notr="true">QWidget{
+background-color:rgba(255,255,255,0.0);
+}</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_24">
+             <item>
+              <widget class="QTableView" name="stockTableView"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_14" native="true">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QWidget{
+background-color:rgba(255,255,255,0.0);
+}</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_25">
+             <item>
+              <widget class="QPushButton" name="stockChangedAcceptBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>确认修改</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="stockChangedCancelBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>取消修改</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="addStockBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>添加进货记录</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="stockDeleteBtn">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>删除进货记录</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="stockDeleteEdit">
+               <property name="styleSheet">
+                <string notr="true"> QLineEdit {
+     border: 1px solid #ccc;
+     border-radius: 10px;
+     padding: 2px;
+     font-size: 14px;
+     text-align: center;
+ }
+ QLineEdit:focus {
+     border: 1px solid #2196F3;
+ }</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入进货记录ID</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_11">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="stockPageLabel">
+               <property name="text">
+                <string>第1/1页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="preStockPageBtn_2">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font: 13px;
+}
+
+QPushButton:hover {
+    background-color: #42A5F5;
+}
+
+QPushButton:pressed {
+    background-color: #0D47A1;
+}</string>
+               </property>
+               <property name="text">
+                <string>上一页</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="nextStockPageBtn_2">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     background-color: #2196F3;
@@ -1697,6 +2194,87 @@ QPushButton:pressed {
 background-color:rgba(255,255,255,0.8);
 }</string>
       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_21">
+       <item>
+        <widget class="QFrame" name="frame_9">
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+background-color:rgba(255,255,255,0.0);
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QFrame" name="frame_11">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QFrame{
+background-color:rgba(255,255,255,0.0);
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
+             <item>
+              <widget class="QDateEdit" name="dateEdit"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="toLabel">
+               <property name="text">
+                <string>到</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateEdit" name="dateEdit_2"/>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="chartLay" native="true">
+            <property name="styleSheet">
+             <string notr="true">QWidget{
+background-color:rgba(255,255,255,0.0);
+}</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_15"/>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
