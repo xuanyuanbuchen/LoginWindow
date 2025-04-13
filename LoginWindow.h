@@ -10,9 +10,17 @@ class LoginWindow : public QWidget
 public:
     LoginWindow(QWidget *parent = nullptr);
     ~LoginWindow();
+private:
+	void InitBackground();
+	void InitConnect();
+
 private slots:
     void onLoginClicked();
     void onMailLoginClicked();
+	void onRegisterClicked();
+    void onSignCodeSentClicked();
+	void onMailCodeSentClicked();
+
 private:
     Ui::LoginWindowClass ui;
 };

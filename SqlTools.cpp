@@ -1,8 +1,8 @@
 #include "SqlTools.h"
 
-bool SqlTools::Login_Account_Password_Check(const std::string& account, const std::string& password)
+int SqlTools::Login_Account_Password_Check(const std::string& account, const std::string& password)
 {
-	return false;
+	return 1;
 }
 
 bool SqlTools::Account_Exist(const std::string& account, const std::string& password)
@@ -10,9 +10,9 @@ bool SqlTools::Account_Exist(const std::string& account, const std::string& pass
 	return false;
 }
 
-bool SqlTools::Login_Email_Code_Check(const std::string& email, const std::string& code)
+int SqlTools::Login_Email_Code_Check(const std::string& email, const std::string& code)
 {
-	return false;
+	return 1;
 }
 
 bool SqlTools::Register_Account_Password_Check(const std::string& account, const std::string& password)
@@ -21,6 +21,11 @@ bool SqlTools::Register_Account_Password_Check(const std::string& account, const
 }
 
 bool SqlTools::Register_Email_Code_Check(const std::string& email, const std::string& code)
+{
+	return false;
+}
+
+bool SqlTools::Register_Account_Password_Email_Wirte(const std::string& account, const std::string& password, const std::string& email)
 {
 	return false;
 }
