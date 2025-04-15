@@ -1,14 +1,14 @@
-#include "ProductWidget.h"
+﻿#include "ProductWidget.h"
 
-ProductWidget::ProductWidget(QWidget *parent)
+ProductWidget::ProductWidget(QWidget* parent, const QString& path, const QString& ID, const QString& name, const QString& price, const QString& category, const QString& count, const QString& description)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	id = "null";
 	QPalette pe;
 	pe.setColor(QPalette::WindowText, Qt::red);
 	ui.productPriceText->setPalette(pe);
-	productDetailDialog = new ProductDetailDialog(this);
+	setProductInfo(name, price, path);
+	productDetailDialog = new ProductDetailDialog(this, path, ID, name, price, category, count, description);
 
 	productDetailDialog->hide();
 }

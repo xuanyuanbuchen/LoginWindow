@@ -20,19 +20,39 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     QPalette palette;
     palette.setBrush(QPalette::Window, background);  // 设置背景图片
     this->setPalette(palette);
+
+    auto [records, kinds_count] = SqlTools::SearchProductTable_Kind_Price_Name();
+
+    for (const auto& record : records)
+    {
+        vec_current_goods_widget.emplace_back(
+            std::make_unique<GoodsWidget>(
+                new GoodsWidget
+                { 
+                    nullptr ,
+                    QString::fromStdString(record.path),
+                    QString::fromStdString(record.ID),
+                    QString::fromStdString(record.name),
+                    QString::fromStdString(record.price),
+                    QString::fromStdString(record.category),
+                    QString::fromStdString(record.count),
+                    QString::fromStdString(record.description)
+                }
+            ));
+    }
     //设置商品展示网格
     for (int i = 0; i < 19; i++)
     {
         GoodsWidget* goo = new GoodsWidget(nullptr);
         goo->setStyleSheet("QWidget { background-color: rgba(255,255,255,0.8); }");
-        vec_current_goods_widget.push_back(goo);
+        vec_current_goods_widget.push_back(std::make_unique<GoodsWidget>(goo));
         //点击唤出详细页面
         connect(goo, &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
     }
 	//最后一个用来添加新的商品，添加完新的商品再添加一个的功能有了数据库后再实现
-	GoodsWidget* addGoo = new GoodsWidget(QString(":/res/Add_Icon.svg"));
+	GoodsWidget* addGoo = new GoodsWidget(nullptr,QString(":/res/Add_Icon.svg"));
     addGoo->setStyleSheet("QWidget { background-color: rgba(255,255,255,0.8); }");
-    vec_current_goods_widget.push_back(addGoo);
+    vec_current_goods_widget.push_back(std::make_unique<GoodsWidget>(addGoo));
     //点击唤出详细页面
     connect(addGoo, &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
     //设置滚动区域
@@ -252,7 +272,8 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     connect(ui.preGoodsWidgetPageBtn, &QPushButton::clicked, this, &ManagerWindowClass::onPrevPageClicked);
 
     // 初始化商品分页管理器
-    goodsWidgetPagination = new GoodsWidgetPagination(vec_current_goods_widget, 9);
+    auto [_, totalCount] = SqlTools::SearchProductTable_Kind_Price_Name("", "", "", 0, 0); // 获取商品总数
+    goodsWidgetPagination = new GoodsWidgetPagination(totalCount, 9);
     updateGoodsPage();
 
     //连接表格操作
@@ -316,8 +337,49 @@ void ManagerWindowClass::onGoodsClicked()
 
 void ManagerWindowClass::updateGoodsPage()
 {
-    goodsWidgetPagination->applyToGridLayout(ui.gridLayout);
-    ui.goodsWidgetPageLabel->setText(QString("第 %1/%2 页").arg(goodsWidgetPagination->getCurrentPage() + 1).arg(goodsWidgetPagination->pageCount()));
+    // 获取当前页的起始偏移量
+    int offset = goodsWidgetPagination->getCurrentPage() * goodsWidgetPagination->getPageSize();
+    int returnCount = goodsWidgetPagination->getPageSize();
+
+    // 调用 SqlTools 获取当前页的数据
+    auto [records, totalCount] = SqlTools::SearchProductTable_Kind_Price_Name("", "", "", returnCount, offset);
+
+    // 清空当前商品数据
+    vec_current_goods_widget.clear();
+
+    // 创建新的商品小部件
+    for (const auto& record : records)
+    {
+        vec_current_goods_widget.emplace_back(std::make_unique<GoodsWidget>(
+            new GoodsWidget(
+                nullptr,
+                QString::fromStdString(record.path),
+                QString::fromStdString(record.ID),
+                QString::fromStdString(record.name),
+                QString::fromStdString(record.price),
+                QString::fromStdString(record.category),
+                QString::fromStdString(record.count),
+                QString::fromStdString(record.description)
+            )
+        ));
+    }
+
+    // 提供一个回调函数，获取当前页的商品数据
+    auto fetchPageData = [this](int start, int count) -> std::vector<GoodsWidget*> {
+        std::vector<GoodsWidget*> widgets;
+        for (int i = start; i < start + count && i < vec_current_goods_widget.size(); ++i) {
+            widgets.push_back(vec_current_goods_widget[i].get());
+        }
+        return widgets;
+        };
+
+    // 调用 applyToGridLayout，传递回调函数
+    goodsWidgetPagination->applyToGridLayout(ui.gridLayout, fetchPageData);
+
+    // 更新分页标签和按钮状态
+    ui.goodsWidgetPageLabel->setText(QString("第 %1/%2 页")
+        .arg(goodsWidgetPagination->getCurrentPage() + 1)
+        .arg(goodsWidgetPagination->pageCount()));
     ui.preGoodsWidgetPageBtn->setEnabled(goodsWidgetPagination->getCurrentPage() > 0);
     ui.nextGoodsWidgetPageBtn->setEnabled(goodsWidgetPagination->getCurrentPage() < goodsWidgetPagination->pageCount() - 1);
 }
@@ -535,24 +597,26 @@ void ManagerWindowClass::onDeleteGoodsClicked()
 
     // 遍历商品列表，找到对应的商品
     auto it = std::find_if(vec_current_goods_widget.begin(), vec_current_goods_widget.end(),
-        [&goodsId](GoodsWidget* widget) {
+        [&goodsId](const std::unique_ptr<GoodsWidget>& widget) 
+        {
             return widget->getID() == goodsId;
         });
 
-    if (it != vec_current_goods_widget.end()) {
-        GoodsWidget* widgetToDelete = *it;
+    if (it != vec_current_goods_widget.end()) 
+    {
+        // 从布局中移除商品
+        ui.gridLayout->removeWidget(it->get());
 
-        // 从布局中移除并删除商品
-        ui.gridLayout->removeWidget(widgetToDelete);
+        // unique_ptr会自动释放内存，erase时会自动delete
         vec_current_goods_widget.erase(it);
-        delete widgetToDelete;
 
         // 更新商品分页
         updateGoodsPage();
 
         QMessageBox::information(this, "成功", "商品已成功删除！");
     }
-    else {
+    else 
+    {
         QMessageBox::warning(this, "警告", "未找到对应的商品编号！");
     }
 }
@@ -560,34 +624,40 @@ void ManagerWindowClass::onDeleteGoodsClicked()
 void ManagerWindowClass::onDeleteSaleClicked()
 {
     QString saleId = ui.saleDeleteEdit->text().trimmed(); // 获取输入的订单编号
-    if (saleId.isEmpty()) {
+    if (saleId.isEmpty()) 
+    {
         QMessageBox::warning(this, "警告", "请输入订单编号！");
         return;
     }
 
     QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui.saleTableView->model());
-    if (!model) {
+    if (!model) 
+    {
         QMessageBox::warning(this, "错误", "无法获取销售记录表格模型！");
         return;
     }
 
     // 遍历表格，找到对应的订单编号
     bool recordFound = false;
-    for (int row = 0; row < model->rowCount(); ++row) {
+    for (int row = 0; row < model->rowCount(); ++row) 
+    {
         QModelIndex index = model->index(row, 0); // 假设订单编号在第0列
-        if (model->data(index).toString() == saleId) {
+        if (model->data(index).toString() == saleId) 
+        {
             model->removeRow(row); // 删除该行
             recordFound = true;
             break;
         }
     }
 
-    if (recordFound) {
+    if (recordFound) 
+    {
         // 更新分页
         updateSalePage();
         QMessageBox::information(this, "成功", "销售记录已成功删除！");
     }
-    else {
+    else 
+    {
         QMessageBox::warning(this, "警告", "未找到对应的订单编号！");
     }
 }
@@ -601,39 +671,47 @@ void ManagerWindowClass::onDeleteStaffClicked()
     }
 
     QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui.staffTableView->model());
-    if (!model) {
+    if (!model) 
+    {
         QMessageBox::warning(this, "错误", "无法获取员工表格模型！");
         return;
     }
 
     // 遍历表格，找到对应的员工编号
     bool recordFound = false;
-    for (int row = 0; row < model->rowCount(); ++row) {
+    for (int row = 0; row < model->rowCount(); ++row) 
+    {
         QModelIndex index = model->index(row, 0); // 假设员工编号在第0列
-        if (model->data(index).toString() == staffId) {
+        if (model->data(index).toString() == staffId) 
+        {
             model->removeRow(row); // 删除该行
             recordFound = true;
             break;
         }
     }
 
-    if (recordFound) {
+    if (recordFound) 
+    {
         // 更新分页
         updateStaffPage();
         QMessageBox::information(this, "成功", "员工已成功删除！");
     }
-    else {
+    else 
+    {
         QMessageBox::warning(this, "警告", "未找到对应的员工编号！");
     }
 }
 
 void ManagerWindowClass::onCustomerChangedAcceptClicked()
 {
-    for (int row = 0; row < customerModel->rowCount(); ++row) {
-        for (int col = 0; col < customerModel->columnCount(); ++col) {
+    for (int row = 0; row < customerModel->rowCount(); ++row) 
+    {
+        for (int col = 0; col < customerModel->columnCount(); ++col) 
+        {
             QModelIndex index = customerModel->index(row, col);
             QVariant data = customerModel->data(index, Qt::ForegroundRole);
-            if (data.isValid() && data.value<QBrush>().color() == Qt::red) {
+            if (data.isValid() && data.value<QBrush>().color() == Qt::red) 
+            {
                 // 确认修改后将字体颜色恢复为黑色
                 customerModel->setData(index, QBrush(Qt::black), Qt::ForegroundRole);
             }
@@ -651,32 +729,38 @@ void ManagerWindowClass::onAddCustomerClicked()
 {
     // 创建并显示 CustomerDetailDialog
     CustomerDetailDialog dialog(this);
-    connect(&dialog, &CustomerDetailDialog::dataAccepted, this, [=](const QString& id, const QString& birthDate, const QString& logDate, const QString& email, const QString& password, const QString& description, const QString& avatarPath) {
-        // 创建新顾客数据
-        QList<QStandardItem*> rowItems;
+    connect(&dialog, &CustomerDetailDialog::dataAccepted, this, 
+        [=](const QString& id, const QString& birthDate, 
+            const QString& logDate, const QString& email, 
+            const QString& password, const QString& description,
+            const QString& avatarPath) 
+        {
 
-        // 头像
-        QPixmap avatar(avatarPath);
-        QStandardItem* avatarItem = new QStandardItem();
-        avatarItem->setData(QVariant(avatar.scaled(50, 50, Qt::KeepAspectRatio)), Qt::DecorationRole);
-        avatarItem->setEditable(false); // 头像不可直接编辑
-        rowItems << avatarItem;
+            // 创建新顾客数据
+            QList<QStandardItem*> rowItems;
 
-        // 其他列
-        rowItems << new QStandardItem(id);
-        rowItems << new QStandardItem(birthDate);
-        rowItems << new QStandardItem(description);
-        rowItems << new QStandardItem(logDate);
-        rowItems << new QStandardItem(email);
-        rowItems << new QStandardItem(password);
+            // 头像
+            QPixmap avatar(avatarPath);
+            QStandardItem* avatarItem = new QStandardItem();
+            avatarItem->setData(QVariant(avatar.scaled(50, 50, Qt::KeepAspectRatio)), Qt::DecorationRole);
+            avatarItem->setEditable(false); // 头像不可直接编辑
+            rowItems << avatarItem;
 
-        // 将新行添加到模型中
-        customerModel->appendRow(rowItems);
+            // 其他列
+            rowItems << new QStandardItem(id);
+            rowItems << new QStandardItem(birthDate);
+            rowItems << new QStandardItem(description);
+            rowItems << new QStandardItem(logDate);
+            rowItems << new QStandardItem(email);
+            rowItems << new QStandardItem(password);
 
-        // 更新分页
-        updateCustomerPage();
+            // 将新行添加到模型中
+            customerModel->appendRow(rowItems);
 
-        QMessageBox::information(this, "成功", "新顾客已成功添加！");
+            // 更新分页
+            updateCustomerPage();
+
+            QMessageBox::information(this, "成功", "新顾客已成功添加！");
         });
 
     dialog.exec(); // 以模态方式显示对话框
@@ -685,36 +769,43 @@ void ManagerWindowClass::onAddCustomerClicked()
 void ManagerWindowClass::onDeleteCustomerClicked()
 {
     QString customerId = ui.customerDeleteEdit->text().trimmed(); // 获取输入的顾客ID
-    if (customerId.isEmpty()) {
+    if (customerId.isEmpty())
+    {
         QMessageBox::warning(this, "警告", "请输入顾客ID！");
         return;
     }
 
     // 遍历表格，找到对应的顾客ID
     bool recordFound = false;
-    for (int row = 0; row < customerModel->rowCount(); ++row) {
+    for (int row = 0; row < customerModel->rowCount(); ++row) 
+    {
         QModelIndex index = customerModel->index(row, 1); // 假设顾客ID在第1列
-        if (customerModel->data(index).toString() == customerId) {
+        if (customerModel->data(index).toString() == customerId) 
+        {
             customerModel->removeRow(row); // 删除该行
             recordFound = true;
             break;
         }
     }
 
-    if (recordFound) {
+    if (recordFound) 
+    {
         // 更新分页
         updateCustomerPage();
         QMessageBox::information(this, "成功", "顾客已成功删除！");
     }
-    else {
+    else 
+    {
         QMessageBox::warning(this, "警告", "未找到对应的顾客ID！");
     }
 }
 
 void ManagerWindowClass::onCustomerDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles)
 {
-    for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-        for (int col = topLeft.column(); col <= bottomRight.column(); ++col) {
+    for (int row = topLeft.row(); row <= bottomRight.row(); ++row) 
+    {
+        for (int col = topLeft.column(); col <= bottomRight.column(); ++col)
+        {
             QModelIndex index = customerModel->index(row, col);
             // 将修改后的数据字体变为红色
             customerModel->setData(index, QBrush(Qt::red), Qt::ForegroundRole);
@@ -724,9 +815,11 @@ void ManagerWindowClass::onCustomerDataChanged(const QModelIndex& topLeft, const
 
 void ManagerWindowClass::onCustomerAvatarDoubleClicked(const QModelIndex& index)
 {
-    if (index.column() == 0) { // 头像列
+    if (index.column() == 0) 
+    { // 头像列
         QString filePath = QFileDialog::getOpenFileName(this, "选择头像", "", "Images (*.png *.jpg *.jpeg *.bmp)");
-        if (!filePath.isEmpty()) {
+        if (!filePath.isEmpty()) 
+        {
             QPixmap avatar(filePath);
             customerModel->setData(index, QVariant(avatar.scaled(50, 50, Qt::KeepAspectRatio)), Qt::DecorationRole);
         }

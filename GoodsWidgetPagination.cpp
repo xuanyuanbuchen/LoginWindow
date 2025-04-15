@@ -1,17 +1,58 @@
 #include "GoodsWidgetPagination.h"
 #include <QGridLayout>
 
-GoodsWidgetPagination::GoodsWidgetPagination(std::vector<GoodsWidget*>& widgets, int pageSize)
-    : widgets(widgets), pageSize(pageSize), currentPage(0)
+GoodsWidgetPagination::GoodsWidgetPagination(int kinds_count, int pageSize)
+    : pageSize(pageSize), currentPage(0), totalPage((kinds_count + pageSize - 1) / pageSize)
 {
     Q_ASSERT(pageSize > 0);
 }
 
 int GoodsWidgetPagination::pageCount() const
 {
-    if (widgets.empty()) return 1;
-    return (widgets.size() + pageSize - 1) / pageSize;
+    return totalPage;
 }
+
+void GoodsWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const std::function<std::vector<GoodsWidget*>(int, int)>& fetchPageData)
+{
+    if (!gridLayout)
+    {
+        return; // 如果布局为空，直接返回
+    }
+
+    // 获取当前页的商品数据
+    int start = currentPage * pageSize;
+    std::vector<GoodsWidget*> widgets = fetchPageData(start, pageSize);
+
+    // 清空当前布局
+    while (QLayoutItem* item = gridLayout->takeAt(0))
+    {
+        if (item->widget())
+        {
+            item->widget()->setVisible(false);
+        }
+        delete item;
+    }
+
+    // 添加当前页的商品
+    int row = 0;
+    int col = 0;
+    for (GoodsWidget* widget : widgets) {
+        gridLayout->addWidget(widget, row, col);
+        widget->setVisible(true);
+        if (++col == 3) { // 每行3列
+            col = 0;
+            ++row;
+        }
+    }
+}
+
+void GoodsWidgetPagination::updatePagination(int kinds_count, int pageSize)
+{
+    this->pageSize = pageSize;
+    this->totalPage = (kinds_count + pageSize - 1) / pageSize;
+    this->currentPage = qBound(0, this->currentPage, this->totalPage - 1); // 确保当前页在有效范围内
+}
+
 
 void GoodsWidgetPagination::setPage(int page)
 {
@@ -23,32 +64,6 @@ int GoodsWidgetPagination::getCurrentPage() const
     return currentPage;
 }
 
-void GoodsWidgetPagination::applyToGridLayout(QGridLayout* gridLayout)
-{
-    int start = currentPage * pageSize;
-    int end = qMin(start + pageSize, static_cast<int>(widgets.size()));
-
-    // 清空当前布局
-    while (QLayoutItem* item = gridLayout->takeAt(0)) {
-        if (item->widget()) {
-            item->widget()->setVisible(false);
-        }
-        delete item;
-    }
-
-    // 添加当前页的商品
-    int row = 0;
-    int col = 0;
-    for (int i = start; i < end; ++i) {
-        gridLayout->addWidget(widgets[i], row, col);
-        widgets[i]->setVisible(true);
-        if (++col == 3) {
-            col = 0;
-            ++row;
-        }
-    }
-}
-
 int GoodsWidgetPagination::startRow() const
 {
     return currentPage * pageSize;
@@ -56,5 +71,10 @@ int GoodsWidgetPagination::startRow() const
 
 int GoodsWidgetPagination::endRow() const
 {
-    return qMin(startRow() + pageSize, static_cast<int>(widgets.size()));
+    return qMin(startRow() + pageSize, totalPage * pageSize);
+}
+
+int GoodsWidgetPagination::getPageSize() const
+{
+    return pageSize;
 }

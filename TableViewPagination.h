@@ -1,42 +1,34 @@
 #pragma once
-#include <QtCore/QVariant>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QScrollArea>
-#include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QStackedWidget>
-#include <QtWidgets/QTableView>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
-#include <SearchEdit.h>
-class TableViewPagination 
+#include <functional>
+#include <QAbstractItemModel>
+#include <QTableView>
+#include "SqlTools.h"
+#include <QStandardItemModel>
+
+class TableViewPagination
 {
 public:
-
     // 构造函数
-    TableViewPagination(QAbstractItemModel* model, int pageSize = 15);
-    //获取页总数
+    TableViewPagination(QStandardItemModel* model, int pageSize = 15);
+
+    // 获取页总数
     int pageCount() const;
+
     // 设置当前页(自动处理边界)
     void setPage(int page);
+
     // 获取当前页
     int getCurrentPage() const;
+
     // 应用到表格视图
     void applyToTableView(QTableView* tableView);
-    // 获取当前页的起始行号
-    int startRow() const;
-    // 获取当前页的结束行号(不包含)
-    int endRow() const;
+
+    // 设置动态数据加载回调
+    void setDataLoader(const std::function<std::pair<std::vector<OrderDetail>, int>(int offset, int limit)>& loader);
 
 private:
-    QAbstractItemModel* model;
+    QStandardItemModel* model;
     int pageSize;
     int currentPage;
-
+    std::function<std::pair<std::vector<OrderDetail>, int>(int offset, int limit)> dataLoader; // 数据加载回调
 };

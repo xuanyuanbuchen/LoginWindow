@@ -1,16 +1,15 @@
 #include "ProductWidgetPagination.h"
 #include <QGridLayout>
 
-ProductWidgetPagination::ProductWidgetPagination(std::vector<ProductWidget*>& widgets, int pageSize)
-    : widgets(widgets), pageSize(pageSize), currentPage(0)
+ProductWidgetPagination::ProductWidgetPagination(int kinds_count, int pageSize)
+    : pageSize(pageSize), currentPage(0), totalPage((kinds_count + pageSize - 1) / pageSize)
 {
     Q_ASSERT(pageSize > 0);
 }
 
 int ProductWidgetPagination::pageCount() const
 {
-    if (widgets.empty()) return 1;
-    return (widgets.size() + pageSize - 1) / pageSize;
+    return totalPage;
 }
 
 void ProductWidgetPagination::setPage(int page)
@@ -23,14 +22,22 @@ int ProductWidgetPagination::getCurrentPage() const
     return currentPage;
 }
 
-void ProductWidgetPagination::applyToGridLayout(QGridLayout* gridLayout)
+void ProductWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const std::function<std::vector<ProductWidget*>(int, int)>& fetchPageData)
 {
+    if (!gridLayout) 
+    {
+        return; // 如果布局为空，直接返回
+    }
+
+    // 获取当前页的商品数据
     int start = currentPage * pageSize;
-    int end = qMin(start + pageSize, static_cast<int>(widgets.size()));
+    std::vector<ProductWidget*> widgets = fetchPageData(start, pageSize);
 
     // 清空当前布局
-    while (QLayoutItem* item = gridLayout->takeAt(0)) {
-        if (item->widget()) {
+    while (QLayoutItem* item = gridLayout->takeAt(0)) 
+    {
+        if (item->widget()) 
+        {
             item->widget()->setVisible(false);
         }
         delete item;
@@ -39,10 +46,10 @@ void ProductWidgetPagination::applyToGridLayout(QGridLayout* gridLayout)
     // 添加当前页的商品
     int row = 0;
     int col = 0;
-    for (int i = start; i < end; ++i) {
-        gridLayout->addWidget(widgets[i], row, col);
-        widgets[i]->setVisible(true);
-        if (++col == 3) {
+    for (ProductWidget* widget : widgets) {
+        gridLayout->addWidget(widget, row, col);
+        widget->setVisible(true);
+        if (++col == 3) { // 每行3列
             col = 0;
             ++row;
         }
@@ -56,5 +63,17 @@ int ProductWidgetPagination::startRow() const
 
 int ProductWidgetPagination::endRow() const
 {
-    return qMin(startRow() + pageSize, static_cast<int>(widgets.size()));
+    return qMin(startRow() + pageSize, totalPage * pageSize);
+}
+
+int ProductWidgetPagination::getPageSize() const
+{
+    return 0;
+}
+
+void ProductWidgetPagination::updatePagination(int kinds_count, int pageSize)
+{
+    this->pageSize = pageSize;
+    this->totalPage = (kinds_count + pageSize - 1) / pageSize;
+    this->currentPage = qBound(0, this->currentPage, this->totalPage - 1); 
 }

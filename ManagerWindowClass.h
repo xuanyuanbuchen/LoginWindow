@@ -8,6 +8,7 @@
 #include "TableViewPagination.h"
 #include <vector>
 #include <QStandardItemModel>
+#include <memory>
 
 //struct FinancialData {
 //    QList<QPointF> income;  // 收入数据（x: 时间戳，y: 金额）
@@ -56,10 +57,14 @@ private slots:
 
 private:
     Ui::ManagerWindowClass ui;
-    std::vector<GoodsWidget*> vec_current_goods_widget;
+    std::vector<std::unique_ptr<GoodsWidget>> vec_current_goods_widget;
 	TableViewPagination* salePagination;
     TableViewPagination* staffPagination;
     GoodsWidgetPagination* goodsWidgetPagination;
     QStandardItemModel* customerModel;
     TableViewPagination* customerPagination;
+
+    int goodsWidgetPageSize = 9; // 每页显示的商品数量
+    std::string account;
+    std::string password;
 };

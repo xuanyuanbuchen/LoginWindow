@@ -10,7 +10,17 @@ class ProductWidget : public QWidget
 	Q_OBJECT
 
 public:
-	ProductWidget(QWidget *parent = nullptr);
+	ProductWidget
+	(
+		QWidget* parent = nullptr,
+		const QString& path = ":/res/default.jpg",
+		const QString& ID = "NULL",
+		const QString& name = "NULL",
+		const QString& price = "NULL",
+		const QString& category = "NULL",
+		const QString& count = "NULL",
+		const QString& description = "NULL"
+	);
 	~ProductWidget();
 
 	void setProductInfo(const QString& name, const QString& price, const QPixmap& image);

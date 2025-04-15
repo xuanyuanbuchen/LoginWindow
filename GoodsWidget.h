@@ -9,8 +9,17 @@ class GoodsWidget : public QWidget
     Q_OBJECT
 
 public:
-    GoodsWidget(QWidget* parent = nullptr);
-    GoodsWidget(const QString& path = ":/res/default.jpg", QWidget* parent = nullptr);
+	GoodsWidget
+	(
+		QWidget* parent = nullptr,
+		const QString& path = ":/res/default.jpg",
+		const QString& ID = "NULL",
+		const QString& name = "NULL",
+		const QString& price = "NULL",
+		const QString& category = "NULL",
+		const QString& count = "NULL",
+		const QString& description = "NULL"
+	);
     ~GoodsWidget();
     void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
     void showGoodsDetailDialog();

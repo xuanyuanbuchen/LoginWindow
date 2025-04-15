@@ -1,23 +1,9 @@
 #include "GoodsWidget.h"
 
-GoodsWidget::GoodsWidget(QWidget* parent)
-    : QWidget(parent)
-{
-    ui.setupUi(this);
-    id = "null";
-    QPalette pe;
-    pe.setColor(QPalette::WindowText, Qt::red);
-    ui.goodsPriceText->setPalette(pe);
-    ui.goodsCountText->setPalette(pe);
-    goodsDetailDialog = new GoodsDetailDialog(this);
-    connect(goodsDetailDialog, &GoodsDetailDialog::pictureChanged, this, &GoodsWidget::onPictureChanged);
-    goodsDetailDialog->hide();
-}
-
-GoodsWidget::GoodsWidget(const QString& path, QWidget* parent)
+GoodsWidget::GoodsWidget(QWidget* parent, const QString& path, const QString& ID, const QString& name, const QString& price, const QString& category, const QString& count, const QString& description)
 {
 	ui.setupUi(this);
-	id = "null";
+	id = ID;
 	QPalette pe;
 	pe.setColor(QPalette::WindowText, Qt::red);
 	ui.goodsPriceText->setPalette(pe);
@@ -27,7 +13,7 @@ GoodsWidget::GoodsWidget(const QString& path, QWidget* parent)
 	goodsDetailDialog->hide();
 	QPixmap image(path);
 	ui.goodsPicture->setPixmap(image.scaled(200, 200, Qt::KeepAspectRatio));
-	goodsDetailDialog->setGoodsDetail("null", "null", "null", "null", image, "null", 0);
+	goodsDetailDialog->setGoodsDetail(ID, name, price, category, image, description, 0);
 }
 
 GoodsWidget::~GoodsWidget()

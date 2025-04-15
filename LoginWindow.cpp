@@ -1,4 +1,4 @@
-#include "LoginWindow.h"
+ï»¿#include "LoginWindow.h"
 #include <QDir>
 #include <QDebug>
 #include "CashierWindowClass.h"
@@ -19,27 +19,31 @@ void LoginWindow::onLoginClicked()
 	const int logIdentityType = SqlTools::Login_Account_Password_Check(ui.logAccountLineEdit->text().toStdString(), ui.logPasswordLineEdit->text().toStdString());
     if (logIdentityType == 1)
     {
-        qDebug() << "µÇÂ¼³É¹¦";
+        qDebug() << "ç™»å½•æˆåŠŸ";
         this->hide();
-        CashierWindowClass* cashierWindow = new CashierWindowClass;
-        connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // Á¬½ÓÍË³öĞÅºÅ
+        CashierWindowClass* cashierWindow = new CashierWindowClass
+		(
+			ui.logAccountLineEdit->text().toStdString(),
+			ui.logPasswordLineEdit->text().toStdString()
+		);
+        connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // è¿æ¥é€€å‡ºä¿¡å·
 		cashierWindow->show();
 	}
 	else if (logIdentityType == 2)
 	{
-		qDebug() << "µÇÂ¼³É¹¦";
+		qDebug() << "ç™»å½•æˆåŠŸ";
 		this->hide();
 		ManagerWindowClass* managerWindow = new ManagerWindowClass;
-		connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // Á¬½ÓÍË³öĞÅºÅ
+		connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // è¿æ¥é€€å‡ºä¿¡å·
 		managerWindow->show();
 	}
 	else
 	{
-		qDebug() << "µÇÂ¼Ê§°Ü";
-		// ÏÔÊ¾´íÎóÌáÊ¾
-		QMessageBox::warning(this, "µÇÂ¼Ê§°Ü", "ÕËºÅ»òÃÜÂë´íÎó£¬ÇëÖØÊÔ¡£");
-		ui.logAccountLineEdit->clear(); // Çå¿ÕÕËºÅÊäÈë¿ò
-		ui.logPasswordLineEdit->clear(); // Çå¿ÕÃÜÂëÊäÈë¿ò
+		qDebug() << "ç™»å½•å¤±è´¥";
+		// æ˜¾ç¤ºé”™è¯¯æç¤º
+		QMessageBox::warning(this, "ç™»å½•å¤±è´¥", "è´¦å·æˆ–å¯†ç é”™è¯¯ï¼Œè¯·é‡è¯•ã€‚");
+		ui.logAccountLineEdit->clear(); // æ¸…ç©ºè´¦å·è¾“å…¥æ¡†
+		ui.logPasswordLineEdit->clear(); // æ¸…ç©ºå¯†ç è¾“å…¥æ¡†
     }
   
 }
@@ -51,12 +55,12 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::InitBackground()
 {
-	// ÉèÖÃ´°¿Ú±³¾°Í¼Æ¬
-	QPixmap background(":/res/LogBackground.png");  // ´Ó×ÊÔ´ÎÄ¼şÖĞ¼ÓÔØÍ¼Æ¬
-	background = background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // Ëõ·ÅÍ¼Æ¬ÒÔÊÊÓ¦´°¿Ú
+	// è®¾ç½®çª—å£èƒŒæ™¯å›¾ç‰‡
+	QPixmap background(":/res/LogBackground.png");  // ä»èµ„æºæ–‡ä»¶ä¸­åŠ è½½å›¾ç‰‡
+	background = background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // ç¼©æ”¾å›¾ç‰‡ä»¥é€‚åº”çª—å£
 
 	QPalette palette;
-	palette.setBrush(QPalette::Window, background);  // ÉèÖÃ±³¾°Í¼Æ¬
+	palette.setBrush(QPalette::Window, background);  // è®¾ç½®èƒŒæ™¯å›¾ç‰‡
 	this->setPalette(palette);
 
 }
@@ -64,29 +68,29 @@ void LoginWindow::InitBackground()
 void LoginWindow::InitConnect()
 {
 	ui.stackedWidget->setCurrentIndex(0);
-	//×¢²á°´Å¥ÊÂ¼ş
+	//æ³¨å†ŒæŒ‰é’®äº‹ä»¶
 	connect(ui.signPageBtn, &QPushButton::clicked, [=]() {
 		ui.stackedWidget->setCurrentIndex(2);
 		});
-	//×¢²á·µ»ØµÇÂ¼½çÃæ°´Å¥ÊÂ¼ş
+	//æ³¨å†Œè¿”å›ç™»å½•ç•Œé¢æŒ‰é’®äº‹ä»¶
 	connect(ui.signReturnToLogBtn, &QPushButton::clicked, [=]() {
 		ui.stackedWidget->setCurrentIndex(0);
 		});
-	//ÓÊ¼ş°´Å¥ÊÂ¼ş
+	//é‚®ä»¶æŒ‰é’®äº‹ä»¶
 	connect(ui.mailPageBtn, &QPushButton::clicked, [=]() {
 		ui.stackedWidget->setCurrentIndex(1);
 		});
-	//ÓÊ¼ş·µ»ØµÇÂ¼½çÃæ°´Å¥ÊÂ¼ş
+	//é‚®ä»¶è¿”å›ç™»å½•ç•Œé¢æŒ‰é’®äº‹ä»¶
 	connect(ui.mailReturnToLogBtn, &QPushButton::clicked, [=]() {
 		ui.stackedWidget->setCurrentIndex(0);
 		});
-	//µÇÂ¼°´Å¥ÊÂ¼ş
+	//ç™»å½•æŒ‰é’®äº‹ä»¶
 	connect(ui.logBtn, &QPushButton::clicked, this, &LoginWindow::onLoginClicked);
-	//ÓÊ¼şµÇÂ¼°´Å¥ÊÂ¼ş
+	//é‚®ä»¶ç™»å½•æŒ‰é’®äº‹ä»¶
 	connect(ui.mailLogBtn, &QPushButton::clicked, this, &LoginWindow::onMailLoginClicked);
-	//×¢²á°´Å¥ÊÂ¼ş
+	//æ³¨å†ŒæŒ‰é’®äº‹ä»¶
 	connect(ui.signBtn, &QPushButton::clicked, this, &LoginWindow::onRegisterClicked);
-	//×¢²á·¢ËÍÑéÖ¤Âë°´Å¥ÊÂ¼ş
+	//æ³¨å†Œå‘é€éªŒè¯ç æŒ‰é’®äº‹ä»¶
 	connect(ui.signSendCodeBtn, &QPushButton::clicked, this, &LoginWindow::onSignCodeSentClicked);
 	connect(ui.mailSendCodeBtn, &QPushButton::clicked, this, &LoginWindow::onMailCodeSentClicked);
 }
@@ -96,27 +100,33 @@ void LoginWindow::onMailLoginClicked()
 	const int logIdentityType = SqlTools::Login_Email_Code_Check(ui.mailMailBoxLineEdit->text().toStdString(), ui.mailVerificationCodeLineEdit->text().toStdString());
 	if (logIdentityType == 1)
 	{
-		qDebug() << "µÇÂ¼³É¹¦";
+		qDebug() << "ç™»å½•æˆåŠŸ";
 		this->hide();
-		CashierWindowClass* cashierWindow = new CashierWindowClass;
-		connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // Á¬½ÓÍË³öĞÅºÅ
+		// è·å–è´¦å·
+		auto[account, password] = SqlTools::Login_Get_Account_Password
+		(
+			ui.mailMailBoxLineEdit->text().toStdString(),
+			ui.mailVerificationCodeLineEdit->text().toStdString()
+		);
+		CashierWindowClass* cashierWindow = new CashierWindowClass(account, password);
+		connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // è¿æ¥é€€å‡ºä¿¡å·
 		cashierWindow->show();
 	}
 	else if (logIdentityType == 2)
 	{
-		qDebug() << "µÇÂ¼³É¹¦";
+		qDebug() << "ç™»å½•æˆåŠŸ";
 		this->hide();
 		ManagerWindowClass* managerWindow = new ManagerWindowClass;
-		connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // Á¬½ÓÍË³öĞÅºÅ
+		connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // è¿æ¥é€€å‡ºä¿¡å·
 		managerWindow->show();
 	}
 	else
 	{
-		qDebug() << "µÇÂ¼Ê§°Ü";
-		// ÏÔÊ¾´íÎóÌáÊ¾
-		QMessageBox::warning(this, "µÇÂ¼Ê§°Ü", "ÓÊÏä»òÑéÖ¤Âë´íÎó£¬ÇëÖØÊÔ¡£");
-		ui.mailMailBoxLineEdit->clear(); // Çå¿ÕÕËºÅÊäÈë¿ò
-		ui.mailVerificationCodeLineEdit->clear(); // Çå¿ÕÃÜÂëÊäÈë¿ò
+		qDebug() << "ç™»å½•å¤±è´¥";
+		// æ˜¾ç¤ºé”™è¯¯æç¤º
+		QMessageBox::warning(this, "ç™»å½•å¤±è´¥", "é‚®ç®±æˆ–éªŒè¯ç é”™è¯¯ï¼Œè¯·é‡è¯•ã€‚");
+		ui.mailMailBoxLineEdit->clear(); // æ¸…ç©ºè´¦å·è¾“å…¥æ¡†
+		ui.mailVerificationCodeLineEdit->clear(); // æ¸…ç©ºå¯†ç è¾“å…¥æ¡†
 	}
 }
 
@@ -128,33 +138,33 @@ void LoginWindow::onRegisterClicked()
 	{
 		if (SqlTools::Register_Account_Password_Email_Wirte(ui.signAccountLineEdit->text().toStdString(), ui.signPasswordLineEdit->text().toStdString(), ui.signMailLineEdit->text().toStdString()))
 		{
-			qDebug() << "×¢²á³É¹¦";
-			QMessageBox::information(this, "×¢²á³É¹¦", "×¢²á³É¹¦£¬ÇëµÇÂ¼¡£");
+			qDebug() << "æ³¨å†ŒæˆåŠŸ";
+			QMessageBox::information(this, "æ³¨å†ŒæˆåŠŸ", "æ³¨å†ŒæˆåŠŸï¼Œè¯·ç™»å½•ã€‚");
 			ui.stackedWidget->setCurrentIndex(0);
 		}
 		else
 		{
-			qDebug() << "×¢²áÊ§°Ü";
-			// ÏÔÊ¾´íÎóÌáÊ¾
-			QMessageBox::warning(this, "×¢²áÊ§°Ü", "·şÎñÆ÷Ğ´Èë³ö´í£¬ÇëÉÔºóÔÙÊÔ¡£");
-			ui.signAccountLineEdit->clear(); // Çå¿ÕÕËºÅÊäÈë¿ò
-			ui.signPasswordLineEdit->clear(); // Çå¿ÕÃÜÂëÊäÈë¿ò
-			ui.signRePasswordLineEdit->clear(); // Çå¿ÕÃÜÂëÊäÈë¿ò
-			ui.signMailLineEdit->clear(); // Çå¿ÕÓÊÏäÊäÈë¿ò
-			ui.signVerificationCodeLineEdit->clear(); // Çå¿ÕÑéÖ¤ÂëÊäÈë¿ò
+			qDebug() << "æ³¨å†Œå¤±è´¥";
+			// æ˜¾ç¤ºé”™è¯¯æç¤º
+			QMessageBox::warning(this, "æ³¨å†Œå¤±è´¥", "æœåŠ¡å™¨å†™å…¥å‡ºé”™ï¼Œè¯·ç¨åå†è¯•ã€‚");
+			ui.signAccountLineEdit->clear(); // æ¸…ç©ºè´¦å·è¾“å…¥æ¡†
+			ui.signPasswordLineEdit->clear(); // æ¸…ç©ºå¯†ç è¾“å…¥æ¡†
+			ui.signRePasswordLineEdit->clear(); // æ¸…ç©ºå¯†ç è¾“å…¥æ¡†
+			ui.signMailLineEdit->clear(); // æ¸…ç©ºé‚®ç®±è¾“å…¥æ¡†
+			ui.signVerificationCodeLineEdit->clear(); // æ¸…ç©ºéªŒè¯ç è¾“å…¥æ¡†
 		}
 		
 	}
 	else
 	{
-		qDebug() << "×¢²áÊ§°Ü";
-		// ÏÔÊ¾´íÎóÌáÊ¾
-		QMessageBox::warning(this, "×¢²áÊ§°Ü", "ÊäÈëÓĞÎó£¬ÇëÖØÊÔ¡£");
-		ui.signAccountLineEdit->clear(); // Çå¿ÕÕËºÅÊäÈë¿ò
-		ui.signPasswordLineEdit->clear(); // Çå¿ÕÃÜÂëÊäÈë¿ò
-		ui.signRePasswordLineEdit->clear(); // Çå¿ÕÃÜÂëÊäÈë¿ò
-		ui.signMailLineEdit->clear(); // Çå¿ÕÓÊÏäÊäÈë¿ò
-		ui.signVerificationCodeLineEdit->clear(); // Çå¿ÕÑéÖ¤ÂëÊäÈë¿ò
+		qDebug() << "æ³¨å†Œå¤±è´¥";
+		// æ˜¾ç¤ºé”™è¯¯æç¤º
+		QMessageBox::warning(this, "æ³¨å†Œå¤±è´¥", "è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡è¯•ã€‚");
+		ui.signAccountLineEdit->clear(); // æ¸…ç©ºè´¦å·è¾“å…¥æ¡†
+		ui.signPasswordLineEdit->clear(); // æ¸…ç©ºå¯†ç è¾“å…¥æ¡†
+		ui.signRePasswordLineEdit->clear(); // æ¸…ç©ºå¯†ç è¾“å…¥æ¡†
+		ui.signMailLineEdit->clear(); // æ¸…ç©ºé‚®ç®±è¾“å…¥æ¡†
+		ui.signVerificationCodeLineEdit->clear(); // æ¸…ç©ºéªŒè¯ç è¾“å…¥æ¡†
 
 	}
 }
