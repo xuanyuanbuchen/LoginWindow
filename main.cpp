@@ -1,4 +1,4 @@
-#include "LoginWindow.h"
+﻿#include "LoginWindow.h"
 #include "CashierWindowClass.h"
 #include <QtWidgets/QApplication>
 

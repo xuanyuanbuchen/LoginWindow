@@ -1,34 +1,42 @@
-#pragma once
-#include <functional>
-#include <QAbstractItemModel>
-#include <QTableView>
-#include "SqlTools.h"
+ï»¿#pragma once
 #include <QStandardItemModel>
+#include <vector>
 
+// ä½¿ç”¨æ¨¡æ¿ç±»
 class TableViewPagination
 {
 public:
-    // ¹¹Ôìº¯Êı
-    TableViewPagination(QStandardItemModel* model, int pageSize = 15);
+    TableViewPagination(int pageSize = 30)
+        : pageSize(pageSize), currentPage(0)
+    {
+        Q_ASSERT(pageSize > 0);
+    }
 
-    // »ñÈ¡Ò³×ÜÊı
-    int pageCount() const;
+    // è·å–é¡µæ€»æ•°
+    int pageCount(int totalItemCount) const
+    {
+        return (totalItemCount + pageSize - 1) / pageSize;
+    }
 
-    // ÉèÖÃµ±Ç°Ò³(×Ô¶¯´¦Àí±ß½ç)
-    void setPage(int page);
+    // è®¾ç½®å½“å‰é¡µ(è‡ªåŠ¨å¤„ç†è¾¹ç•Œ)
+    void setPage(int page, int totalItemCount)
+    {
+        currentPage = qBound(0, page, pageCount(totalItemCount) - 1);
+    }
 
-    // »ñÈ¡µ±Ç°Ò³
-    int getCurrentPage() const;
+    // è·å–å½“å‰é¡µ
+    int getCurrentPage() const
+    {
+        return currentPage;
+    }
 
-    // Ó¦ÓÃµ½±í¸ñÊÓÍ¼
-    void applyToTableView(QTableView* tableView);
-
-    // ÉèÖÃ¶¯Ì¬Êı¾İ¼ÓÔØ»Øµ÷
-    void setDataLoader(const std::function<std::pair<std::vector<OrderDetail>, int>(int offset, int limit)>& loader);
+    // è·å–æ¯é¡µå¤§å°
+    int getPageSize() const
+    {
+        return pageSize;
+    }
 
 private:
-    QStandardItemModel* model;
     int pageSize;
     int currentPage;
-    std::function<std::pair<std::vector<OrderDetail>, int>(int offset, int limit)> dataLoader; // Êı¾İ¼ÓÔØ»Øµ÷
 };

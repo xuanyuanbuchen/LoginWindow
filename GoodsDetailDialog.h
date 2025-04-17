@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QDialog>
 #include "ui_GoodsDetailDialog.h"
@@ -13,7 +13,9 @@ public:
     ~GoodsDetailDialog();
 
     void setGoodsDetail(const QString& id, const QString& name, const QString& price, const QString& category,
-        const QPixmap& image, const QString& description, const int count);
+        const QString& path, const QString& description, const int count);
+    Ui::GoodsDetailDialog& getUi();
+	std::string GetPath() const { return pixpath; } // 获取图片路径
 
 signals:
     void pictureChanged(const QPixmap& newImage);
@@ -23,4 +25,5 @@ private slots:
 
 private:
     Ui::GoodsDetailDialog ui;
+    std::string pixpath;
 };

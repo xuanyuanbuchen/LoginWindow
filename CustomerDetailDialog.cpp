@@ -1,18 +1,46 @@
-#include "CustomerDetailDialog.h"
+ï»¿#include "CustomerDetailDialog.h"
 #include <QFileDialog>
 #include <QPixmap>
 
 CustomerDetailDialog::CustomerDetailDialog(QWidget* parent)
-    : QDialog(parent), avatarPath(":/res/default.jpg") // ³õÊ¼»¯Í·ÏñÂ·¾¶ÎªÄ¬ÈÏÍ¼Æ¬
+	: QDialog(parent), avatarPath(":/res/default.jpg") // åˆå§‹åŒ–å¤´åƒè·¯å¾„ä¸ºé»˜è®¤å›¾ç‰‡
 {
-    ui.setupUi(this);
+	ui.setupUi(this);
 
-    // Á¬½Ó acceptBtn ºÍ cancelBtn µÄµã»÷ĞÅºÅµ½²Ûº¯Êı
-    connect(ui.acceptBtn, &QPushButton::clicked, this, &CustomerDetailDialog::onAcceptBtnClicked);
-    connect(ui.cancelBtn, &QPushButton::clicked, this, &CustomerDetailDialog::onCancelBtnClicked);
+	// è¿æ¥ acceptBtn å’Œ cancelBtn çš„ç‚¹å‡»ä¿¡å·åˆ°æ§½å‡½æ•°
+	connect(ui.acceptBtn, &QPushButton::clicked, this, &CustomerDetailDialog::onAcceptBtnClicked);
+	connect(ui.cancelBtn, &QPushButton::clicked, this, &CustomerDetailDialog::onCancelBtnClicked);
 
-    // Á¬½ÓË«»÷ĞÅºÅµ½²Ûº¯Êı
-    connect(ui.customerPicture, &ClickableLabel::doubleClicked, this, &CustomerDetailDialog::onCustomerPictureDoubleClicked);
+	// è¿æ¥åŒå‡»ä¿¡å·åˆ°æ§½å‡½æ•°
+	connect(ui.customerPicture, &ClickableLabel::doubleClicked, this, &CustomerDetailDialog::onCustomerPictureDoubleClicked);
+}
+
+CustomerDetailDialog::CustomerDetailDialog(QWidget* parent, const QString& id, const QString& birthDate,
+	const QString& logDate, const QString& email,
+	const QString& password, const QString& description,
+	const QString& avatarPath)
+	: QDialog(parent), avatarPath(avatarPath)
+{
+	ui.setupUi(this);
+
+	// è®¾ç½®åˆå§‹æ•°æ®
+	ui.customerIDEdit->setText(id);
+	ui.customerBirthDateEdit->setText(birthDate);
+	ui.customerLogDateEdit->setText(logDate);
+	ui.customerEmailEdit->setText(email);
+	ui.customerPasswordEdit->setText(password);
+	ui.customerTextEdit->setPlainText(description);
+
+	// è®¾ç½®å¤´åƒ
+	QPixmap avatar(avatarPath);
+	if (!avatar.isNull()) {
+		ui.customerPicture->setPixmap(avatar);
+	}
+
+	// è¿æ¥æŒ‰é’®å’Œæ§½å‡½æ•°
+	connect(ui.acceptBtn, &QPushButton::clicked, this, &CustomerDetailDialog::onAcceptBtnClicked);
+	connect(ui.cancelBtn, &QPushButton::clicked, this, &CustomerDetailDialog::onCancelBtnClicked);
+	connect(ui.customerPicture, &ClickableLabel::doubleClicked, this, &CustomerDetailDialog::onCustomerPictureDoubleClicked);
 }
 
 CustomerDetailDialog::~CustomerDetailDialog()
@@ -21,39 +49,39 @@ CustomerDetailDialog::~CustomerDetailDialog()
 
 void CustomerDetailDialog::onAcceptBtnClicked()
 {
-    // ÊÕ¼¯ÓÃ»§ÊäÈëµÄÊı¾İ
-    QString id = ui.customerIDEdit->text();
-    QString birthDate = ui.customerBirthDateEdit->text();
-    QString logDate = ui.customerLogDateEdit->text();
-    QString email = ui.customerEmailEdit->text();
-    QString password = ui.customerPasswordEdit->text();
-    QString description = ui.customerTextEdit->toPlainText();
+	// æ”¶é›†ç”¨æˆ·è¾“å…¥çš„æ•°æ®
+	QString id = ui.customerIDEdit->text();
+	QString birthDate = ui.customerBirthDateEdit->text();
+	QString logDate = ui.customerLogDateEdit->text();
+	QString email = ui.customerEmailEdit->text();
+	QString password = ui.customerPasswordEdit->text();
+	QString description = ui.customerTextEdit->toPlainText();
 
-    // ·¢ÉäĞÅºÅ£¬½«Êı¾İ·µ»Ø¸øÍâ²¿µ÷ÓÃÕß
-    emit dataAccepted(id, birthDate, logDate, email, password, description, avatarPath);
+	// å‘å°„ä¿¡å·ï¼Œå°†æ•°æ®è¿”å›ç»™å¤–éƒ¨è°ƒç”¨è€…
+	emit dataAccepted(id, birthDate, logDate, email, password, description, avatarPath);
 
-    // ¹Ø±Õ´°¿Ú
-    close();
+	// å…³é—­çª—å£
+	close();
 }
 
 void CustomerDetailDialog::onCancelBtnClicked()
 {
-    // ¹Ø±Õ´°¿Ú²¢È¡ÏûËùÓĞĞŞ¸Ä
-    close();
+	// å…³é—­çª—å£å¹¶å–æ¶ˆæ‰€æœ‰ä¿®æ”¹
+	close();
 }
 
 void CustomerDetailDialog::onCustomerPictureDoubleClicked()
 {
-    // µ¯³öÎÄ¼şÑ¡Ôñ´°¿Ú
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Ñ¡ÔñÍ¼Æ¬"), "", tr("Images (*.png *.xpm *.jpg *.jpeg *.bmp)"));
-    if (!filePath.isEmpty())
-    {
-        // ¼ÓÔØ²¢ÉèÖÃĞÂÍ¼Æ¬
-        QPixmap newPixmap(filePath);
-        if (!newPixmap.isNull())
-        {
-            ui.customerPicture->setPixmap(newPixmap);
-            avatarPath = filePath; // ±£´æÑ¡ÔñµÄÍ¼Æ¬Â·¾¶
-        }
-    }
+	// å¼¹å‡ºæ–‡ä»¶é€‰æ‹©çª—å£
+	QString filePath = QFileDialog::getOpenFileName(this, tr("é€‰æ‹©å›¾ç‰‡"), "", tr("Images (*.png *.xpm *.jpg *.jpeg *.bmp)"));
+	if (!filePath.isEmpty())
+	{
+		// åŠ è½½å¹¶è®¾ç½®æ–°å›¾ç‰‡
+		QPixmap newPixmap(filePath);
+		if (!newPixmap.isNull())
+		{
+			ui.customerPicture->setPixmap(newPixmap);
+			avatarPath = filePath; // ä¿å­˜é€‰æ‹©çš„å›¾ç‰‡è·¯å¾„
+		}
+	}
 }

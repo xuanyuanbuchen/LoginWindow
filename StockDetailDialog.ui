@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StockDetailDialog</class>
+ <widget class="QDialog" name="StockDetailDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>StockDetailDialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="labelAlignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="formAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="goodsIDLabel">
+       <property name="text">
+        <string>商品ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="goodsIDEdit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="stockIDLabel">
+       <property name="text">
+        <string>进货记录ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="stockIDEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="countLabel">
+       <property name="text">
+        <string>进货数量</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="countEdit"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="dateLabel">
+       <property name="text">
+        <string>进货时间</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="dateEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton 
+{
+    background-color: #2196F3;  
+    color: white;               
+    border: none;              
+    padding: 10px 20px;        
+    border-radius: 15px;       
+    font-size: 14px;           
+}
+
+QPushButton:hover
+{
+    background-color: #1976D2;  
+}
+
+QPushButton:pressed 
+{
+    background-color: #0D47A1;
+    color: #E0E0E0;            
+}</string>
+       </property>
+       <property name="text">
+        <string>取消</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="confirmButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton 
+{
+    background-color: #2196F3;  
+    color: white;               
+    border: none;              
+    padding: 10px 20px;        
+    border-radius: 15px;       
+    font-size: 14px;           
+}
+
+QPushButton:hover
+{
+    background-color: #1976D2;  
+}
+
+QPushButton:pressed 
+{
+    background-color: #0D47A1;
+    color: #E0E0E0;            
+}</string>
+       </property>
+       <property name="text">
+        <string>确定</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 #include <QWidget>
 #include "ProductDetailDialog.h"
@@ -26,7 +26,7 @@ public:
 	void setProductInfo(const QString& name, const QString& price, const QPixmap& image);
 	void showProductDetailDialog();
 signals:
-	void clicked();  // µ„ª˜–≈∫≈
+	void clicked();  // ÁÇπÂáª‰ø°Âè∑
 
 protected:
 	void mousePressEvent(QMouseEvent* event) override;

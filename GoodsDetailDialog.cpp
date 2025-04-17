@@ -56,15 +56,21 @@ GoodsDetailDialog::~GoodsDetailDialog()
 {
 }
 
-void GoodsDetailDialog::setGoodsDetail(const QString& id, const QString& name, const QString& price, const QString& category, const QPixmap& image, const QString& description, const int count)
+void GoodsDetailDialog::setGoodsDetail(const QString& id, const QString& name, const QString& price, const QString& category, const QString& path, const QString& description, const int count)
 {
-    ui.goodsPicture->setPixmap(image.scaled(200, 200, Qt::KeepAspectRatio));
+    ui.goodsPicture->setPixmap(path);
     ui.goodsIDEdit->setText(id);
     ui.goodsNameEdit->setText(name);
     ui.goodsPriceEdit->setText(price);
     ui.goodsCategoryEdit->setText(category);
     ui.goodsCountEdit->setText(QString::number(count));
     ui.goodsDescription->setText(description);
+	pixpath = path.toStdString();
+}
+
+Ui::GoodsDetailDialog& GoodsDetailDialog::getUi()
+{
+    return ui;
 }
 
 void GoodsDetailDialog::onGoodsPictureClicked()

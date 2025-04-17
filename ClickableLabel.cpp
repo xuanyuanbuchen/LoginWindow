@@ -1,4 +1,4 @@
-#include "ClickableLabel.h"
+ï»¿#include "ClickableLabel.h"
 
 ClickableLabel::ClickableLabel(QWidget* parent)
     : QLabel(parent) 
@@ -18,5 +18,5 @@ void ClickableLabel::mousePressEvent(QMouseEvent* event)
 
 void ClickableLabel::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    emit doubleClicked(); // ·¢ÉäË«»÷ĞÅºÅ
+    emit doubleClicked(); // å‘å°„åŒå‡»ä¿¡å·
 }

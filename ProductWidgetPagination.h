@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <vector>
 #include "ProductWidget.h"
@@ -6,19 +6,19 @@
 class ProductWidgetPagination
 {
 public:
-    // ¹¹Ôìº¯Êı
+    // æ„é€ å‡½æ•°
     ProductWidgetPagination(int kinds_count, int pageSize = 9);
-    // »ñÈ¡Ò³×ÜÊı
+    // è·å–é¡µæ€»æ•°
     int pageCount() const;
-    // ÉèÖÃµ±Ç°Ò³(×Ô¶¯´¦Àí±ß½ç)
+    // è®¾ç½®å½“å‰é¡µ(è‡ªåŠ¨å¤„ç†è¾¹ç•Œ)
     void setPage(int page);
-    // »ñÈ¡µ±Ç°Ò³
+    // è·å–å½“å‰é¡µ
     int getCurrentPage() const;
-    // Ó¦ÓÃµ½ÉÌÆ·Õ¹Ê¾Íø¸ñ
+    // åº”ç”¨åˆ°å•†å“å±•ç¤ºç½‘æ ¼
     void applyToGridLayout(QGridLayout* gridLayout, const std::function<std::vector<ProductWidget*>(int, int)>& fetchPageData);
-    // »ñÈ¡µ±Ç°Ò³µÄÆğÊ¼Ë÷Òı
+    // è·å–å½“å‰é¡µçš„èµ·å§‹ç´¢å¼•
     int startRow() const;
-    // »ñÈ¡µ±Ç°Ò³µÄ½áÊøË÷Òı(²»°üº¬)
+    // è·å–å½“å‰é¡µçš„ç»“æŸç´¢å¼•(ä¸åŒ…å«)
     int endRow() const;
 
     int getPageSize() const;

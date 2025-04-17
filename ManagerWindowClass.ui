@@ -1333,7 +1333,7 @@ background-color:rgba(255,255,255,0.0);
               </widget>
              </item>
              <item>
-              <widget class="SearchEdit" name="stockNameLine_2">
+              <widget class="SearchEdit" name="stockNameLine">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -1524,7 +1524,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="preStockPageBtn_2">
+              <widget class="QPushButton" name="preStockPageBtn">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     background-color: #2196F3;
@@ -1548,7 +1548,7 @@ QPushButton:pressed {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="nextStockPageBtn_2">
+              <widget class="QPushButton" name="nextStockPageBtn">
                <property name="styleSheet">
                 <string notr="true">QPushButton {
     background-color: #2196F3;
@@ -2233,7 +2233,7 @@ background-color:rgba(255,255,255,0.0);
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
              <item>
-              <widget class="QDateEdit" name="dateEdit"/>
+              <widget class="QDateEdit" name="dateEditStart"/>
              </item>
              <item>
               <widget class="QLabel" name="toLabel">
@@ -2243,7 +2243,7 @@ background-color:rgba(255,255,255,0.0);
               </widget>
              </item>
              <item>
-              <widget class="QDateEdit" name="dateEdit_2"/>
+              <widget class="QDateEdit" name="dateEditEnd"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_4">

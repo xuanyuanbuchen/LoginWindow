@@ -29,7 +29,7 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="styleSheet">
@@ -430,7 +430,7 @@ background-color:rgba(255,255,255,0.0);
               <enum>QLayout::SetDefaultConstraint</enum>
              </property>
              <item>
-              <widget class="QComboBox" name="produceComboBoxCategory_2">
+              <widget class="QComboBox" name="salesComboBoxCategory">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -500,7 +500,7 @@ background-color:rgba(255,255,255,0.0);
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="produceComboBoxPrice_2">
+              <widget class="QComboBox" name="salesComboBoxPrice">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>
@@ -534,7 +534,7 @@ background-color:rgba(255,255,255,0.0);
               </widget>
              </item>
              <item>
-              <widget class="SearchEdit" name="produceNameLine_2">
+              <widget class="SearchEdit" name="salesNameLine">
                <property name="font">
                 <font>
                  <pointsize>9</pointsize>

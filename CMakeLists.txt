@@ -46,8 +46,6 @@ set(PROJECT_SOURCES
     CustomerDetailDialog.ui
     CustomerDetailDialog.h
     CustomerDetailDialog.cpp
-    TableViewPagination.h
-    TableViewPagination.cpp
     ProductWidgetPagination.h
     ProductWidgetPagination.cpp
     GoodsWidgetPagination.h
@@ -59,7 +57,16 @@ set(PROJECT_SOURCES
     FinanceChart.ui
     FinanceChart.h
     FinanceChart.cpp
-
+    TableViewPagination.h
+    OrderDetailDialog.ui
+    OrderDetailDialog.h
+    OrderDetailDialog.cpp
+    StockDetailDialog.ui
+    StockDetailDialog.h
+    StockDetailDialog.cpp
+    StaffDetailDialog.ui
+    StaffDetailDialog.h
+    StaffDetailDialog.cpp
 
 )
 

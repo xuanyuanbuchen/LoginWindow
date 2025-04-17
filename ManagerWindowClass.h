@@ -9,6 +9,7 @@
 #include <vector>
 #include <QStandardItemModel>
 #include <memory>
+#include "SqlTools.h"
 
 //struct FinancialData {
 //    QList<QPointF> income;  // 收入数据（x: 时间戳，y: 金额）
@@ -23,35 +24,75 @@ public:
     ManagerWindowClass(QWidget* parent = nullptr);
     ~ManagerWindowClass();
 
+private:
+	void InitBackground();
+	void InitConnect();
+    void InitManagerGoodsPage();
+	void InitProcessSalesPage();
+	void InitProcessStockInfoPage();
+    void InitManagerStaffPage();
+    void InitManagerCustomPage();
+	void InitFinancialManagerPage();
+
+
 signals:
     void logoutRequested();  // 退出信号
 
 private slots:
     void onLogoutClicked();
-    void onGoodsClicked();
     void onNextPageClicked();
     void onPrevPageClicked();
-    void updateSalePage();
-    void updateStaffPage();
+    //库存管理
+    void onGoodsClicked();
     void updateGoodsPage();
+    void onGoodsComboxCategoryClicked(int index);
+	void onGoodsComboxPriceClicked(int index);
+    void onGoodstNameLineSearchClicked(const QString& text);
+	void onAddGoodsClicked(const QString& id, int count);
+	void onDeleteGoodsClicked(const QString& id);
+    //销售数据
+    void updateSalePage();
     void onSaleChangedAcceptClicked();
     void onSaleChangedCancelClicked();
     void onSaleDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles = QVector<int>());
-    void onAddOrderClicked();
+    void onSaleComboxCategoryClicked(int index);
+    void onSaleComboxPriceClicked(int index);
+    void onAddSaleClicked();
+	void onDeleteSaleClicked(const QString& id, int count);
+    void onSaleNameLineSearchClicked(const QString& text);
+    //进货数据
+    void updateStockPage();
+    void onAddStockClicked();
+    void onStockChangedAcceptClicked();
+    void onStockChangedCancelClicked();
+    void onStockDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles = QVector<int>());
+    void onStockComboxCategoryClicked(int index);
+    void onStockComboxPriceClicked(int index);
+    void onStockNameLineSearchClicked(const QString& text);
+    void onDeleteStockClicked(const QString& id, int count);
+
+    //员工管理
+    void updateStaffPage();
+    void onAddStaffClicked();
     void onStaffChangedAcceptClicked();
     void onStaffChangedCancelClicked();
     void onStaffDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles = QVector<int>());
-    void onAddStaffClicked();
-    void onDeleteGoodsClicked();
-    void onDeleteSaleClicked();
+    void onStaffComboxCategoryClicked(int index);
+    void onstaffNameLineSearchClicked(const QString& text);
     void onDeleteStaffClicked();
+
+    //顾客管理
+    void updateCustomerPage();
+    void onAddCustomerClicked();
     void onCustomerChangedAcceptClicked();
     void onCustomerChangedCancelClicked();
-    void onAddCustomerClicked();
-    void onDeleteCustomerClicked();
     void onCustomerDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles = QVector<int>());
+    void onCustomerNameLineSearchClicked(const QString& text);
     void onCustomerAvatarDoubleClicked(const QModelIndex& index);
-    void updateCustomerPage();
+    void onDeleteCustomerClicked();
+
+    //财务管理
+    void onDateRangeChanged();
 
     
 
@@ -59,6 +100,8 @@ private:
     Ui::ManagerWindowClass ui;
     std::vector<std::unique_ptr<GoodsWidget>> vec_current_goods_widget;
 	TableViewPagination* salePagination;
+    TableViewPagination* stockPagination;
+
     TableViewPagination* staffPagination;
     GoodsWidgetPagination* goodsWidgetPagination;
     QStandardItemModel* customerModel;
@@ -67,4 +110,20 @@ private:
     int goodsWidgetPageSize = 9; // 每页显示的商品数量
     std::string account;
     std::string password;
+
+    std::vector < std::unique_ptr<SaleTableLine> > vec_changed_sale_data;
+    std::vector < std::unique_ptr<StockDetail> > vec_changed_stock_data;
+    std::vector < std::unique_ptr<StaffDetail> > vec_changed_Staff_data;
+    std::vector < std::unique_ptr<CustomerDetail> > vec_changed_Customer_data;
+
+
+	int salePageSize = 30; // 每页显示的销售数据数量
+	int salePageCount = 0; // 销售数据总页数
+	int stockPageSize = 30; // 每页显示的进货数据数量
+	int stockPageCount = 0; // 进货数据总页数
+	int staffPageSize = 30; // 每页显示的员工数据数量
+	int staffPageCount = 0; // 员工数据总页数
+	int customerPageSize = 30; // 每页显示的客户数据数量
+	int customerPageCount = 0; // 客户数据总页数
+
 };

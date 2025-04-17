@@ -1,8 +1,8 @@
-#include "SqlTools.h"
+Ôªø#include "SqlTools.h"
 
 int SqlTools::Login_Account_Password_Check(const std::string& account, const std::string& password)
 {
-	return 1;
+	return 2;
 }
 
 bool SqlTools::Account_Exist(const std::string& account, const std::string& password)
@@ -66,71 +66,117 @@ SalesDetail SqlTools::Search_Sale_Information(const std::string& account, const 
 	return SalesDetail();
 }
 
-
-
-std::string SqlTools::Search_SaleTable_State_Price_ID(const std::string& state, const std::string& price, const std::string& id)
-{
-	return std::string();
-}
-
-std::string SqlTools::Search_StaffTable_Role_Name(const std::string& role, const std::string& name)
-{
-	return std::string();
-}
-
-std::string SqlTools::Search_CustomerTable_Name(const std::string& name)
-{
-	return std::string();
-}
-
-bool SqlTools::Change_OrderTable_State(const std::string& account)
+bool SqlTools::Stock_Goods(const std::string& id, const std::string& counts)
 {
 	return false;
 }
 
-bool SqlTools::Change_OrderTable(const std::string& changeInformation)
+bool SqlTools::Add_Goods(const std::string& path, const std::string& id, const std::string& name, const std::string& price, const std::string& category, const std::string& count, const std::string& description)
 {
 	return false;
 }
 
-bool SqlTools::Add_Order(const std::string& orderInformation)
+bool SqlTools::Delete_Goods(const std::string& id)
 {
 	return false;
 }
 
-bool SqlTools::Delete_Order(const std::string& orderInformation)
+std::pair<std::vector<SaleTableLine>, int> SqlTools::Search_SaleTable_State_Price_ID
+(
+	const std::string& kind, 
+	const std::string& price, 
+	const std::string& id,
+	const int& return_count,
+	const int& offset
+)
+{
+	return std::pair<std::vector<SaleTableLine>, int>();
+}
+
+bool SqlTools::Change_SaleTable(const std::vector<SaleTableLine>& changeData)
 {
 	return false;
 }
 
-bool SqlTools::Change_StaffTable(const std::string& changeInformation)
+bool SqlTools::Add_Sale(const SaleTableLine& addData)
 {
 	return false;
 }
 
-bool SqlTools::Add_Staff(const std::string& staffInformation)
+bool SqlTools::Delete_Sale(const std::string& id)
 {
 	return false;
 }
 
-bool SqlTools::Delete_Staff(const std::string& staffInformation)
+std::pair<std::vector<StockDetail>, int> SqlTools::Search_StockTable_State_Price_ID(const std::string& kind, const std::string& price, const std::string& id, const int& return_count, const int& offset)
+{
+	return std::pair<std::vector<StockDetail>, int>();
+}
+
+bool SqlTools::Change_StockTable_State(const std::vector<StockDetail>& changeData)
 {
 	return false;
 }
 
-bool SqlTools::Change_CustomerTable(const std::string& changeInformation)
+bool SqlTools::Add_Stock(const StockDetail& addData)
 {
 	return false;
 }
 
-bool SqlTools::Add_Customer(const std::string& customerInformation)
+bool SqlTools::Delete_Stock(const std::string& id)
 {
 	return false;
 }
 
-bool SqlTools::Delete_Customer(const std::string& customerInformation)
+
+std::pair<std::vector<StaffDetail>, int> SqlTools::Search_StaffTable_Role_Name(const std::string& role, const std::string& name, const int& return_count, const int& offset)
+{
+	return std::pair<std::vector<StaffDetail>, int>();
+}
+
+bool SqlTools::Change_StaffTable(const std::vector<StaffDetail>& changeData)
 {
 	return false;
+}
+
+bool SqlTools::Add_Staff(const StaffDetail& addData)
+{
+	return false;
+}
+
+bool SqlTools::Delete_Staff(const std::string& id)
+{
+	return false;
+}
+
+std::pair<std::vector<CustomerDetail>, int> SqlTools::Search_CustomerTable_Name(const std::string& name, const int& return_count, const int& offset)
+{
+	return std::pair<std::vector<CustomerDetail>, int>();
+}
+
+bool SqlTools::Change_CustomerTable(const std::vector<CustomerDetail>& changeData)
+{
+	return false;
+}
+
+bool SqlTools::Add_Customer(const CustomerDetail& addData)
+{
+	return false;
+}
+
+bool SqlTools::Delete_Customer(const std::string& id)
+{
+	return false;
+}
+
+const QVector<QPair<QDateTime, double>> SqlTools::Get_Income_Date(const std::string& start_date, const std::string& end_date)
+{
+	return QVector<QPair<QDateTime, double>>();
+}
+
+const QVector<QPair<QDateTime, double>> SqlTools::Get_Expense_Date(const std::string& start_date, const std::string& end_date)
+{
+	return QVector<QPair<QDateTime, double>>();
 }
 
 //std::pair<std::vector<ProductRecord>, int> SqlTools::SearchProductTable(int offset, int limit)
@@ -138,7 +184,7 @@ bool SqlTools::Delete_Customer(const std::string& customerInformation)
 //    std::vector<ProductRecord> records;
 //    int totalCount = 0;
 //
-//    // ÷¥––∑÷“≥≤È—Ø
+//    // ÊâßË°åÂàÜÈ°µÊü•ËØ¢
 //    QSqlQuery query;
 //    query.prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
 //    query.bindValue(":limit", limit);
@@ -158,7 +204,7 @@ bool SqlTools::Delete_Customer(const std::string& customerInformation)
 //        }
 //    }
 //
-//    // ªÒ»°◊‹…Ã∆∑ ˝¡ø
+//    // Ëé∑ÂèñÊÄªÂïÜÂìÅÊï∞Èáè
 //    if (query.exec("SELECT COUNT(*) FROM products")) {
 //        if (query.next()) {
 //            totalCount = query.value(0).toInt();

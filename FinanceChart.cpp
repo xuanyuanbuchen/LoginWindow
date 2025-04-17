@@ -1,4 +1,4 @@
-#include "FinanceChart.h"
+ï»¿#include "FinanceChart.h"
 #include <QtCharts/QChart>
 #include <QRandomGenerator>
 
@@ -25,7 +25,7 @@ void FinanceChart::initChart()
     chart->addSeries(expenseSeries);
     chart->setTitle("Income & Expense Chart");
 
-    // ³õÊ¼»¯×ø±êÖá
+    // åˆå§‹åŒ–åæ ‡è½´
     axisX = new QDateTimeAxis();
     axisX->setTitleText("Date");
     axisX->setFormat("yyyy-MM-dd");
@@ -46,13 +46,13 @@ void FinanceChart::initChart()
         QPainter::SmoothPixmapTransform |
         QPainter::TextAntialiasing);
 
-    // ÔÚ FinanceChart ¹¹Ôìº¯ÊıÖĞÌí¼Ó
+    // åœ¨ FinanceChart æ„é€ å‡½æ•°ä¸­æ·»åŠ 
     incomeSeries->setPointsVisible(true);
     expenseSeries->setPointsVisible(true);
 
-    // ×Ô¶¨ÒåÌáÊ¾¸ñÊ½
-    incomeSeries->setPointLabelsFormat("ÊÕÈë: @yPoint Ôª");
-    expenseSeries->setPointLabelsFormat("Ö§³ö: @yPoint Ôª");
+    // è‡ªå®šä¹‰æç¤ºæ ¼å¼
+    incomeSeries->setPointLabelsFormat("æ”¶å…¥: @yPoint å…ƒ");
+    expenseSeries->setPointLabelsFormat("æ”¯å‡º: @yPoint å…ƒ");
 
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
@@ -62,14 +62,14 @@ void FinanceChart::createDefaultData()
 {
     QDateTime baseDate = QDateTime::currentDateTime().addDays(-7);
 
-    // Éú³É7ÌìµÄÄ¬ÈÏÊı¾İ
+    // ç”Ÿæˆ7å¤©çš„é»˜è®¤æ•°æ®
     for (int i = 0; i < 7; ++i) {
         QDateTime date = baseDate.addDays(i);
         incomeData.append({ date, QRandomGenerator::global()->bounded(5000, 10000) });
         expenseData.append({ date, QRandomGenerator::global()->bounded(3000, 8000) });
     }
 
-    // ÉèÖÃÄ¬ÈÏÊı¾İ
+    // è®¾ç½®é»˜è®¤æ•°æ®
     setIncomeData(incomeData);
     setExpenseData(expenseData);
 }

@@ -1,4 +1,4 @@
-#ifndef FINANCECHART_H
+ï»¿#ifndef FINANCECHART_H
 #define FINANCECHART_H
 
 #include <QtCharts/QChartView>
@@ -20,7 +20,7 @@ class FinanceChart : public QChartView
 public:
     explicit FinanceChart(QWidget* parent = nullptr);
 
-    // Êı¾İ¸üĞÂ½Ó¿Ú
+    // æ•°æ®æ›´æ–°æ¥å£
     void setIncomeData(const QVector<QPair<QDateTime, double>>& data);
     void setExpenseData(const QVector<QPair<QDateTime, double>>& data);
 

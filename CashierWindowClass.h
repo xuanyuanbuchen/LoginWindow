@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QWidget>
 #include "ui_CashierWindowClass.h"
@@ -7,6 +7,7 @@
 #include "ProductWidgetPagination.h"
 #include <vector>
 #include <memory>
+#include "SqlTools.h"
 
 class CashierWindowClass : public QWidget
 {
@@ -17,7 +18,7 @@ public:
     CashierWindowClass(std::string account, std::string password, QWidget* parent = nullptr);
     ~CashierWindowClass();
 signals:
-    void logoutRequested();  // ÍË³öĞÅºÅ
+    void logoutRequested();  // é€€å‡ºä¿¡å·
 
 private:
 	void InitBackground();
@@ -30,11 +31,17 @@ private slots:
     void onNextPageClicked();
     void onPrevPageClicked();
     void onProductClicked();
-    void updateOrderPage();
-    void updateProductPage();  // ¸üĞÂÉÌÆ·Ò³Ãæ
-	void updateSalesInformationPage();  // ¸üĞÂÏúÊÛĞÅÏ¢Ò³Ãæ
-	void onCategoryComboxChanged(int index);
+    void updateProductPage();  // æ›´æ–°å•†å“é¡µé¢
+    void onProductNameLineSearchClicked (const QString& text); 
+	void onProcuctCategoryComboxChanged(int index);
+    void onProcuctPriceComboxChanged(int index);
 
+	void updateSalesInformationPage();  // æ›´æ–°é”€å”®ä¿¡æ¯é¡µé¢
+    void onSalesNameLineSearchClicked(const QString& text);
+    void onSalesCategoryComboxChanged(int index);
+    void onSalesPriceComboxChanged(int index);
+
+    void updateOrderPage();
 private:
     Ui::CashierWindowClass ui;
     std::vector<std::unique_ptr<ProductWidget>> vec_current_produc_widget;
@@ -42,9 +49,12 @@ private:
     int totalPages;
     TableViewPagination* orderPagination;
     ProductWidgetPagination* productWidgetPagination;
-	int productWidgetPageSize = 9; // Ã¿Ò³ÏÔÊ¾µÄÉÌÆ·ÊıÁ¿
+	int productWidgetPageSize = 9; // æ¯é¡µæ˜¾ç¤ºçš„å•†å“æ•°é‡
 	std::string account;
 	std::string password;
+
+	int orderPageSize = 30; // æ¯é¡µæ˜¾ç¤ºçš„è®¢å•æ•°é‡
+	int orderPageCount = 0; // æ€»é¡µæ•°
 
     void loadPage(int page);
     

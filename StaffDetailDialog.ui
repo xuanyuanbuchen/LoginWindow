@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StaffDetailDialog</class>
+ <widget class="QDialog" name="StaffDetailDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>StaffDetailDialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="labelAlignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="formAlignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="StaffIDLabel">
+       <property name="text">
+        <string>员工ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="staffIDEdit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="nameLabel">
+       <property name="text">
+        <string>姓名</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="nameEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="emailLabel">
+       <property name="text">
+        <string>邮箱</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="emailEdit"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="passwordLabel">
+       <property name="text">
+        <string>密码</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="passwordEdit"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="joinDateLabel">
+       <property name="text">
+        <string>入职时间</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="joinDateEdit"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="roleEdit"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="roleLabel">
+       <property name="text">
+        <string>职责</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton 
+{
+    background-color: #2196F3;  
+    color: white;               
+    border: none;              
+    padding: 10px 20px;        
+    border-radius: 15px;       
+    font-size: 14px;           
+}
+
+QPushButton:hover
+{
+    background-color: #1976D2;  
+}
+
+QPushButton:pressed 
+{
+    background-color: #0D47A1;
+    color: #E0E0E0;            
+}</string>
+       </property>
+       <property name="text">
+        <string>取消</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="confirmButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton 
+{
+    background-color: #2196F3;  
+    color: white;               
+    border: none;              
+    padding: 10px 20px;        
+    border-radius: 15px;       
+    font-size: 14px;           
+}
+
+QPushButton:hover
+{
+    background-color: #1976D2;  
+}
+
+QPushButton:pressed 
+{
+    background-color: #0D47A1;
+    color: #E0E0E0;            
+}</string>
+       </property>
+       <property name="text">
+        <string>确定</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

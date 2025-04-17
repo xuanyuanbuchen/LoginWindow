@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include "ui_GoodsWidget.h"
@@ -24,9 +24,10 @@ public:
     void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
     void showGoodsDetailDialog();
     const QString& getID();
+	GoodsDetailDialog* getGoodsDetailDialog() { return goodsDetailDialog; } // 获取商品详情对话框指针
 
 signals:
-    void clicked();  // ����ź�
+    void clicked();  // 点击信号
 
 protected:
     void mousePressEvent(QMouseEvent* event) override;

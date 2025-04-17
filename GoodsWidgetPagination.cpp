@@ -1,4 +1,4 @@
-#include "GoodsWidgetPagination.h"
+ï»¿#include "GoodsWidgetPagination.h"
 #include <QGridLayout>
 
 GoodsWidgetPagination::GoodsWidgetPagination(int kinds_count, int pageSize)
@@ -16,14 +16,14 @@ void GoodsWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const std
 {
     if (!gridLayout)
     {
-        return; // Èç¹û²¼¾ÖÎª¿Õ£¬Ö±½Ó·µ»Ø
+        return; // å¦‚æœå¸ƒå±€ä¸ºç©ºï¼Œç›´æ¥è¿”å›
     }
 
-    // »ñÈ¡µ±Ç°Ò³µÄÉÌÆ·Êı¾İ
+    // è·å–å½“å‰é¡µçš„å•†å“æ•°æ®
     int start = currentPage * pageSize;
     std::vector<GoodsWidget*> widgets = fetchPageData(start, pageSize);
 
-    // Çå¿Õµ±Ç°²¼¾Ö
+    // æ¸…ç©ºå½“å‰å¸ƒå±€
     while (QLayoutItem* item = gridLayout->takeAt(0))
     {
         if (item->widget())
@@ -33,13 +33,13 @@ void GoodsWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const std
         delete item;
     }
 
-    // Ìí¼Óµ±Ç°Ò³µÄÉÌÆ·
+    // æ·»åŠ å½“å‰é¡µçš„å•†å“
     int row = 0;
     int col = 0;
     for (GoodsWidget* widget : widgets) {
         gridLayout->addWidget(widget, row, col);
         widget->setVisible(true);
-        if (++col == 3) { // Ã¿ĞĞ3ÁĞ
+        if (++col == 3) { // æ¯è¡Œ3åˆ—
             col = 0;
             ++row;
         }
@@ -50,7 +50,7 @@ void GoodsWidgetPagination::updatePagination(int kinds_count, int pageSize)
 {
     this->pageSize = pageSize;
     this->totalPage = (kinds_count + pageSize - 1) / pageSize;
-    this->currentPage = qBound(0, this->currentPage, this->totalPage - 1); // È·±£µ±Ç°Ò³ÔÚÓĞĞ§·¶Î§ÄÚ
+    this->currentPage = qBound(0, this->currentPage, this->totalPage - 1); // ç¡®ä¿å½“å‰é¡µåœ¨æœ‰æ•ˆèŒƒå›´å†…
 }
 
 

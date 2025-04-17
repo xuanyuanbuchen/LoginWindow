@@ -1,4 +1,4 @@
-#include "ProductWidgetPagination.h"
+ï»¿#include "ProductWidgetPagination.h"
 #include <QGridLayout>
 
 ProductWidgetPagination::ProductWidgetPagination(int kinds_count, int pageSize)
@@ -26,14 +26,14 @@ void ProductWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const s
 {
     if (!gridLayout) 
     {
-        return; // Èç¹û²¼¾ÖÎª¿Õ£¬Ö±½Ó·µ»Ø
+        return; // å¦‚æœå¸ƒå±€ä¸ºç©ºï¼Œç›´æ¥è¿”å›
     }
 
-    // »ñÈ¡µ±Ç°Ò³µÄÉÌÆ·Êı¾İ
+    // è·å–å½“å‰é¡µçš„å•†å“æ•°æ®
     int start = currentPage * pageSize;
     std::vector<ProductWidget*> widgets = fetchPageData(start, pageSize);
 
-    // Çå¿Õµ±Ç°²¼¾Ö
+    // æ¸…ç©ºå½“å‰å¸ƒå±€
     while (QLayoutItem* item = gridLayout->takeAt(0)) 
     {
         if (item->widget()) 
@@ -43,13 +43,13 @@ void ProductWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const s
         delete item;
     }
 
-    // Ìí¼Óµ±Ç°Ò³µÄÉÌÆ·
+    // æ·»åŠ å½“å‰é¡µçš„å•†å“
     int row = 0;
     int col = 0;
     for (ProductWidget* widget : widgets) {
         gridLayout->addWidget(widget, row, col);
         widget->setVisible(true);
-        if (++col == 3) { // Ã¿ĞĞ3ÁĞ
+        if (++col == 3) { // æ¯è¡Œ3åˆ—
             col = 0;
             ++row;
         }

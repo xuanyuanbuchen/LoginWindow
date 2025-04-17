@@ -1,25 +1,28 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QDialog>
 #include "ui_CustomerDetailDialog.h"
 
 class CustomerDetailDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    CustomerDetailDialog(QWidget* parent = nullptr);
-    ~CustomerDetailDialog();
+	CustomerDetailDialog(QWidget* parent = nullptr);
+	CustomerDetailDialog(QWidget* parent, const QString& id, const QString& birthDate, const QString& logDate,
+		const QString& email, const QString& password, const QString& description,
+		const QString& avatarPath); // æ–°å¢æ„é€ å‡½æ•°
+	~CustomerDetailDialog();
 
 signals:
-    void dataAccepted(const QString& id, const QString& birthDate, const QString& logDate, const QString& email, const QString& password, const QString& description, const QString& avatarPath); // ĞÂÔöÍ·ÏñÂ·¾¶²ÎÊı
+	void dataAccepted(const QString& id, const QString& birthDate, const QString& logDate, const QString& email, const QString& password, const QString& description, const QString& avatarPath); // æ–°å¢å¤´åƒè·¯å¾„å‚æ•°
 
 private slots:
-    void onAcceptBtnClicked(); // ½ÓÊÜ°´Å¥²Ûº¯Êı
-    void onCancelBtnClicked(); // È¡Ïû°´Å¥²Ûº¯Êı
-    void onCustomerPictureDoubleClicked(); // Ë«»÷Í·Ïñ²Ûº¯Êı
+	void onAcceptBtnClicked(); // æ¥å—æŒ‰é’®æ§½å‡½æ•°
+	void onCancelBtnClicked(); // å–æ¶ˆæŒ‰é’®æ§½å‡½æ•°
+	void onCustomerPictureDoubleClicked(); // åŒå‡»å¤´åƒæ§½å‡½æ•°
 
 private:
-    Ui::CustomerDetailDialog ui;
-    QString avatarPath; // ±£´æÍ·ÏñÂ·¾¶
+	Ui::CustomerDetailDialog ui;
+	QString avatarPath; // ä¿å­˜å¤´åƒè·¯å¾„
 };

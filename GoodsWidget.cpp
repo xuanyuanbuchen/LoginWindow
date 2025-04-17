@@ -1,4 +1,4 @@
-#include "GoodsWidget.h"
+﻿#include "GoodsWidget.h"
 
 GoodsWidget::GoodsWidget(QWidget* parent, const QString& path, const QString& ID, const QString& name, const QString& price, const QString& category, const QString& count, const QString& description)
 {
@@ -11,9 +11,7 @@ GoodsWidget::GoodsWidget(QWidget* parent, const QString& path, const QString& ID
 	goodsDetailDialog = new GoodsDetailDialog(this);
 	connect(goodsDetailDialog, &GoodsDetailDialog::pictureChanged, this, &GoodsWidget::onPictureChanged);
 	goodsDetailDialog->hide();
-	QPixmap image(path);
-	ui.goodsPicture->setPixmap(image.scaled(200, 200, Qt::KeepAspectRatio));
-	goodsDetailDialog->setGoodsDetail(ID, name, price, category, image, description, 0);
+	goodsDetailDialog->setGoodsDetail(ID, name, price, category, path, description, 0);
 }
 
 GoodsWidget::~GoodsWidget()
