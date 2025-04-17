@@ -2,6 +2,7 @@
 #include <qstandarditemmodel.h>
 #include <qtimezone.h>
 #include "SqlTools.h"
+#include <qmessagebox.h>
 
 CashierWindowClass::CashierWindowClass(QWidget *parent)
     : QWidget(parent), currentPage(0), totalPages(0)
@@ -149,6 +150,12 @@ void CashierWindowClass::InitOrderTableView()
     ui.tableView->horizontalHeader()->setStretchLastSection(true); // 最后一列拉伸
     ui.tableView->setStyleSheet("QTableView { border: 1px solid #ddd; }");
 
+    // 启用表头排序功能
+    ui.tableView->setSortingEnabled(true);
+
+    // 连接表头点击信号到槽函数
+    connect(ui.tableView->horizontalHeader(), &QHeaderView::sectionClicked, this, &CashierWindowClass::onOrderHeaderClicked);
+
     // 初始化订单分页管理器
     orderPagination = new TableViewPagination(30); // 每页显示 30 条记录
 
@@ -191,7 +198,12 @@ void CashierWindowClass::updateOrderPage()
         ui.salesComboBoxPrice->currentText().toStdString(),
         ui.salesNameLine->text().toStdString(),
         limit,
-        offset
+        offset,
+        orderReverseFlags[0], // reverse_order_ID
+        orderReverseFlags[1], // reverse_customer_ID
+        orderReverseFlags[2], // reverse_date
+        orderReverseFlags[3], // reverse_price
+        orderReverseFlags[4]  // reverse_state
     );
 
     // 清空表格模型
@@ -211,8 +223,23 @@ void CashierWindowClass::updateOrderPage()
         // 添加操作按钮
         QPushButton* btn = new QPushButton("同意", this);
         connect(btn, &QPushButton::clicked, [=]() {
-            btn->setText("操作完成");
-            btn->setEnabled(false);
+            // 创建修改后的订单数据
+            OrderDetail modifiedOrder = record;
+            modifiedOrder.state = "已完成";
+
+            // 调用 SqlTools 提交修改
+            bool success = SqlTools::Change_OrderTable_State({ modifiedOrder });
+
+            if (success) {
+                // 提交成功，更新按钮状态和表格
+                btn->setText("操作完成");
+                btn->setEnabled(false);
+                model->setData(model->index(model->rowCount() - 1, 4), "已完成");
+            }
+            else {
+                // 提交失败，显示错误提示
+                QMessageBox::warning(this, "失败", "订单状态更新失败，请重试！");
+            }
             });
 
         // 将按钮放入表格
@@ -234,6 +261,24 @@ void CashierWindowClass::updateOrderPage()
     ui.preOrderPageBtn->setEnabled(orderPagination->getCurrentPage() > 0);
     ui.nextOrderPageBtn->setEnabled(orderPagination->getCurrentPage() < orderPagination->pageCount(totalCount) - 1);
 }
+
+void CashierWindowClass::onOrderHeaderClicked(int column)
+{
+    // 重置其他列的排序状态
+    for (int i = 0; i < 5; ++i) {
+        if (i != column) {
+            orderReverseFlags[i] = false;
+        }
+    }
+
+    // 切换当前列的排序状态
+    orderReverseFlags[column] = !orderReverseFlags[column];
+    currentOrderSortColumn = column;
+
+    // 更新订单表格数据
+    updateOrderPage();
+}
+
 
 
 void CashierWindowClass::loadPage(int page)

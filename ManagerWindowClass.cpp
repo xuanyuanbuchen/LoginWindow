@@ -193,23 +193,30 @@ void ManagerWindowClass::InitManagerGoodsPage()
 
 void ManagerWindowClass::InitProcessSalesPage()
 {
-    //设置销售记录展示和处理表格
+    // 设置销售记录展示和处理表格
     QStandardItemModel* salemodel = new QStandardItemModel(this);
-    salemodel->setHorizontalHeaderLabels({ "订单ID","顾客ID","订单时间","总金额","订单状态","操作" });
+    salemodel->setHorizontalHeaderLabels({ "订单ID", "顾客ID", "订单时间", "总金额", "订单状态", "操作" });
 
     ui.saleTableView->setModel(salemodel);
     ui.saleTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui.saleTableView->setEditTriggers(QAbstractItemView::DoubleClicked);
+    ui.saleTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui.saleTableView->verticalHeader()->setVisible(false); // 隐藏行号
     ui.saleTableView->horizontalHeader()->setStretchLastSection(true); // 最后一列拉伸
     ui.saleTableView->setStyleSheet("QTableView { border: 1px solid #ddd; }");
-   
+
+    // 启用表头排序功能
+    ui.saleTableView->setSortingEnabled(true);
+
+    // 连接表头点击信号到槽函数
+    connect(ui.saleTableView->horizontalHeader(), &QHeaderView::sectionClicked, this, &ManagerWindowClass::onSaleHeaderClicked);
+
     // 初始化订单分页管理器
     salePagination = new TableViewPagination(30); // 每页显示 30 条记录
 
     // 更新数据
     updateSalePage();
 }
+
 
 void ManagerWindowClass::InitProcessStockInfoPage()
 {
@@ -223,6 +230,12 @@ void ManagerWindowClass::InitProcessStockInfoPage()
     ui.stockTableView->verticalHeader()->setVisible(false); // 隐藏行号
     ui.stockTableView->horizontalHeader()->setStretchLastSection(true); // 最后一列拉伸
     ui.stockTableView->setStyleSheet("QTableView { border: 1px solid #ddd; }");
+
+    // 启用表头排序功能
+    ui.stockTableView->setSortingEnabled(true);
+
+    // 连接表头点击信号到槽函数
+    connect(ui.stockTableView->horizontalHeader(), &QHeaderView::sectionClicked, this, &ManagerWindowClass::onStockHeaderClicked);
 
     // 初始化进货记录分页管理器
     stockPagination = new TableViewPagination(30); // 每页显示 30 条记录
@@ -244,6 +257,13 @@ void ManagerWindowClass::InitManagerStaffPage()
     ui.staffTableView->verticalHeader()->setVisible(false); // 隐藏行号
     ui.staffTableView->horizontalHeader()->setStretchLastSection(true); // 最后一列拉伸
     ui.staffTableView->setStyleSheet("QTableView { border: 1px solid #ddd; }");
+
+    // 启用表头排序功能
+    ui.staffTableView->setSortingEnabled(true);
+
+    // 连接表头点击信号到槽函数
+    connect(ui.staffTableView->horizontalHeader(), &QHeaderView::sectionClicked, this, &ManagerWindowClass::onStaffHeaderClicked);
+
 
     // 初始化员工分页管理器
     staffPagination = new TableViewPagination(staffPageSize);
@@ -267,6 +287,13 @@ void ManagerWindowClass::InitManagerCustomPage()
     ui.customerTableView->verticalHeader()->setVisible(false); // 隐藏行号
     ui.customerTableView->horizontalHeader()->setStretchLastSection(true); // 最后一列拉伸
     ui.customerTableView->setStyleSheet("QTableView { border: 1px solid #ddd; }");
+
+    // 启用表头排序功能
+    ui.customerTableView->setSortingEnabled(true);
+
+    // 连接表头点击信号到槽函数
+    connect(ui.customerTableView->horizontalHeader(), &QHeaderView::sectionClicked, this, &ManagerWindowClass::onCustomerHeaderClicked);
+
 
     // 初始化顾客分页管理器
     customerPagination = new TableViewPagination(customerPageSize);
@@ -319,7 +346,12 @@ void ManagerWindowClass::updateSalePage()
         ui.saleComboBoxPrice->currentText().toStdString(),
         ui.saleNameLine->text().toStdString(),
         limit,
-        offset
+        offset,
+        saleReverseFlags[0], // reverse_order_ID
+        saleReverseFlags[1], // reverse_customer_ID
+        saleReverseFlags[2], // reverse_date
+        saleReverseFlags[3], // reverse_price
+        saleReverseFlags[4]  // reverse_state
     );
 
     // 清空表格模型
@@ -539,7 +571,11 @@ void ManagerWindowClass::updateStockPage()
         ui.stockComboBoxPrice->currentText().toStdString(),
         ui.stockNameLine->text().toStdString(),
         limit,
-        offset
+        offset,
+        stockReverseFlags[0], // reverse_goods_ID
+        stockReverseFlags[1], // reverse_stock_ID
+        stockReverseFlags[2], // reverse_count
+        stockReverseFlags[3]  // reverse_date
     );
 
     // 清空表格模型
@@ -719,7 +755,13 @@ void ManagerWindowClass::updateStaffPage()
         ui.staffComboBoxRole->currentText().toStdString(),
         ui.staffNameLine->text().toStdString(),
         limit,
-        offset
+        offset,
+        staffReverseFlags[0], // reverse_staff_ID
+        staffReverseFlags[1], // reverse_name
+        staffReverseFlags[2], // reverse_email
+        staffReverseFlags[3], // reverse_password
+        staffReverseFlags[4], // reverse_join_date
+        staffReverseFlags[5]  // reverse_role
     );
 
     // 清空表格模型
@@ -1206,6 +1248,65 @@ void ManagerWindowClass::onDateRangeChanged()
     }
 }
 
+void ManagerWindowClass::onSaleHeaderClicked(int column)
+{
+    // 重置其他列的排序状态
+    for (int i = 0; i < 5; ++i) {
+        if (i != column) {
+            saleReverseFlags[i] = false;
+        }
+    }
+
+    // 切换当前列的排序状态
+    saleReverseFlags[column] = !saleReverseFlags[column];
+    currentSaleSortColumn = column;
+
+    // 更新销售表格数据
+    updateSalePage();
+}
+
+void ManagerWindowClass::onStockHeaderClicked(int column)
+{
+    for (int i = 0; i < 4; ++i) {
+        if (i != column) {
+            stockReverseFlags[i] = false;
+        }
+    }
+
+    stockReverseFlags[column] = !stockReverseFlags[column];
+    currentStockSortColumn = column;
+
+    updateStockPage();
+}
+
+void ManagerWindowClass::onStaffHeaderClicked(int column)
+{
+    for (int i = 0; i < 6; ++i) {
+        if (i != column) {
+            staffReverseFlags[i] = false;
+        }
+    }
+
+    staffReverseFlags[column] = !staffReverseFlags[column];
+    currentStaffSortColumn = column;
+
+    updateStaffPage();
+}
+
+void ManagerWindowClass::onCustomerHeaderClicked(int column)
+{
+    for (int i = 0; i < 7; ++i) {
+        if (i != column) {
+            customerReverseFlags[i] = false;
+        }
+    }
+
+    customerReverseFlags[column] = !customerReverseFlags[column];
+    currentCustomerSortColumn = column;
+
+    updateCustomerPage();
+}
+
 
 
 void ManagerWindowClass::onCustomerDataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles)
@@ -1328,7 +1429,14 @@ void ManagerWindowClass::updateCustomerPage()
     auto [records, totalCount] = SqlTools::Search_CustomerTable_Name(
         ui.customerNameLine->text().toStdString(),
         limit,
-        offset
+        offset,
+        customerReverseFlags[0], // reverse_profile_picture
+        customerReverseFlags[1], // reverse_customer_ID
+        customerReverseFlags[2], // reverse_birth_date
+        customerReverseFlags[3], // reverse_note
+        customerReverseFlags[4], // reverse_register_date
+        customerReverseFlags[5], // reverse_email
+        customerReverseFlags[6]  // reverse_password
     );
 
     // 清空表格模型

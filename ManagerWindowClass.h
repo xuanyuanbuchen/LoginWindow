@@ -94,7 +94,11 @@ private slots:
     //财务管理
     void onDateRangeChanged();
 
-    
+    void onSaleHeaderClicked(int column);
+    void onStockHeaderClicked(int column);
+    void onStaffHeaderClicked(int column);
+    void onCustomerHeaderClicked(int column);
+
 
 private:
     Ui::ManagerWindowClass ui;
@@ -125,5 +129,22 @@ private:
 	int staffPageCount = 0; // 员工数据总页数
 	int customerPageSize = 30; // 每页显示的客户数据数量
 	int customerPageCount = 0; // 客户数据总页数
+
+    // 标记销售表格的列排序状态
+    bool saleReverseFlags[5] = { false, false, false, false, false }; // 对应销售表格的 5 列
+    int currentSaleSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
+    // 标记进货表格的列排序状态
+    bool stockReverseFlags[4] = { false, false, false, false }; // 对应进货表格的 4 列
+    int currentStockSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
+    // 标记员工表格的列排序状态
+    bool staffReverseFlags[6] = { false, false, false, false, false, false }; // 对应员工表格的 6 列
+    int currentStaffSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
+    // 标记顾客表格的列排序状态
+    bool customerReverseFlags[7] = { false, false, false, false, false, false, false }; // 对应顾客表格的 7 列
+    int currentCustomerSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
 
 };

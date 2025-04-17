@@ -18,9 +18,9 @@ struct ProductDetail
 
 	ProductDetail
 	(
-		std::string path = NULL, std::string ID = NULL, std::string name = NULL,
-		std::string price = NULL, std::string category = NULL, std::string count = NULL,
-		std::string description = NULL
+		std::string path = "", std::string ID = "", std::string name = "",
+		std::string price = "", std::string category = "", std::string count = "",
+		std::string description = ""
 	)
 		: path(std::move(path)), ID(std::move(ID)), name(std::move(name)),
 		price(std::move(price)), category(std::move(category)), count(std::move(count)),
@@ -38,7 +38,8 @@ struct OrderDetail
 	std::string price;
 	std::string state;
 
-	OrderDetail(
+	OrderDetail
+	(
 		std::string order_ID = "",
 		std::string customer_ID = "",
 		std::string date = "",
@@ -62,7 +63,7 @@ struct SalesDetail
 
 	SalesDetail
 	(
-		std::string max_sales_amount = NULL, std::string max_sales_count = NULL,
+		std::string max_sales_amount = "", std::string max_sales_count = "",
 		ProductDetail product_detail = ProductDetail()
 	)
 		: max_sales_amount(std::move(max_sales_amount)), max_sales_count(std::move(max_sales_count)),
@@ -80,8 +81,8 @@ struct SaleTableLine
 	std::string state;
 	SaleTableLine
 	(
-		std::string order_ID = NULL, std::string customer_ID = NULL, std::string date = NULL,
-		std::string price = NULL, std::string state = NULL
+		std::string order_ID = "", std::string customer_ID = "", std::string date = "",
+		std::string price = "", std::string state = ""
 	)
 		: order_ID(std::move(order_ID)), customer_ID(std::move(customer_ID)), date(std::move(date)),
 		price(std::move(price)), state(std::move(state))
@@ -203,6 +204,7 @@ public:
 		const std::string& name = " ",
 		const int& return_count = 9,
 		const int& offset = 0
+
 	);
 	static std::pair<std::vector<OrderDetail>, int> SearchOrderTable_State_Price_ID
 	(
@@ -210,8 +212,14 @@ public:
 		const std::string& price = " ",
 		const std::string& id = " ",
 		const int& return_count = 9,
-		const int& offset = 0
+		const int& offset = 0,
+		bool reverse_order_ID = false,
+		bool reverse_customer_ID = false,
+		bool reverse_date = false,
+		bool reverse_price = false,
+		bool reverse_state = false
 	);
+	static bool Change_OrderTable_State(const std::vector<OrderDetail>& changeData);
 	static SalesDetail Search_Sale_Information(const std::string& account, const std::string& password);
 	//管理员界面SQL——库存管理
 	//static std::pair<std::vector<ProductDetail>, int> SearchProductTable_Kind_Price_Name
@@ -235,7 +243,13 @@ public:
 		const std::string& price = " ",
 		const std::string& id = " ",
 		const int& return_count = 9,
-		const int& offset = 0
+		const int& offset = 0,
+		bool reverse_order_ID = false,
+		bool reverse_customer_ID = false,
+		bool reverse_date = false,
+		bool reverse_price = false,
+		bool reverse_state = false
+
 	);
 	static bool Change_SaleTable(const std::vector<SaleTableLine>& changeData);
 	static bool Add_Sale(const SaleTableLine& addData);
@@ -247,7 +261,12 @@ public:
 		const std::string& price = " ",
 		const std::string& id = " ",
 		const int& return_count = 9,
-		const int& offset = 0
+		const int& offset = 0,
+		bool reverse_goods_ID = false,
+		bool reverse_stock_ID = false,
+		bool reverse_count = false,
+		bool reverse_date = false
+
 	);
 	static bool Change_StockTable_State(const std::vector<StockDetail>& changeData);
 	static bool Add_Stock(const StockDetail& addData);
@@ -259,7 +278,14 @@ public:
 		const std::string& role = " ",
 		const std::string& name = " ",
 		const int& return_count = 9,
-		const int& offset = 0
+		const int& offset = 0,
+		bool reverse_staff_ID = false,
+		bool reverse_name = false,
+		bool reverse_email = false,
+		bool reverse_password = false,
+		bool reverse_join_date = false,
+		bool reverse_role = false
+
 	);
 
 	static bool Change_StaffTable(const std::vector<StaffDetail>& changeData);
@@ -271,7 +297,14 @@ public:
 	(
 		const std::string& name = " ",
 		const int& return_count = 9,
-		const int& offset = 0
+		const int& offset = 0,
+		bool reverse_profile_picture = false,
+		bool reverse_customer_ID = false,
+		bool reverse_birth_date = false,
+		bool reverse_note = false,
+		bool reverse_register_date = false,
+		bool reverse_email = false,
+		bool reverse_password = false
 	);
 	static bool Change_CustomerTable(const std::vector<CustomerDetail>& changeData);
 	static bool Add_Customer(const CustomerDetail& addData);

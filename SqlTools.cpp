@@ -55,10 +55,20 @@ std::pair<std::vector<OrderDetail>, int> SqlTools::SearchOrderTable_State_Price_
 	const std::string& price,
 	const std::string& id,
 	const int& return_count,
-	const int& offset
+	const int& offset,
+	bool reverse_order_ID,
+	bool reverse_customer_ID,
+	bool reverse_date,
+	bool reverse_price,
+	bool reverse_state
 )
 {
 	return std::pair<std::vector<OrderDetail>, int>();
+}
+
+bool SqlTools::Change_OrderTable_State(const std::vector<OrderDetail>& changeData)
+{
+	return false;
 }
 
 SalesDetail SqlTools::Search_Sale_Information(const std::string& account, const std::string& password)
@@ -81,14 +91,7 @@ bool SqlTools::Delete_Goods(const std::string& id)
 	return false;
 }
 
-std::pair<std::vector<SaleTableLine>, int> SqlTools::Search_SaleTable_State_Price_ID
-(
-	const std::string& kind, 
-	const std::string& price, 
-	const std::string& id,
-	const int& return_count,
-	const int& offset
-)
+std::pair<std::vector<SaleTableLine>, int> SqlTools::Search_SaleTable_State_Price_ID(const std::string& kind, const std::string& price, const std::string& id, const int& return_count, const int& offset, bool reverse_order_ID, bool reverse_customer_ID, bool reverse_date, bool reverse_price, bool reverse_state)
 {
 	return std::pair<std::vector<SaleTableLine>, int>();
 }
@@ -108,7 +111,7 @@ bool SqlTools::Delete_Sale(const std::string& id)
 	return false;
 }
 
-std::pair<std::vector<StockDetail>, int> SqlTools::Search_StockTable_State_Price_ID(const std::string& kind, const std::string& price, const std::string& id, const int& return_count, const int& offset)
+std::pair<std::vector<StockDetail>, int> SqlTools::Search_StockTable_State_Price_ID(const std::string& kind, const std::string& price, const std::string& id, const int& return_count, const int& offset, bool reverse_goods_ID, bool reverse_stock_ID, bool reverse_count, bool reverse_date)
 {
 	return std::pair<std::vector<StockDetail>, int>();
 }
@@ -128,8 +131,7 @@ bool SqlTools::Delete_Stock(const std::string& id)
 	return false;
 }
 
-
-std::pair<std::vector<StaffDetail>, int> SqlTools::Search_StaffTable_Role_Name(const std::string& role, const std::string& name, const int& return_count, const int& offset)
+std::pair<std::vector<StaffDetail>, int> SqlTools::Search_StaffTable_Role_Name(const std::string& role, const std::string& name, const int& return_count, const int& offset, bool reverse_staff_ID, bool reverse_name, bool reverse_email, bool reverse_password, bool reverse_join_date, bool reverse_role)
 {
 	return std::pair<std::vector<StaffDetail>, int>();
 }
@@ -149,7 +151,7 @@ bool SqlTools::Delete_Staff(const std::string& id)
 	return false;
 }
 
-std::pair<std::vector<CustomerDetail>, int> SqlTools::Search_CustomerTable_Name(const std::string& name, const int& return_count, const int& offset)
+std::pair<std::vector<CustomerDetail>, int> SqlTools::Search_CustomerTable_Name(const std::string& name, const int& return_count, const int& offset, bool reverse_profile_picture, bool reverse_customer_ID, bool reverse_birth_date, bool reverse_note, bool reverse_register_date, bool reverse_email, bool reverse_password)
 {
 	return std::pair<std::vector<CustomerDetail>, int>();
 }

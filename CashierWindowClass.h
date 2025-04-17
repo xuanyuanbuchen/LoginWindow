@@ -42,6 +42,8 @@ private slots:
     void onSalesPriceComboxChanged(int index);
 
     void updateOrderPage();
+
+    void onOrderHeaderClicked(int column);
 private:
     Ui::CashierWindowClass ui;
     std::vector<std::unique_ptr<ProductWidget>> vec_current_produc_widget;
@@ -57,5 +59,13 @@ private:
 	int orderPageCount = 0; // 总页数
 
     void loadPage(int page);
+    // 标记订单表格的列排序状态
+    bool orderReverseFlags[5] = { false, false, false, false, false }; // 对应订单表格的 5 列
+    int currentOrderSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
+    // 标记商品表格的列排序状态
+    bool productReverseFlags[7] = { false, false, false, false, false, false, false }; // 对应商品表格的 7 列
+    int currentProductSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
     
 };
