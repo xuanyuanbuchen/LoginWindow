@@ -23,54 +23,54 @@
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="orderIDLabel">
+      <widget class="QLabel" name="saleIDLabel">
+       <property name="text">
+        <string>销售记录ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="saleIDEdit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="orderIDLabel_2">
        <property name="text">
         <string>订单ID</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="orderIDEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="customerIDLabel">
-       <property name="text">
-        <string>顾客ID</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="customerIDEdit"/>
+      <widget class="QLineEdit" name="oderIDEdit"/>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="dateLabel">
+      <widget class="QLabel" name="goodsIDLabel">
        <property name="text">
-        <string>订单时间</string>
+        <string>商品ID</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="dateEdit"/>
+      <widget class="QLineEdit" name="goodsIDEdit"/>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="priceLabel">
+      <widget class="QLabel" name="countLabel">
        <property name="text">
-        <string>总金额</string>
+        <string>销售数量</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="priceEdit"/>
+      <widget class="QLineEdit" name="dateEdit"/>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="stateLabel">
+      <widget class="QLabel" name="dateLabel_2">
        <property name="text">
-        <string>订单状态</string>
+        <string>销售时间</string>
        </property>
       </widget>
      </item>
      <item row="4" column="1">
-      <widget class="QLineEdit" name="stateEdit"/>
+      <widget class="QLineEdit" name="dateEdit_2"/>
      </item>
     </layout>
    </item>

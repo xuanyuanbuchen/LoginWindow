@@ -91,7 +91,7 @@ bool SqlTools::Delete_Goods(const std::string& id)
 	return false;
 }
 
-std::pair<std::vector<SaleTableLine>, int> SqlTools::Search_SaleTable_State_Price_ID(const std::string& kind, const std::string& price, const std::string& id, const int& return_count, const int& offset, bool reverse_order_ID, bool reverse_customer_ID, bool reverse_date, bool reverse_price, bool reverse_state)
+std::pair<std::vector<SaleTableLine>, int> SqlTools::Search_SaleTable_State_Price_ID(const std::string& kind, const std::string& price, const std::string& id, const int& return_count, const int& offset, bool reverse_sale_ID, bool reverse_order_ID, bool reverse_goods_ID, bool reverse_count, bool reverse_date)
 {
 	return std::pair<std::vector<SaleTableLine>, int>();
 }

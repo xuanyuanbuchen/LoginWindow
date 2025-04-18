@@ -195,7 +195,7 @@ void ManagerWindowClass::InitProcessSalesPage()
 {
     // 设置销售记录展示和处理表格
     QStandardItemModel* salemodel = new QStandardItemModel(this);
-    salemodel->setHorizontalHeaderLabels({ "订单ID", "顾客ID", "订单时间", "总金额", "订单状态", "操作" });
+    salemodel->setHorizontalHeaderLabels({ "销售记录ID", "订单ID", "商品ID", "销售数量", "销售时间"});
 
     ui.saleTableView->setModel(salemodel);
     ui.saleTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -362,48 +362,12 @@ void ManagerWindowClass::updateSalePage()
     for (int row = 0; row < records.size(); ++row) {
         const auto& record = records[row];
         QList<QStandardItem*> rowItems;
+        rowItems << new QStandardItem(QString::fromStdString(record.sale_ID));
         rowItems << new QStandardItem(QString::fromStdString(record.order_ID));
-        rowItems << new QStandardItem(QString::fromStdString(record.customer_ID));
+        rowItems << new QStandardItem(QString::fromStdString(record.goods_ID));
+        rowItems << new QStandardItem(QString::fromStdString(record.count));
         rowItems << new QStandardItem(QString::fromStdString(record.date));
-        rowItems << new QStandardItem(QString::fromStdString(record.price));
-        rowItems << new QStandardItem(QString::fromStdString(record.state));
         model->appendRow(rowItems);
-
-        // 根据 state 设置操作按钮
-        QWidget* widget = new QWidget;
-        QHBoxLayout* layout = new QHBoxLayout(widget);
-        QPushButton* btn = nullptr;
-
-        if (record.state == "待处理") {
-            btn = new QPushButton("同意", this);
-            connect(btn, &QPushButton::clicked, [=]() {
-                // 修改 state 为 "已发货"
-                model->setData(model->index(row, 4), "已发货");
-                btn->setText("操作完成");
-                btn->setEnabled(false);
-
-                // 将修改记录存储到 vec_changed_sale_data
-                SaleTableLine* sale = new SaleTableLine();
-                sale->order_ID = record.order_ID;
-                sale->customer_ID = record.customer_ID;
-                sale->date = record.date;
-                sale->price = record.price;
-                sale->state = "已发货";
-                vec_changed_sale_data.push_back(std::unique_ptr<SaleTableLine>(sale));
-                });
-        }
-        else if (record.state == "已完成" || record.state == "已发货") {
-            btn = new QPushButton("操作完成", this);
-            btn->setEnabled(false); // 按钮不可点击
-        }
-
-        if (btn) {
-            layout->addWidget(btn);
-            layout->setAlignment(Qt::AlignCenter);
-            layout->setContentsMargins(0, 0, 0, 0);
-            widget->setLayout(layout);
-            ui.saleTableView->setIndexWidget(model->index(row, 5), widget);
-        }
     }
 
     // 更新分页标签和按钮状态
@@ -454,11 +418,11 @@ void ManagerWindowClass::onSaleDataChanged(const QModelIndex& topLeft, const QMo
     for (int row = topLeft.row(); row <= bottomRight.row(); ++row)
     {
         SaleTableLine* sale = new SaleTableLine();
-        sale->order_ID = model->data(model->index(row, 0)).toString().toStdString();
-        sale->customer_ID = model->data(model->index(row, 1)).toString().toStdString();
-        sale->date = model->data(model->index(row, 2)).toString().toStdString();
-        sale->price = model->data(model->index(row, 3)).toString().toStdString();
-        sale->state = model->data(model->index(row, 4)).toString().toStdString();
+        sale->sale_ID = model->data(model->index(row, 0)).toString().toStdString();
+        sale->order_ID = model->data(model->index(row, 1)).toString().toStdString();
+        sale->goods_ID = model->data(model->index(row, 2)).toString().toStdString();
+        sale->count = model->data(model->index(row, 3)).toString().toStdString();
+        sale->date = model->data(model->index(row, 4)).toString().toStdString();
 
         // 将修改记录存储到 vec_changed_sale_data
         vec_changed_sale_data.push_back(std::unique_ptr<SaleTableLine>(sale));

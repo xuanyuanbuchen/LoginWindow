@@ -74,18 +74,18 @@ struct SalesDetail
 
 struct SaleTableLine
 {
+	std::string sale_ID;
 	std::string order_ID;
-	std::string customer_ID;
+	std::string goods_ID;
+	std::string count;
 	std::string date;
-	std::string price;
-	std::string state;
 	SaleTableLine
 	(
-		std::string order_ID = "", std::string customer_ID = "", std::string date = "",
-		std::string price = "", std::string state = ""
+		std::string sale_ID = "", std::string order_ID = "", std::string goods_ID = "",
+		std::string count = "", std::string date = ""
 	)
-		: order_ID(std::move(order_ID)), customer_ID(std::move(customer_ID)), date(std::move(date)),
-		price(std::move(price)), state(std::move(state))
+		: sale_ID(std::move(sale_ID)), order_ID(std::move(order_ID)), goods_ID(std::move(goods_ID)),
+		count(std::move(count)), date(std::move(date))
 	{
 	}
 };
@@ -244,11 +244,11 @@ public:
 		const std::string& id = " ",
 		const int& return_count = 9,
 		const int& offset = 0,
+		bool reverse_sale_ID = false,
 		bool reverse_order_ID = false,
-		bool reverse_customer_ID = false,
-		bool reverse_date = false,
-		bool reverse_price = false,
-		bool reverse_state = false
+		bool reverse_goods_ID = false,
+		bool reverse_count = false,
+		bool reverse_date = false
 
 	);
 	static bool Change_SaleTable(const std::vector<SaleTableLine>& changeData);
