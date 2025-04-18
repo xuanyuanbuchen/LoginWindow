@@ -453,11 +453,11 @@ void ManagerWindowClass::onAddSaleClicked()
 
     // 连接确定按钮的信号槽
     connect(dialog.getUi()->confirmButton, &QPushButton::clicked, [&]() {
-        QString orderID = dialog.getUi()->orderIDEdit->text().trimmed();
-        QString customerID = dialog.getUi()->customerIDEdit->text().trimmed();
-        QString date = dialog.getUi()->dateEdit->text().trimmed();
-        QString price = dialog.getUi()->priceEdit->text().trimmed();
-        QString state = dialog.getUi()->stateEdit->text().trimmed();
+        QString orderID = dialog.getUi()->saleIDEdit->text().trimmed();
+        QString customerID = dialog.getUi()->oderIDEdit->text().trimmed();
+        QString date = dialog.getUi()->goodsIDEdit->text().trimmed();
+        QString price = dialog.getUi()->countEdit->text().trimmed();
+        QString state = dialog.getUi()->dateEdit->text().trimmed();
 
         // 检查输入是否有效
         if (orderID.isEmpty() || customerID.isEmpty() || date.isEmpty() || price.isEmpty() || state.isEmpty()) {
