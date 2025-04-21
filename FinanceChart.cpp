@@ -1,6 +1,7 @@
 ﻿#include "FinanceChart.h"
 #include <QtCharts/QChart>
 #include <QRandomGenerator>
+#include <qdatetime.h>
 
 FinanceChart::FinanceChart(QWidget* parent)
     : QChartView(parent)
@@ -94,6 +95,15 @@ void FinanceChart::setExpenseData(const QVector<QPair<QDateTime, double>>& data)
         expenseSeries->append(point.first.toMSecsSinceEpoch(), point.second);
     }
     updateAxesRange();
+}
+
+void FinanceChart::setAxisRange(const QDate& start, const QDate& end)
+{
+    if (!axisX) return;
+    QDateTime minTime(start, QTime(0, 0, 0));
+    QDateTime maxTime(end, QTime(23, 59, 59));
+    axisX->setMin(minTime.addSecs(-3600)); // 提前1小时
+    axisX->setMax(maxTime.addSecs(3600));  // 延后1小时
 }
 
 void FinanceChart::updateAxesRange()

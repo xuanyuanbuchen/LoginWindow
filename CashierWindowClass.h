@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 #include "SqlTools.h"
+#include "UnifiedLoginManager.h"
 
 class CashierWindowClass : public QWidget
 {

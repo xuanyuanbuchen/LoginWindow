@@ -29,7 +29,7 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="styleSheet">
@@ -279,8 +279,8 @@ QScrollBar::add-page, QScrollBar::sub-page {
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>1056</width>
-                  <height>591</height>
+                  <width>100</width>
+                  <height>30</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -1381,6 +1381,7 @@ QPushButton:pressed
  </customwidgets>
  <resources>
   <include location="resource.qrc"/>
+  <include location="C:/Users/DELL/.designer/backup/resource.qrc"/>
  </resources>
  <connections/>
 </ui>

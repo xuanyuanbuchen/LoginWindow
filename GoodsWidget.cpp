@@ -8,6 +8,7 @@ GoodsWidget::GoodsWidget(QWidget* parent, const QString& path, const QString& ID
 	pe.setColor(QPalette::WindowText, Qt::red);
 	ui.goodsPriceText->setPalette(pe);
 	ui.goodsCountText->setPalette(pe);
+	setProductInfo(name, "价格：" + price + "元", "库存：" + count, path);
 	goodsDetailDialog = new GoodsDetailDialog(this);
 	connect(goodsDetailDialog, &GoodsDetailDialog::pictureChanged, this, &GoodsWidget::onPictureChanged);
 	goodsDetailDialog->hide();
@@ -18,12 +19,12 @@ GoodsWidget::~GoodsWidget()
 {
 }
 
-void GoodsWidget::setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image)
+void GoodsWidget::setProductInfo(const QString& name, const QString& price, const QString& count, const QString& path)
 {
     ui.goodsNameText->setText(name);
     ui.goodsPriceText->setText(price);
     ui.goodsCountText->setText(count);
-    ui.goodsPicture->setPixmap(image.scaled(200, 200, Qt::KeepAspectRatio));
+    ui.goodsPicture->setPixmap(path);
 }
 
 void GoodsWidget::showGoodsDetailDialog()

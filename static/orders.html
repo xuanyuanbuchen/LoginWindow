@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史订单</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #e03c31;
+            color: white;
+            padding: 10px 20px;
+        }
+
+            .header a {
+                color: white;
+                text-decoration: none;
+                margin-left: 10px;
+            }
+
+                .header a:hover {
+                    text-decoration: underline;
+                }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            float: left;
+            width: 200px;
+            padding: 10px;
+        }
+
+        .content {
+            float: left;
+            width: calc(100% - 220px);
+            padding: 10px;
+        }
+
+        .clear-float {
+            clear: both;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button type="button" onclick="goToIndex()">主页</button>
+        <button type="button" onclick="goToPersonal()">个人中心</button>
+
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <h3>个人信息</h3>
+            <ul>
+                <li> <button type="button" onclick="goToPersonal()">个人信息</button></li>
+                <li><button type="button" onclick="goToOrders()">历史订单</button></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h2>历史订单</h2>
+            <table id="ordersTable">
+                <tr>
+                    <th>订单号</th>
+                    <th>顾客ID</th>
+                    <th>商品信息</th>
+                    <th>购买数量</th>
+                    <th>付款金额</th>
+                    <th>订单时间</th>
+                </tr>
+                <!-- 动态生成订单数据 -->
+            </table>
+        </div>
+        <div class="clear-float"></div>
+    </div>
+
+    <script>
+        function goToIndex() {
+            window.location.href = '/index.html';
+        }
+
+        function goToPersonal() {
+            window.location.href = '/personal.html';
+        }
+
+        function goToOrders() {
+            window.location.href = '/orders.html';
+        }
+
+        // 动态加载订单数据
+        function loadOrders() {
+            const ordersTable = document.getElementById('ordersTable');
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${order.orderId}</td>
+                        <td>${order.customerId}</td>
+                        <td>${order.productName}</td>
+                        <td>${order.quantity}</td>
+                        <td>${order.totalPrice}元</td>
+                        <td>${order.orderTime}</td>
+                    `;
+                ordersTable.appendChild(row);
+            });
+        }
+
+        // 初始化页面
+        loadOrders();
+    </script>
+</body>
+</html>

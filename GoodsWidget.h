@@ -21,7 +21,7 @@ public:
 		const QString& description = "NULL"
 	);
     ~GoodsWidget();
-    void setProductInfo(const QString& name, const QString& price, const QString& count, const QPixmap& image);
+    void setProductInfo(const QString& name, const QString& price, const QString& count, const QString& path);
     void showGoodsDetailDialog();
     const QString& getID();
 	GoodsDetailDialog* getGoodsDetailDialog() { return goodsDetailDialog; } // 获取商品详情对话框指针

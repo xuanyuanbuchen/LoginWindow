@@ -23,6 +23,7 @@ public:
     // 数据更新接口
     void setIncomeData(const QVector<QPair<QDateTime, double>>& data);
     void setExpenseData(const QVector<QPair<QDateTime, double>>& data);
+    void setAxisRange(const QDate& start, const QDate& end);
 
 private:
     void initChart();

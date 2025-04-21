@@ -20,7 +20,7 @@ void GoodsWidgetPagination::applyToGridLayout(QGridLayout* gridLayout, const std
     }
 
     // 获取当前页的商品数据
-    int start = currentPage * pageSize;
+    int start = 0;
     std::vector<GoodsWidget*> widgets = fetchPageData(start, pageSize);
 
     // 清空当前布局

@@ -8,4 +8,12 @@
         <file>res/manager.png</file>
         <file>res/Add_Icon.svg</file>
     </qresource>
+    <qresource prefix="/static">
+        <file>static/buy.html</file>
+        <file>static/index.html</file>
+        <file>static/orders.html</file>
+        <file>static/personal.html</file>
+        <file>static/register.html</file>
+        <file>static/login.html</file>
+    </qresource>
 </RCC>

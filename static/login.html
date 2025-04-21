@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .login-container {
+            width: 300px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .login-container h2 {
+                text-align: center;
+            }
+
+            .login-container input {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .login-container button {
+                width: 100%;
+                padding: 10px;
+                background-color: #e03c31;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .login-container button:hover {
+                    background-color: #cc3330;
+                }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .register-link a {
+                color: #e03c31;
+                text-decoration: none;
+            }
+
+                .register-link a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>登录</h2>
+        <form id="loginForm">
+            <input type="text" id="email" name="email" placeholder="账号" required>
+            <input type="password" id="password" name="password" placeholder="密码" required>
+            <button type="button" onclick="login()">登录</button>
+        </form>
+        <div class="register-link">
+            <button type="button" onclick="goToRegister()">没有账号？立即注册</button>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // 检查账号和密码是否为空
+            if (!email || !password) {
+                alert('账号和密码不能为空！');
+                return;
+            }
+
+            // 假设登录成功，保存邮箱信息到localStorage
+            localStorage.setItem('email', email);
+
+            alert('登录成功！');
+            window.location.href = '/index.html';
+        }
+
+        function goToRegister() {
+            window.location.href = '/register.html';
+        }
+    </script>
+</body>
+</html>

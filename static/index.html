@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #e03c31;
+            color: white;
+            padding: 10px 20px;
+        }
+
+            .header a {
+                color: white;
+                text-decoration: none;
+                margin-left: 10px;
+            }
+
+                .header a:hover {
+                    text-decoration: underline;
+                }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .product img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .product button {
+                padding: 5px 10px;
+                background-color: #e03c31;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .product button:hover {
+                    background-color: #cc3330;
+                }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .pagination a {
+                padding: 5px 10px;
+                margin: 0 5px;
+                background-color: #e03c31;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+            }
+
+                .pagination a:hover {
+                    background-color: #cc3330;
+                }
+
+        .filter-form {
+            margin-bottom: 20px;
+        }
+
+            .filter-form input, .filter-form select {
+                margin-right: 10px;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button type="button" onclick="goToIndex()">主页</button>
+        <button type="button" onclick="goToPersonal()">个人中心</button>
+        <button type="button" onclick="logout()">退出登录</button>
+        <span id="emailDisplay"></span>
+    </div>
+    <div class="container">
+        <h1>商品列表</h1>
+        <form class="filter-form" id="filterForm">
+            <input type="text" id="searchId" name="searchId" placeholder="搜索商品编号">
+            <input type="text" id="searchName" name="searchName" placeholder="搜索商品名称">
+            <select id="category" name="category">
+                <option value="">所有分类</option>
+                <option value="生鲜">生鲜</option>
+                <option value="日用品">日用品</option>
+                <option value="零食">零食</option>
+            </select>
+            <select id="sort" name="sort">
+                <option value="">排序</option>
+                <option value="asc">价格升序</option>
+                <option value="desc">价格降序</option>
+            </select>
+            <select id="priceRange" name="priceRange">
+                <option value="">价格区间</option>
+                <option value="lessThan10">小于10元</option>
+                <option value="10to50">10元到50元</option>
+                <option value="50to100">50元到100元</option>
+                <option value="greaterThan100">大于100元</option>
+            </select>
+            <button type="button" onclick="filterProducts()">搜索</button>
+        </form>
+        <div id="products">
+            <!-- 商品列表将在这里动态生成 -->
+        </div>
+        <div class="pagination" id="pagination">
+            <!-- 分页链接将在这里动态生成 -->
+        </div>
+    </div>
+
+    <script>
+       
+
+        function logout() {
+            localStorage.removeItem('email'); // 清除邮箱信息
+            alert('已退出登录');
+            window.location.href = '/login.html';
+        }
+
+        function goToIndex() {
+            window.location.href = '/index.html';
+        }
+
+        function goToPersonal() {
+            window.location.href = '/personal.html';
+        }
+
+        // 向后端发送请求并获取商品数据
+        function fetchProducts() {
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 将后端返回的数据保存到本地变量中
+                    products = data;
+                    // 动态生成商品列表
+                    displayProducts(products);
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    alert('无法获取商品数据，请检查网络连接或后端接口是否正常。');
+                });
+
+            const searchId = ""; 
+            const searchName = "";
+            const category = "";
+            const sort = "";
+            const priceRange = "";
+
+            const searchParams = {
+                searchId,
+                searchName,
+                category,
+                sort,
+                priceRange
+            };
+
+            // 发送POST请求到后端
+            fetch('/api/products/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(searchParams)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 接收后端返回的数据并展示
+                    products = data;
+                    displayProducts(products);
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    alert('无法获取商品数据，请检查网络连接或后端接口是否正常。');
+                });
+        }
+
+        // 页面加载时调用 fetchProducts 函数
+        window.onload = function () {
+            const email = localStorage.getItem('email');
+            if (email) {
+                document.getElementById('emailDisplay').innerText = `邮箱：${email}`;
+            }
+            fetchProducts(); // 获取商品数据
+        };
+
+        // 动态生成商品列表
+        function displayProducts(filteredProducts, page = 1, itemsPerPage = 5) {
+            const productsDiv = document.getElementById('products');
+            productsDiv.innerHTML = '';
+
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedProducts = filteredProducts.slice(start, end);
+
+            paginatedProducts.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `
+            <img src="${product.path}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>商品编号: ${product.ID}</p>
+            <p>商品种类: ${product.category}</p>
+            <p>价格: ${product.price.toFixed(2)}元</p>
+            <p>库存: ${product.count}</p>
+            <button onclick="goToBuy(${product.ID})">购买</button>
+        `;
+                //以上为商品展示数据
+
+                productsDiv.appendChild(productDiv);
+            });
+
+            // 分页导航
+            const paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = '';
+
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                pageLink.className = i === page ? 'active' : '';
+                pageLink.onclick = function (e) {
+                    e.preventDefault();
+                    displayProducts(filteredProducts, i, itemsPerPage);
+                };
+                paginationDiv.appendChild(pageLink);
+            }
+        }
+
+        // 购买商品
+        function goToBuy(productId) {
+            const product = products.find(p => p.ID === productId);
+            if (product) {
+                localStorage.setItem('selectedProduct', JSON.stringify(product));
+                window.location.href = '/buy.html';
+            }
+        }
+
+        
+        // 封装搜索条件并发送到后端
+        function filterProducts() {
+            const searchId = document.getElementById('searchId').value.trim();
+            const searchName = document.getElementById('searchName').value.trim();
+            const category = document.getElementById('category').value;
+            const sort = document.getElementById('sort').value;
+            const priceRange = document.getElementById('priceRange').value;
+
+            const searchParams = {
+                searchId,
+                searchName,
+                category,
+                sort,
+                priceRange
+            };
+
+            // 发送POST请求到后端
+            fetch('/api/products/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(searchParams)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 接收后端返回的数据并展示
+                    displayProducts(data);
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    alert('无法获取商品数据，请检查网络连接或后端接口是否正常。');
+                });
+        }
+        
+        
+        // 初始化商品列表
+        displayProducts(products);
+    </script>
+</body>
+</html>

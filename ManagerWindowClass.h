@@ -10,6 +10,8 @@
 #include <QStandardItemModel>
 #include <memory>
 #include "SqlTools.h"
+#include "UnifiedLoginManager.h"
+#include <map>
 
 //struct FinancialData {
 //    QList<QPointF> income;  // 收入数据（x: 时间戳，y: 金额）
@@ -145,6 +147,8 @@ private:
     // 标记顾客表格的列排序状态
     bool customerReverseFlags[7] = { false, false, false, false, false, false, false }; // 对应顾客表格的 7 列
     int currentCustomerSortColumn = -1; // 当前排序的列索引，-1 表示未排序
+
+    std::map<QString, std::string> convert;
 
 
 };

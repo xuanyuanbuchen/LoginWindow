@@ -5,6 +5,8 @@
 #include "ManagerWindowClass.h"
 #include "SqlTools.h"
 #include <qmessagebox.h>
+#include <QTimer>
+
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QWidget(parent)
@@ -14,38 +16,29 @@ LoginWindow::LoginWindow(QWidget *parent)
 	InitConnect();
 }
 
-void LoginWindow::onLoginClicked()
-{
-	const int logIdentityType = SqlTools::Login_Account_Password_Check(ui.logAccountLineEdit->text().toStdString(), ui.logPasswordLineEdit->text().toStdString());
-    if (logIdentityType == 1)
-    {
-        qDebug() << "登录成功";
-        this->hide();
-        CashierWindowClass* cashierWindow = new CashierWindowClass
-		(
-			ui.logAccountLineEdit->text().toStdString(),
-			ui.logPasswordLineEdit->text().toStdString()
-		);
-        connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // 连接退出信号
-		cashierWindow->show();
-	}
-	else if (logIdentityType == 2)
-	{
-		qDebug() << "登录成功";
+void LoginWindow::onLoginClicked() {
+	int userType = 0;
+	if (UnifiedLoginManager::instance().localPasswordLogin(ui.logAccountLineEdit->text(), ui.logPasswordLineEdit->text(), userType)) {
 		this->hide();
-		ManagerWindowClass* managerWindow = new ManagerWindowClass;
-		connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // 连接退出信号
-		managerWindow->show();
+		if (userType == 1) {
+			ManagerWindowClass* managerWindow = new ManagerWindowClass;
+			connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);
+			managerWindow->show();
+		}
+		else if (userType == 2) {
+			CashierWindowClass* cashierWindow = new CashierWindowClass(
+				ui.logAccountLineEdit->text().toStdString(),
+				ui.logPasswordLineEdit->text().toStdString()
+			);
+			connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);
+			cashierWindow->show();
+		}
 	}
-	else
-	{
-		qDebug() << "登录失败";
-		// 显示错误提示
+	else {
 		QMessageBox::warning(this, "登录失败", "账号或密码错误，请重试。");
-		ui.logAccountLineEdit->clear(); // 清空账号输入框
-		ui.logPasswordLineEdit->clear(); // 清空密码输入框
-    }
-  
+		ui.logAccountLineEdit->clear();
+		ui.logPasswordLineEdit->clear();
+	}
 }
 
 LoginWindow::~LoginWindow()
@@ -93,47 +86,45 @@ void LoginWindow::InitConnect()
 	//注册发送验证码按钮事件
 	connect(ui.signSendCodeBtn, &QPushButton::clicked, this, &LoginWindow::onSignCodeSentClicked);
 	connect(ui.mailSendCodeBtn, &QPushButton::clicked, this, &LoginWindow::onMailCodeSentClicked);
+	connect(ui.signAccountLineEdit, &QLineEdit::textChanged, [=]() {
+		ui.signMailLineEdit->setText(ui.signAccountLineEdit->text());
+		});
+	connect(ui.signMailLineEdit, &QLineEdit::textChanged, [=]() {
+		ui.signAccountLineEdit->setText(ui.signMailLineEdit->text());
+		});
 }
 
-void LoginWindow::onMailLoginClicked()
-{
-	const int logIdentityType = SqlTools::Login_Email_Code_Check(ui.mailMailBoxLineEdit->text().toStdString(), ui.mailVerificationCodeLineEdit->text().toStdString());
-	if (logIdentityType == 1)
-	{
-		qDebug() << "登录成功";
+void LoginWindow::onMailLoginClicked() {
+	int userType = 0;
+	if (UnifiedLoginManager::instance().localEmailLogin(ui.mailMailBoxLineEdit->text(), ui.mailVerificationCodeLineEdit->text(), userType)) {
 		this->hide();
-		// 获取账号
-		auto[account, password] = SqlTools::Login_Get_Account_Password
-		(
-			ui.mailMailBoxLineEdit->text().toStdString(),
-			ui.mailVerificationCodeLineEdit->text().toStdString()
-		);
-		CashierWindowClass* cashierWindow = new CashierWindowClass(account, password);
-		connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);  // 连接退出信号
-		cashierWindow->show();
+		if (userType == 1) {
+			ManagerWindowClass* managerWindow = new ManagerWindowClass;
+			connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);
+			managerWindow->show();
+		}
+		else if (userType == 2) {
+			auto [account, password] = SqlTools::Login_Get_Account_Password(
+				ui.mailMailBoxLineEdit->text().toStdString(),
+				ui.mailVerificationCodeLineEdit->text().toStdString()
+			);
+			CashierWindowClass* cashierWindow = new CashierWindowClass(account, password);
+			connect(cashierWindow, &CashierWindowClass::logoutRequested, this, &LoginWindow::show);
+			cashierWindow->show();
+		}
 	}
-	else if (logIdentityType == 2)
-	{
-		qDebug() << "登录成功";
-		this->hide();
-		ManagerWindowClass* managerWindow = new ManagerWindowClass;
-		connect(managerWindow, &ManagerWindowClass::logoutRequested, this, &LoginWindow::show);  // 连接退出信号
-		managerWindow->show();
-	}
-	else
-	{
-		qDebug() << "登录失败";
-		// 显示错误提示
+	else {
 		QMessageBox::warning(this, "登录失败", "邮箱或验证码错误，请重试。");
-		ui.mailMailBoxLineEdit->clear(); // 清空账号输入框
-		ui.mailVerificationCodeLineEdit->clear(); // 清空密码输入框
+		ui.mailMailBoxLineEdit->clear();
+		ui.mailVerificationCodeLineEdit->clear();
 	}
 }
 
 void LoginWindow::onRegisterClicked()
 {
-	if (SqlTools::Register_Account_Password_Check(ui.signAccountLineEdit->text().toStdString(), ui.signPasswordLineEdit->text().toStdString())
-		&& SqlTools::Register_Email_Code_Check(ui.signMailLineEdit->text().toStdString(), ui.signPasswordLineEdit->text().toStdString())
+	if (
+		 SqlTools::Register_Email_Code_Check(ui.signMailLineEdit->text().toStdString(), ui.signVerificationCodeLineEdit->text().toStdString())
+		&& SqlTools::Register_Account_Password_Check(ui.signAccountLineEdit->text().toStdString(), ui.signPasswordLineEdit->text().toStdString())
 		&& (ui.signPasswordLineEdit->text() == ui.signRePasswordLineEdit->text()))
 	{
 		if (SqlTools::Register_Account_Password_Email_Wirte(ui.signAccountLineEdit->text().toStdString(), ui.signPasswordLineEdit->text().toStdString(), ui.signMailLineEdit->text().toStdString()))
@@ -169,12 +160,66 @@ void LoginWindow::onRegisterClicked()
 	}
 }
 
-void LoginWindow::onSignCodeSentClicked()
-{
+void LoginWindow::onSignCodeSentClicked() {
+	QString email = ui.signMailLineEdit->text().trimmed();
+	if (email.isEmpty()) {
+		QMessageBox::warning(this, "错误", "请输入邮箱地址！");
+		return;
+	}
 
+	// 调用 UnifiedLoginManager 发送验证码
+	UnifiedLoginManager::instance().sendLocalVerificationCode(email);
+
+	// 禁用按钮并启动倒计时
+	ui.signSendCodeBtn->setEnabled(false);
+	QTimer* timer = new QTimer(this);
+	int countdown = 60; // 倒计时 60 秒
+	ui.signSendCodeBtn->setText(QString("%1s").arg(countdown));
+
+	connect(timer, &QTimer::timeout, this, [=]() mutable {
+		countdown--;
+		if (countdown > 0) {
+			ui.signSendCodeBtn->setText(QString("%1s").arg(countdown));
+		}
+		else {
+			timer->stop();
+			ui.signSendCodeBtn->setEnabled(true);
+			ui.signSendCodeBtn->setText("发送验证码");
+			timer->deleteLater();
+		}
+		});
+
+	timer->start(1000); // 每秒更新一次
 }
 
-void LoginWindow::onMailCodeSentClicked()
-{
+void LoginWindow::onMailCodeSentClicked() {
+	QString email = ui.mailMailBoxLineEdit->text().trimmed();
+	if (email.isEmpty()) {
+		QMessageBox::warning(this, "错误", "请输入邮箱地址！");
+		return;
+	}
 
+	// 调用 UnifiedLoginManager 发送验证码
+	UnifiedLoginManager::instance().sendLocalVerificationCode(email);
+
+	// 禁用按钮并启动倒计时
+	ui.mailSendCodeBtn->setEnabled(false);
+	QTimer* timer = new QTimer(this);
+	int countdown = 60; // 倒计时 60 秒
+	ui.mailSendCodeBtn->setText(QString("%1s").arg(countdown));
+
+	connect(timer, &QTimer::timeout, this, [=]() mutable {
+		countdown--;
+		if (countdown > 0) {
+			ui.mailSendCodeBtn->setText(QString("%1s").arg(countdown));
+		}
+		else {
+			timer->stop();
+			ui.mailSendCodeBtn->setEnabled(true);
+			ui.mailSendCodeBtn->setText("发送验证码");
+			timer->deleteLater();
+		}
+		});
+
+	timer->start(1000); // 每秒更新一次
 }

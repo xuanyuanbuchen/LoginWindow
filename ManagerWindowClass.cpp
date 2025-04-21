@@ -9,6 +9,7 @@
 #include "OrderDetailDialog.h"
 #include "StockDetailDialog.h"
 #include "StaffDetailDialog.h"
+#include <QStringConverter>
 
 ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     : QWidget(parent)
@@ -17,7 +18,54 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     setAttribute(Qt::WA_DeleteOnClose);
     ui.stackedWidget->setCurrentIndex(0);
 
-    void InitBackground();
+    convert.emplace("全部种类", "all");
+    convert.emplace("生鲜", "fresh produce");
+    convert.emplace("蔬菜", "vegetables");
+    convert.emplace("水果", "fruit");
+    convert.emplace("粮食", "grain");
+    convert.emplace("饮品", "drink");
+    convert.emplace("烟", "smoke");
+    convert.emplace("零食", "snacks");
+    convert.emplace("日用百货", "daily necessities");
+    convert.emplace("五金零件", "hardware parts");
+    convert.emplace("母婴用品", "baby and maternal products");
+
+    convert.emplace("全部价格", " ");
+    convert.emplace("<10元", "less10");
+    convert.emplace("10元~50元 ", "10to50");
+    convert.emplace("50元~100元", "50to100");
+    convert.emplace(">100", "than100");
+
+
+
+    InitBackground();
+	InitConnect();
+    InitManagerGoodsPage();
+    InitProcessSalesPage();
+    InitProcessStockInfoPage();
+    InitManagerStaffPage();
+    InitManagerCustomPage();
+    InitFinancialManagerPage();
+
+}
+
+ManagerWindowClass::~ManagerWindowClass()
+{
+    vec_current_goods_widget.clear();
+}
+
+void ManagerWindowClass::InitBackground()
+{
+    // 设置窗口背景图片
+    QPixmap background(":/res/manager.png");  // 从资源文件中加载图片
+    background = background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 缩放图片以适应窗口
+    QPalette palette;
+    palette.setBrush(QPalette::Window, background);  // 设置背景图片
+    this->setPalette(palette);
+}
+
+void ManagerWindowClass::InitConnect()
+{
     // 页面切换按钮
     connect(ui.manageGoodsBtn, &QPushButton::clicked, [=]() { ui.stackedWidget->setCurrentIndex(0); });
     connect(ui.processSalesInfoBtn, &QPushButton::clicked, [=]() { ui.stackedWidget->setCurrentIndex(1); });
@@ -121,34 +169,6 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     connect(ui.dateEditStart, &QDateEdit::dateChanged, this, &ManagerWindowClass::onDateRangeChanged);
     connect(ui.dateEditEnd, &QDateEdit::dateChanged, this, &ManagerWindowClass::onDateRangeChanged);
 
-    void InitManagerGoodsPage();
-    void InitProcessSalesPage();
-    void InitProcessStockInfoPage();
-    void InitManagerStaffPage();
-    void InitManagerCustomPage();
-    void InitFinancialManagerPage();
-
-}
-
-ManagerWindowClass::~ManagerWindowClass()
-{
-    vec_current_goods_widget.clear();
-}
-
-void ManagerWindowClass::InitBackground()
-{
-    // 设置窗口背景图片
-    QPixmap background(":/res/manager.png");  // 从资源文件中加载图片
-    background = background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 缩放图片以适应窗口
-    QPalette palette;
-    palette.setBrush(QPalette::Window, background);  // 设置背景图片
-    this->setPalette(palette);
-}
-
-void ManagerWindowClass::InitConnect()
-{
-  
-
 
 
    
@@ -156,31 +176,54 @@ void ManagerWindowClass::InitConnect()
 
 void ManagerWindowClass::InitManagerGoodsPage()
 {
-    //库存管理页面
-    auto [records, kinds_count] = SqlTools::SearchProductTable_Kind_Price_Name();
+    /*qDebug() << ui.goodsComboBoxCategory->currentText().toStdU32String() << ui.goodsComboBoxPrice->currentText().toStdString() << ui.goodsComboBoxPrice->currentText().toUtf8().constData();
+    std::string e = ui.goodsComboBoxPrice->currentText().toUtf8().data();
+    qDebug() << e;
+    auto fromUtf16 = QStringEncoder(QStringEncoder::Utf8);
+    QString category = ui.goodsComboBoxCategory->currentText();
+    std::string categoryStr = category.toUtf8().constData();
+    qDebug() << categoryStr << ui.goodsComboBoxPrice->currentText().toStdString();
+
+    库存管理页面*/
+    auto [records, kinds_count] = SqlTools::SearchProductTable_Kind_Price_Name
+    (
+        convert[ui.goodsComboBoxCategory->currentText()],
+        convert[ui.goodsComboBoxPrice->currentText()],
+        ui.goodsNameLine->text().toStdString()
+
+    );
 
     for (const auto& record : records)
     {
-        vec_current_goods_widget.emplace_back(
-            std::make_unique<GoodsWidget>(
-                new GoodsWidget
-                {
-                    nullptr ,
-                    QString::fromStdString(record.path),
-                    QString::fromStdString(record.ID),
-                    QString::fromStdString(record.name),
-                    QString::fromStdString(record.price),
-                    QString::fromStdString(record.category),
-                    QString::fromStdString(record.count),
-                    QString::fromStdString(record.description)
-                }
-            ));
+        auto widget = std::make_unique<GoodsWidget>(
+            new GoodsWidget{
+            nullptr,
+            QString::fromStdString(record.path),
+            QString::fromStdString(record.ID),
+            QString::fromStdString(record.name),
+            QString::fromStdString(record.price),
+            QString::fromStdString(record.category),
+            QString::fromStdString(record.count),
+            QString::fromStdString(record.description)
+            }
+        );
+
+        connect(widget.get(), &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
+
+        vec_current_goods_widget.emplace_back(std::move(widget));
     }
-    GoodsWidget* addGoo = new GoodsWidget(nullptr, QString(":/res/Add_Icon.svg"));
-    addGoo->setStyleSheet("QWidget { background-color: rgba(255,255,255,0.8); }");
-    vec_current_goods_widget.push_back(std::make_unique<GoodsWidget>(addGoo));
-    //点击唤出详细页面
-    connect(addGoo, &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
+
+    if ( vec_current_goods_widget.size()<=9)
+    {
+        auto addGoo = std::make_unique<GoodsWidget>(nullptr, QString(":/res/Add_Icon.svg"));
+        addGoo->setStyleSheet("QWidget { background-color: rgba(255,255,255,0.8); }");
+
+        connect(addGoo.get(), &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
+
+        vec_current_goods_widget.push_back(std::move(addGoo));
+        kinds_count++;
+    }
+   
     //设置滚动区域
     ui.scrollAreaWidgetContents_3->setMaximumSize(1600, 800);
     ui.scrollAreaWidgetContents_3->setMinimumSize(1600, 800);
@@ -189,6 +232,8 @@ void ManagerWindowClass::InitManagerGoodsPage()
     ui.scrollArea->setWidgetResizable(true);
     ui.scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     ui.scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    goodsWidgetPagination = new GoodsWidgetPagination(kinds_count, 9);
+    updateGoodsPage();
 }
 
 void ManagerWindowClass::InitProcessSalesPage()
@@ -342,8 +387,8 @@ void ManagerWindowClass::updateSalePage()
 
     // 调用 SqlTools 获取当前页的销售数据
     auto [records, totalCount] = SqlTools::Search_SaleTable_State_Price_ID(
-        ui.saleComboBoxCategory->currentText().toStdString(),
-        ui.saleComboBoxPrice->currentText().toStdString(),
+        convert[ui.saleComboBoxCategory->currentText()],
+        convert[ui.saleComboBoxPrice->currentText()],
         ui.saleNameLine->text().toStdString(),
         limit,
         offset,
@@ -528,11 +573,12 @@ void ManagerWindowClass::updateStockPage()
     // 获取当前页的偏移量和返回数量
     int offset = stockPagination->getCurrentPage() * stockPagination->getPageSize();
     int limit = stockPagination->getPageSize();
+    qDebug() << ui.stockComboBoxCategory->currentText().toStdU32String() << ui.stockComboBoxPrice->currentText() << ui.stockNameLine->text();
 
     // 调用 SqlTools 获取当前页的进货记录数据
     auto [records, totalCount] = SqlTools::Search_StockTable_State_Price_ID(
-        ui.stockComboBoxCategory->currentText().toStdString(),
-        ui.stockComboBoxPrice->currentText().toStdString(),
+        convert[ui.stockComboBoxCategory->currentText()],
+        convert[ui.stockComboBoxPrice->currentText()],
         ui.stockNameLine->text().toStdString(),
         limit,
         offset,
@@ -716,7 +762,7 @@ void ManagerWindowClass::updateStaffPage()
 
     // 调用 SqlTools 获取当前页的员工数据
     auto [records, totalCount] = SqlTools::Search_StaffTable_Role_Name(
-        ui.staffComboBoxRole->currentText().toStdString(),
+        convert[ui.staffComboBoxRole->currentText()],
         ui.staffNameLine->text().toStdString(),
         limit,
         offset,
@@ -773,7 +819,7 @@ void ManagerWindowClass::onGoodsClicked()
             QString path = ":/res/default.jpg"; // 默认图片路径
             if (dialog.getUi().goodsPicture)
             {
-                path = QString::fromStdString(dialog.GetPath()); // 假设图片路径存储在 cacheKey 中
+                path = QString::fromStdString(dialog.GetPath());
             }
 
             // 调用 SqlTools::Add_Goods 写入数据库
@@ -783,7 +829,7 @@ void ManagerWindowClass::onGoodsClicked()
                 id.toStdString(),
                 name.toStdString(),
                 price.toStdString(),
-                category.toStdString(),
+                convert[category],
                 count.toStdString(),
                 description.toStdString()
             );
@@ -814,8 +860,8 @@ void ManagerWindowClass::onGoodsComboxCategoryClicked(int index)
 
     // 调用 SqlTools 获取筛选后的商品总数
     auto [records, totalCount] = SqlTools::SearchProductTable_Kind_Price_Name(
-        selectedCategory.toStdString(),
-        selectedPrice.toStdString(),
+        convert[selectedCategory],
+        convert[selectedPrice],
         goodsName.toStdString(),
         goodsWidgetPagination->getPageSize(),
         0 // 从偏移量 0 开始
@@ -836,8 +882,8 @@ void ManagerWindowClass::onGoodsComboxPriceClicked(int index)
 
     // 调用 SqlTools 获取筛选后的商品总数
     auto [records, totalCount] = SqlTools::SearchProductTable_Kind_Price_Name(
-        selectedCategory.toStdString(),
-        selectedPrice.toStdString(),
+        convert[selectedCategory],
+        convert[selectedPrice],
         goodsName.toStdString(),
         goodsWidgetPagination->getPageSize(),
         0 // 从偏移量 0 开始
@@ -857,8 +903,8 @@ void ManagerWindowClass::onGoodstNameLineSearchClicked(const QString& text)
 
     // 调用 SqlTools 获取筛选后的商品总数
     auto [records, totalCount] = SqlTools::SearchProductTable_Kind_Price_Name(
-        selectedCategory.toStdString(),
-        selectedPrice.toStdString(),
+        convert[selectedCategory],
+        convert[selectedPrice],
         text.toStdString(),
         goodsWidgetPagination->getPageSize(),
         0 // 从偏移量 0 开始
@@ -923,8 +969,8 @@ void ManagerWindowClass::updateGoodsPage()
 
     // 调用 SqlTools 获取当前页的数据
     auto [records, totalCount] = SqlTools::SearchProductTable_Kind_Price_Name(
-        ui.goodsComboBoxCategory->currentText().toStdString(),
-        ui.goodsComboBoxPrice->currentText().toStdString(),
+        convert[ui.goodsComboBoxCategory->currentText()],
+        convert[ui.goodsComboBoxPrice->currentText()],
         ui.goodsNameLine->text().toStdString(),
         returnCount,
         offset
@@ -933,23 +979,35 @@ void ManagerWindowClass::updateGoodsPage()
     // 清空当前商品数据
     vec_current_goods_widget.clear();
 
-    // 创建新的商品小部件
     for (const auto& record : records)
     {
-        vec_current_goods_widget.emplace_back(std::make_unique<GoodsWidget>(
-            new GoodsWidget(
-                nullptr,
-                QString::fromStdString(record.path),
-                QString::fromStdString(record.ID),
-                QString::fromStdString(record.name),
-                QString::fromStdString(record.price),
-                QString::fromStdString(record.category),
-                QString::fromStdString(record.count),
-                QString::fromStdString(record.description)
-            )
-        ));
+        auto widget = std::make_unique<GoodsWidget>(
+            nullptr,
+            QString::fromStdString(record.path),
+            QString::fromStdString(record.ID),
+            QString::fromStdString(record.name),
+            QString::fromStdString(record.price),
+            QString::fromStdString(record.category),
+            QString::fromStdString(record.count),
+            QString::fromStdString(record.description)
+        );
+
+        connect(widget.get(), &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
+
+        vec_current_goods_widget.emplace_back(std::move(widget));
     }
 
+    if (vec_current_goods_widget.size()<=9)
+    {
+        auto addGoo = std::make_unique<GoodsWidget>(nullptr, QString(":/res/Add_Icon.svg"));
+        addGoo->setStyleSheet("QWidget { background-color: rgba(255,255,255,0.8); }");
+
+        connect(addGoo.get(), &GoodsWidget::clicked, this, &ManagerWindowClass::onGoodsClicked);
+
+        vec_current_goods_widget.push_back(std::move(addGoo));
+        totalCount++;
+    }
+   
     // 提供一个回调函数，获取当前页的商品数据
     auto fetchPageData = [this](int start, int count) -> std::vector<GoodsWidget*> {
         std::vector<GoodsWidget*> widgets;
@@ -970,8 +1028,8 @@ void ManagerWindowClass::updateGoodsPage()
     ui.nextGoodsWidgetPageBtn->setEnabled(goodsWidgetPagination->getCurrentPage() < goodsWidgetPagination->pageCount() - 1);
 }
 
-void ManagerWindowClass::onLogoutClicked()
-{
+void ManagerWindowClass::onLogoutClicked() {
+    UnifiedLoginManager::instance().localLogout("Manager");
     emit logoutRequested();
     this->close();
 }
@@ -1197,18 +1255,19 @@ void ManagerWindowClass::onDeleteCustomerClicked()
 void ManagerWindowClass::onDateRangeChanged()
 {
     // 获取日期范围
-    QString startDate = ui.dateEditStart->date().toString("yyyy-MM-dd");
-    QString endDate = ui.dateEditEnd->date().toString("yyyy-MM-dd");
+    QDate startDate = ui.dateEditStart->date();
+    QDate endDate = ui.dateEditEnd->date();
+    QString startDateStr = startDate.toString("yyyy-MM-dd");
+    QString endDateStr = endDate.toString("yyyy-MM-dd");
 
-    // 从 SqlTools 获取收入和支出数据
-    QVector<QPair<QDateTime, double>> incomeData = SqlTools::Get_Income_Date(startDate.toStdString(), endDate.toStdString());
-    QVector<QPair<QDateTime, double>> expenseData = SqlTools::Get_Expense_Date(startDate.toStdString(), endDate.toStdString());
+    // 从 SqlTools 获取收入数据
+    QVector<QPair<QDateTime, double>> incomeData = SqlTools::Get_Income_Date(startDateStr.toStdString(), endDateStr.toStdString());
 
-    // 更新 FinanceChart 数据
+    // 更新 FinanceChart 数据和坐标轴
     FinanceChart* financeChart = qobject_cast<FinanceChart*>(ui.chartLay->layout()->itemAt(0)->widget());
     if (financeChart) {
         financeChart->setIncomeData(incomeData);
-        financeChart->setExpenseData(expenseData);
+        financeChart->setAxisRange(startDate, endDate);  // 添加的坐标轴范围设置函数
     }
 }
 
@@ -1394,13 +1453,8 @@ void ManagerWindowClass::updateCustomerPage()
         ui.customerNameLine->text().toStdString(),
         limit,
         offset,
-        customerReverseFlags[0], // reverse_profile_picture
-        customerReverseFlags[1], // reverse_customer_ID
         customerReverseFlags[2], // reverse_birth_date
-        customerReverseFlags[3], // reverse_note
-        customerReverseFlags[4], // reverse_register_date
-        customerReverseFlags[5], // reverse_email
-        customerReverseFlags[6]  // reverse_password
+        customerReverseFlags[4]  // reverse_register_date
     );
 
     // 清空表格模型

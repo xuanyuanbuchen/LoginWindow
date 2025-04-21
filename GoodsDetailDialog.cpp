@@ -11,19 +11,12 @@ GoodsDetailDialog::GoodsDetailDialog(QWidget* parent)
     ui.setupUi(this);
     connect(ui.cancelBtn, &QPushButton::clicked, [=]() {
         this->close();
-        //以后有了数据库应该调用setGoodsDetail
-        ui.goodsCategoryEdit->setText("NULL");
-        ui.goodsCountEdit->setText("NULL");
-        ui.goodsIDEdit->setText("NULL");
-        ui.goodsNameEdit->setText("NULL");
-        ui.goodsPriceEdit->setText("NULL");
-        ui.goodsTextEdit->setText("NULL");
-        ui.goodsPicture->setPixmap(QPixmap(":/res/default.jpg").scaled(200, 200, Qt::KeepAspectRatio));
-        emit pictureChanged(QPixmap(":/res/default.jpg"));
+        
         });
     connect(ui.acceptBtn, &QPushButton::clicked, [=]() {
         this->close();
         //以后有了数据库应该在这里写回数据库
+        emit accept();
         });
     //点击图片更换图片
     connect(ui.goodsPicture, &ClickableLabel::clicked, this, &GoodsDetailDialog::onGoodsPictureClicked);
@@ -76,6 +69,7 @@ Ui::GoodsDetailDialog& GoodsDetailDialog::getUi()
 void GoodsDetailDialog::onGoodsPictureClicked()
 {
     QString imagePath = QFileDialog::getOpenFileName(this, tr("选择图片"), "", tr("Images (*.png *.jpg *.jpeg *.bmp)"));
+    pixpath = imagePath.toStdString();
     if (!imagePath.isEmpty())
     {
         QPixmap newImage(imagePath);

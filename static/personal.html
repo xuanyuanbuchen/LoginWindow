@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #e03c31;
+            color: white;
+            padding: 10px 20px;
+        }
+
+            .header a {
+                color: white;
+                text-decoration: none;
+                margin-left: 10px;
+            }
+
+                .header a:hover {
+                    text-decoration: underline;
+                }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button type="button" onclick="goToIndex()">主页</button>
+        <button type="button" onclick="goToPersonal()">个人中心</button>
+        <button type="button" onclick="logout()">退出登录</button>
+        <span id="emailDisplay"></span>
+    </div>
+    <div class="container">
+        <h2>个人信息</h2>
+        <p>顾客ID: <span id="IDInfo"></span></p>
+        <p>绑定邮箱: <span id="emailInfo"></span></p>
+        <p>密码: ********</p>
+    </div>
+
+    <script>
+        function goToIndex() {
+            window.location.href = '/index.html';
+        }
+
+        function goToPersonal() {
+            window.location.href = '/personal.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('email'); // 清除邮箱信息
+            alert('已退出登录');
+            window.location.href = '/login.html';
+        }
+
+        // 页面加载时显示邮箱
+        window.onload = function () {
+            const email = localStorage.getItem('email');
+            if (email) {
+                document.getElementById('emailDisplay').innerText = `邮箱：${email}`;
+                document.getElementById('emailInfo').innerText = email;
+                document.getElementById('IDInfo').innerText = email;
+            }
+        };
+    </script>
+</body>
+</html>

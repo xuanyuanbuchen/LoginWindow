@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QWidget>
 #include "ui_LoginWindow.h"
+#include "UnifiedLoginManager.h"
 
 class LoginWindow : public QWidget
 {

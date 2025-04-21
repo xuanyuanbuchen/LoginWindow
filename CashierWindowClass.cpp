@@ -228,7 +228,7 @@ void CashierWindowClass::updateOrderPage()
             modifiedOrder.state = "已完成";
 
             // 调用 SqlTools 提交修改
-            bool success = SqlTools::Change_OrderTable_State({ modifiedOrder });
+            bool success = SqlTools::Change_OrderTable_State({ modifiedOrder },account);
 
             if (success) {
                 // 提交成功，更新按钮状态和表格
@@ -285,8 +285,8 @@ void CashierWindowClass::loadPage(int page)
 {
 }
 
-void CashierWindowClass::onLogoutClicked()
-{
+void CashierWindowClass::onLogoutClicked() {
+    UnifiedLoginManager::instance().localLogout(QString::fromStdString(account));
     emit logoutRequested();
     this->close();
 }
