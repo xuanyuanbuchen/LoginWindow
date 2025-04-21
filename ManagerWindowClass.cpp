@@ -36,6 +36,9 @@ ManagerWindowClass::ManagerWindowClass(QWidget* parent)
     convert.emplace("50元~100元", "50to100");
     convert.emplace(">100", "than100");
 
+    convert.emplace("全部", "allrole");
+    convert.emplace("店长", "Admister");
+    convert.emplace("收银员", "Normal");
 
 
     InitBackground();

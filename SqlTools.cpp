@@ -1105,7 +1105,7 @@ std::pair<std::vector<StaffDetail>, int> SqlTools::Search_StaffTable_Role_Name(/
         // 执行分页查询
         auto* stmt = conn->createStatement(base_sql);
         bind_index = 1;
-        if (role != "" && role != "全部角色")
+        if (role != "" && role != "allrole")
             stmt->setString(bind_index++, role);
         if (name != "")
             stmt->setString(bind_index++, "%" + toLower(name) + "%");
